@@ -846,6 +846,14 @@ type PageV1AccessKey struct {
 	Offset int           `json:"offset"`
 }
 
+// PageV1AppDomain defines model for Page_V1AppDomain_.
+type PageV1AppDomain struct {
+	Count  int           `json:"count"`
+	Data   []V1AppDomain `json:"data"`
+	Limit  int           `json:"limit"`
+	Offset int           `json:"offset"`
+}
+
 // PageV1App defines model for Page_V1App_.
 type PageV1App struct {
 	Count  int     `json:"count"`
@@ -932,6 +940,14 @@ type PageV1Project struct {
 	Data   []V1Project `json:"data"`
 	Limit  int         `json:"limit"`
 	Offset int         `json:"offset"`
+}
+
+// PageV1RegisteredDomain defines model for Page_V1RegisteredDomain_.
+type PageV1RegisteredDomain struct {
+	Count  int                  `json:"count"`
+	Data   []V1RegisteredDomain `json:"data"`
+	Limit  int                  `json:"limit"`
+	Offset int                  `json:"offset"`
 }
 
 // PageV1SshKey defines model for Page_V1SshKey_.
@@ -1400,6 +1416,30 @@ type V1AppCreate struct {
 	VpcId                *string `json:"vpc_id,omitempty"`
 }
 
+// V1AppDeployResult defines model for V1AppDeployResult.
+type V1AppDeployResult struct {
+	AppId  string `json:"app_id"`
+	Id     string `json:"id"`
+	SiteId string `json:"site_id"`
+	Status string `json:"status"`
+}
+
+// V1AppDomain defines model for V1AppDomain.
+type V1AppDomain struct {
+	AppId         string  `json:"app_id"`
+	BuildId       *string `json:"build_id,omitempty"`
+	CertificateId *string `json:"certificate_id,omitempty"`
+	CreatedAt     *string `json:"created_at,omitempty"`
+	DnsConfigured *bool   `json:"dns_configured,omitempty"`
+	Domain        string  `json:"domain"`
+	Error         *string `json:"error,omitempty"`
+	Id            string  `json:"id"`
+	IsDefault     *bool   `json:"is_default,omitempty"`
+	Status        string  `json:"status"`
+	TargetIp      *string `json:"target_ip,omitempty"`
+	Type          *string `json:"type,omitempty"`
+}
+
 // V1AppUpdate defines model for V1AppUpdate.
 type V1AppUpdate struct {
 	Name             *string `json:"name,omitempty"`
@@ -1665,6 +1705,14 @@ type V1FunctionCreate struct {
 	Name    string            `json:"name"`
 	Runtime *string           `json:"runtime,omitempty"`
 	VpcId   *string           `json:"vpc_id,omitempty"`
+}
+
+// V1FunctionDeployResult defines model for V1FunctionDeployResult.
+type V1FunctionDeployResult struct {
+	BuildId    string `json:"build_id"`
+	FunctionId string `json:"function_id"`
+	SiteId     string `json:"site_id"`
+	Status     string `json:"status"`
 }
 
 // V1FunctionUpdate defines model for V1FunctionUpdate.
@@ -1943,6 +1991,40 @@ type V1Project struct {
 	Emoji       *string `json:"emoji,omitempty"`
 	Id          string  `json:"id"`
 	Name        string  `json:"name"`
+}
+
+// V1RegisteredDomain defines model for V1RegisteredDomain.
+type V1RegisteredDomain struct {
+	// AutoCreatedZoneId DNS zone the platform created for this domain, if any
+	AutoCreatedZoneId    *string `json:"auto_created_zone_id,omitempty"`
+	AutoRenew            bool    `json:"auto_renew"`
+	AutoRenewPeriodYears int     `json:"auto_renew_period_years"`
+	CreatedAt            *string `json:"created_at,omitempty"`
+
+	// Domain The domain as registered, in its original script
+	Domain string `json:"domain"`
+
+	// DomainAscii Punycode form — what DNS and the registrar use
+	DomainAscii        string  `json:"domain_ascii"`
+	ExpiresAt          *string `json:"expires_at,omitempty"`
+	Id                 string  `json:"id"`
+	LastProviderSyncAt *string `json:"last_provider_sync_at,omitempty"`
+
+	// Nameservers Nameservers from the last successful register or redelegate; null when the platform has no record (not the same as 'none set')
+	Nameservers *[]string `json:"nameservers,omitempty"`
+
+	// Provider Registrar the domain is held at
+	Provider string `json:"provider"`
+
+	// ProviderStatus The registrar's own verdict on our last request, separate from `status`: ok | blocked | failed | unknown. Anything but 'ok' means the registrar refused us — a domain can be active for us and blocked there at the same time
+	ProviderStatus        *string `json:"provider_status,omitempty"`
+	ProviderStatusAt      *string `json:"provider_status_at,omitempty"`
+	ProviderStatusMessage *string `json:"provider_status_message,omitempty"`
+	RegisteredAt          *string `json:"registered_at,omitempty"`
+
+	// Status Our lifecycle: pending | active | expired | deleted
+	Status string `json:"status"`
+	Tld    string `json:"tld"`
 }
 
 // V1ReservedIp defines model for V1ReservedIp.
@@ -2421,88 +2503,6 @@ type WhoAmIResponse struct {
 	AccountId string              `json:"account_id"`
 	KeyId     string              `json:"key_id"`
 	Policy    []V1PolicyStatement `json:"policy"`
-}
-
-// AppRoutesV1CommonPageV1Domain1 defines model for app__routes__v1___common__Page_V1Domain___1.
-type AppRoutesV1CommonPageV1Domain1 struct {
-	Count  int                       `json:"count"`
-	Data   []AppRoutesV1AppsV1Domain `json:"data"`
-	Limit  int                       `json:"limit"`
-	Offset int                       `json:"offset"`
-}
-
-// AppRoutesV1CommonPageV1Domain2 defines model for app__routes__v1___common__Page_V1Domain___2.
-type AppRoutesV1CommonPageV1Domain2 struct {
-	Count  int                          `json:"count"`
-	Data   []AppRoutesV1DomainsV1Domain `json:"data"`
-	Limit  int                          `json:"limit"`
-	Offset int                          `json:"offset"`
-}
-
-// AppRoutesV1AppsV1DeployResult defines model for app__routes__v1__apps__V1DeployResult.
-type AppRoutesV1AppsV1DeployResult struct {
-	AppId  string `json:"app_id"`
-	Id     string `json:"id"`
-	SiteId string `json:"site_id"`
-	Status string `json:"status"`
-}
-
-// AppRoutesV1AppsV1Domain defines model for app__routes__v1__apps__V1Domain.
-type AppRoutesV1AppsV1Domain struct {
-	AppId         string  `json:"app_id"`
-	BuildId       *string `json:"build_id,omitempty"`
-	CertificateId *string `json:"certificate_id,omitempty"`
-	CreatedAt     *string `json:"created_at,omitempty"`
-	DnsConfigured *bool   `json:"dns_configured,omitempty"`
-	Domain        string  `json:"domain"`
-	Error         *string `json:"error,omitempty"`
-	Id            string  `json:"id"`
-	IsDefault     *bool   `json:"is_default,omitempty"`
-	Status        string  `json:"status"`
-	TargetIp      *string `json:"target_ip,omitempty"`
-	Type          *string `json:"type,omitempty"`
-}
-
-// AppRoutesV1DomainsV1Domain defines model for app__routes__v1__domains__V1Domain.
-type AppRoutesV1DomainsV1Domain struct {
-	// AutoCreatedZoneId DNS zone the platform created for this domain, if any
-	AutoCreatedZoneId    *string `json:"auto_created_zone_id,omitempty"`
-	AutoRenew            bool    `json:"auto_renew"`
-	AutoRenewPeriodYears int     `json:"auto_renew_period_years"`
-	CreatedAt            *string `json:"created_at,omitempty"`
-
-	// Domain The domain as registered, in its original script
-	Domain string `json:"domain"`
-
-	// DomainAscii Punycode form — what DNS and the registrar use
-	DomainAscii        string  `json:"domain_ascii"`
-	ExpiresAt          *string `json:"expires_at,omitempty"`
-	Id                 string  `json:"id"`
-	LastProviderSyncAt *string `json:"last_provider_sync_at,omitempty"`
-
-	// Nameservers Nameservers from the last successful register or redelegate; null when the platform has no record (not the same as 'none set')
-	Nameservers *[]string `json:"nameservers,omitempty"`
-
-	// Provider Registrar the domain is held at
-	Provider string `json:"provider"`
-
-	// ProviderStatus The registrar's own verdict on our last request, separate from `status`: ok | blocked | failed | unknown. Anything but 'ok' means the registrar refused us — a domain can be active for us and blocked there at the same time
-	ProviderStatus        *string `json:"provider_status,omitempty"`
-	ProviderStatusAt      *string `json:"provider_status_at,omitempty"`
-	ProviderStatusMessage *string `json:"provider_status_message,omitempty"`
-	RegisteredAt          *string `json:"registered_at,omitempty"`
-
-	// Status Our lifecycle: pending | active | expired | deleted
-	Status string `json:"status"`
-	Tld    string `json:"tld"`
-}
-
-// AppRoutesV1FunctionsV1DeployResult defines model for app__routes__v1__functions__V1DeployResult.
-type AppRoutesV1FunctionsV1DeployResult struct {
-	BuildId    string `json:"build_id"`
-	FunctionId string `json:"function_id"`
-	SiteId     string `json:"site_id"`
-	Status     string `json:"status"`
 }
 
 // CertificatesListCertificatesParams defines parameters for CertificatesListCertificates.
@@ -19292,13 +19292,13 @@ type DomainsListDomainsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AppRoutesV1CommonPageV1Domain2
+	JSON200 *PageV1RegisteredDomain
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r DomainsListDomainsResponse) GetJSON200() *AppRoutesV1CommonPageV1Domain2 {
+func (r DomainsListDomainsResponse) GetJSON200() *PageV1RegisteredDomain {
 	return r.JSON200
 }
 
@@ -19340,13 +19340,13 @@ type DomainsGetDomainResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AppRoutesV1DomainsV1Domain
+	JSON200 *V1RegisteredDomain
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r DomainsGetDomainResponse) GetJSON200() *AppRoutesV1DomainsV1Domain {
+func (r DomainsGetDomainResponse) GetJSON200() *V1RegisteredDomain {
 	return r.JSON200
 }
 
@@ -21087,13 +21087,13 @@ type AppsDeployAppResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AppRoutesV1AppsV1DeployResult
+	JSON200 *V1AppDeployResult
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r AppsDeployAppResponse) GetJSON200() *AppRoutesV1AppsV1DeployResult {
+func (r AppsDeployAppResponse) GetJSON200() *V1AppDeployResult {
 	return r.JSON200
 }
 
@@ -21135,13 +21135,13 @@ type AppsListDomainsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AppRoutesV1CommonPageV1Domain1
+	JSON200 *PageV1AppDomain
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r AppsListDomainsResponse) GetJSON200() *AppRoutesV1CommonPageV1Domain1 {
+func (r AppsListDomainsResponse) GetJSON200() *PageV1AppDomain {
 	return r.JSON200
 }
 
@@ -21183,13 +21183,13 @@ type AppsAddDomainResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON201 the response for an HTTP 201 `application/json` response
-	JSON201 *AppRoutesV1AppsV1Domain
+	JSON201 *V1AppDomain
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON201 returns the response for an HTTP 201 `application/json` response
-func (r AppsAddDomainResponse) GetJSON201() *AppRoutesV1AppsV1Domain {
+func (r AppsAddDomainResponse) GetJSON201() *V1AppDomain {
 	return r.JSON201
 }
 
@@ -21971,13 +21971,13 @@ type FunctionsDeployFunctionRouteResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *AppRoutesV1FunctionsV1DeployResult
+	JSON200 *V1FunctionDeployResult
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r FunctionsDeployFunctionRouteResponse) GetJSON200() *AppRoutesV1FunctionsV1DeployResult {
+func (r FunctionsDeployFunctionRouteResponse) GetJSON200() *V1FunctionDeployResult {
 	return r.JSON200
 }
 
@@ -29894,7 +29894,7 @@ func ParseDomainsListDomainsResponse(rsp *http.Response) (*DomainsListDomainsRes
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AppRoutesV1CommonPageV1Domain2
+		var dest PageV1RegisteredDomain
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -29927,7 +29927,7 @@ func ParseDomainsGetDomainResponse(rsp *http.Response) (*DomainsGetDomainRespons
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AppRoutesV1DomainsV1Domain
+		var dest V1RegisteredDomain
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -31119,7 +31119,7 @@ func ParseAppsDeployAppResponse(rsp *http.Response) (*AppsDeployAppResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AppRoutesV1AppsV1DeployResult
+		var dest V1AppDeployResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -31152,7 +31152,7 @@ func ParseAppsListDomainsResponse(rsp *http.Response) (*AppsListDomainsResponse,
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AppRoutesV1CommonPageV1Domain1
+		var dest PageV1AppDomain
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -31185,7 +31185,7 @@ func ParseAppsAddDomainResponse(rsp *http.Response) (*AppsAddDomainResponse, err
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest AppRoutesV1AppsV1Domain
+		var dest V1AppDomain
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -31730,7 +31730,7 @@ func ParseFunctionsDeployFunctionRouteResponse(rsp *http.Response) (*FunctionsDe
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest AppRoutesV1FunctionsV1DeployResult
+		var dest V1FunctionDeployResult
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

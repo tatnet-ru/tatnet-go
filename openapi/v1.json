@@ -2357,6 +2357,37 @@
         "title": "Page[V1AccessKey]",
         "type": "object"
       },
+      "Page_V1AppDomain_": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/V1AppDomain"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "limit",
+          "offset",
+          "count"
+        ],
+        "title": "Page[V1AppDomain]",
+        "type": "object"
+      },
       "Page_V1App_": {
         "properties": {
           "count": {
@@ -2696,6 +2727,37 @@
           "count"
         ],
         "title": "Page[V1Project]",
+        "type": "object"
+      },
+      "Page_V1RegisteredDomain_": {
+        "properties": {
+          "count": {
+            "title": "Count",
+            "type": "integer"
+          },
+          "data": {
+            "items": {
+              "$ref": "#/components/schemas/V1RegisteredDomain"
+            },
+            "title": "Data",
+            "type": "array"
+          },
+          "limit": {
+            "title": "Limit",
+            "type": "integer"
+          },
+          "offset": {
+            "title": "Offset",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "limit",
+          "offset",
+          "count"
+        ],
+        "title": "Page[V1RegisteredDomain]",
         "type": "object"
       },
       "Page_V1SshKey_": {
@@ -5031,6 +5093,132 @@
         "title": "V1AppCreate",
         "type": "object"
       },
+      "V1AppDeployResult": {
+        "properties": {
+          "app_id": {
+            "title": "App Id",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "app_id",
+          "site_id",
+          "status"
+        ],
+        "title": "V1AppDeployResult",
+        "type": "object"
+      },
+      "V1AppDomain": {
+        "properties": {
+          "app_id": {
+            "title": "App Id",
+            "type": "string"
+          },
+          "build_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Build Id"
+          },
+          "certificate_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Certificate Id"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "dns_configured": {
+            "default": false,
+            "title": "Dns Configured",
+            "type": "boolean"
+          },
+          "domain": {
+            "title": "Domain",
+            "type": "string"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "is_default": {
+            "default": false,
+            "title": "Is Default",
+            "type": "boolean"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          },
+          "target_ip": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Ip"
+          },
+          "type": {
+            "default": "current",
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "app_id",
+          "domain",
+          "status"
+        ],
+        "title": "V1AppDomain",
+        "type": "object"
+      },
       "V1AppUpdate": {
         "additionalProperties": false,
         "properties": {
@@ -6283,6 +6471,34 @@
         "title": "V1FunctionCreate",
         "type": "object"
       },
+      "V1FunctionDeployResult": {
+        "properties": {
+          "build_id": {
+            "title": "Build Id",
+            "type": "string"
+          },
+          "function_id": {
+            "title": "Function Id",
+            "type": "string"
+          },
+          "site_id": {
+            "title": "Site Id",
+            "type": "string"
+          },
+          "status": {
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "required": [
+          "build_id",
+          "function_id",
+          "site_id",
+          "status"
+        ],
+        "title": "V1FunctionDeployResult",
+        "type": "object"
+      },
       "V1FunctionUpdate": {
         "properties": {
           "files": {
@@ -7324,6 +7540,157 @@
           "name"
         ],
         "title": "V1Project",
+        "type": "object"
+      },
+      "V1RegisteredDomain": {
+        "properties": {
+          "auto_created_zone_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "DNS zone the platform created for this domain, if any",
+            "title": "Auto Created Zone Id"
+          },
+          "auto_renew": {
+            "title": "Auto Renew",
+            "type": "boolean"
+          },
+          "auto_renew_period_years": {
+            "title": "Auto Renew Period Years",
+            "type": "integer"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "domain": {
+            "description": "The domain as registered, in its original script",
+            "title": "Domain",
+            "type": "string"
+          },
+          "domain_ascii": {
+            "description": "Punycode form — what DNS and the registrar use",
+            "title": "Domain Ascii",
+            "type": "string"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "last_provider_sync_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Provider Sync At"
+          },
+          "nameservers": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Nameservers from the last successful register or redelegate; null when the platform has no record (not the same as 'none set')",
+            "title": "Nameservers"
+          },
+          "provider": {
+            "description": "Registrar the domain is held at",
+            "title": "Provider",
+            "type": "string"
+          },
+          "provider_status": {
+            "default": "ok",
+            "description": "The registrar's own verdict on our last request, separate from `status`: ok | blocked | failed | unknown. Anything but 'ok' means the registrar refused us — a domain can be active for us and blocked there at the same time",
+            "title": "Provider Status",
+            "type": "string"
+          },
+          "provider_status_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Status At"
+          },
+          "provider_status_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Provider Status Message"
+          },
+          "registered_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Registered At"
+          },
+          "status": {
+            "description": "Our lifecycle: pending | active | expired | deleted",
+            "title": "Status",
+            "type": "string"
+          },
+          "tld": {
+            "title": "Tld",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "domain",
+          "domain_ascii",
+          "tld",
+          "status",
+          "provider",
+          "auto_renew",
+          "auto_renew_period_years"
+        ],
+        "title": "V1RegisteredDomain",
         "type": "object"
       },
       "V1ReservedIp": {
@@ -9324,373 +9691,6 @@
         ],
         "title": "WhoAmIResponse",
         "type": "object"
-      },
-      "app__routes__v1___common__Page_V1Domain___1": {
-        "properties": {
-          "count": {
-            "title": "Count",
-            "type": "integer"
-          },
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/app__routes__v1__apps__V1Domain"
-            },
-            "title": "Data",
-            "type": "array"
-          },
-          "limit": {
-            "title": "Limit",
-            "type": "integer"
-          },
-          "offset": {
-            "title": "Offset",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "data",
-          "limit",
-          "offset",
-          "count"
-        ],
-        "title": "Page[V1Domain]",
-        "type": "object"
-      },
-      "app__routes__v1___common__Page_V1Domain___2": {
-        "properties": {
-          "count": {
-            "title": "Count",
-            "type": "integer"
-          },
-          "data": {
-            "items": {
-              "$ref": "#/components/schemas/app__routes__v1__domains__V1Domain"
-            },
-            "title": "Data",
-            "type": "array"
-          },
-          "limit": {
-            "title": "Limit",
-            "type": "integer"
-          },
-          "offset": {
-            "title": "Offset",
-            "type": "integer"
-          }
-        },
-        "required": [
-          "data",
-          "limit",
-          "offset",
-          "count"
-        ],
-        "title": "Page[V1Domain]",
-        "type": "object"
-      },
-      "app__routes__v1__apps__V1DeployResult": {
-        "properties": {
-          "app_id": {
-            "title": "App Id",
-            "type": "string"
-          },
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "site_id": {
-            "title": "Site Id",
-            "type": "string"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "app_id",
-          "site_id",
-          "status"
-        ],
-        "title": "V1DeployResult",
-        "type": "object"
-      },
-      "app__routes__v1__apps__V1Domain": {
-        "properties": {
-          "app_id": {
-            "title": "App Id",
-            "type": "string"
-          },
-          "build_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Build Id"
-          },
-          "certificate_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Certificate Id"
-          },
-          "created_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At"
-          },
-          "dns_configured": {
-            "default": false,
-            "title": "Dns Configured",
-            "type": "boolean"
-          },
-          "domain": {
-            "title": "Domain",
-            "type": "string"
-          },
-          "error": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Error"
-          },
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "is_default": {
-            "default": false,
-            "title": "Is Default",
-            "type": "boolean"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          },
-          "target_ip": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Target Ip"
-          },
-          "type": {
-            "default": "current",
-            "title": "Type",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "app_id",
-          "domain",
-          "status"
-        ],
-        "title": "V1Domain",
-        "type": "object"
-      },
-      "app__routes__v1__domains__V1Domain": {
-        "properties": {
-          "auto_created_zone_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "DNS zone the platform created for this domain, if any",
-            "title": "Auto Created Zone Id"
-          },
-          "auto_renew": {
-            "title": "Auto Renew",
-            "type": "boolean"
-          },
-          "auto_renew_period_years": {
-            "title": "Auto Renew Period Years",
-            "type": "integer"
-          },
-          "created_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Created At"
-          },
-          "domain": {
-            "description": "The domain as registered, in its original script",
-            "title": "Domain",
-            "type": "string"
-          },
-          "domain_ascii": {
-            "description": "Punycode form — what DNS and the registrar use",
-            "title": "Domain Ascii",
-            "type": "string"
-          },
-          "expires_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Expires At"
-          },
-          "id": {
-            "title": "Id",
-            "type": "string"
-          },
-          "last_provider_sync_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Last Provider Sync At"
-          },
-          "nameservers": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "description": "Nameservers from the last successful register or redelegate; null when the platform has no record (not the same as 'none set')",
-            "title": "Nameservers"
-          },
-          "provider": {
-            "description": "Registrar the domain is held at",
-            "title": "Provider",
-            "type": "string"
-          },
-          "provider_status": {
-            "default": "ok",
-            "description": "The registrar's own verdict on our last request, separate from `status`: ok | blocked | failed | unknown. Anything but 'ok' means the registrar refused us — a domain can be active for us and blocked there at the same time",
-            "title": "Provider Status",
-            "type": "string"
-          },
-          "provider_status_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Provider Status At"
-          },
-          "provider_status_message": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Provider Status Message"
-          },
-          "registered_at": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Registered At"
-          },
-          "status": {
-            "description": "Our lifecycle: pending | active | expired | deleted",
-            "title": "Status",
-            "type": "string"
-          },
-          "tld": {
-            "title": "Tld",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "domain",
-          "domain_ascii",
-          "tld",
-          "status",
-          "provider",
-          "auto_renew",
-          "auto_renew_period_years"
-        ],
-        "title": "V1Domain",
-        "type": "object"
-      },
-      "app__routes__v1__functions__V1DeployResult": {
-        "properties": {
-          "build_id": {
-            "title": "Build Id",
-            "type": "string"
-          },
-          "function_id": {
-            "title": "Function Id",
-            "type": "string"
-          },
-          "site_id": {
-            "title": "Site Id",
-            "type": "string"
-          },
-          "status": {
-            "title": "Status",
-            "type": "string"
-          }
-        },
-        "required": [
-          "build_id",
-          "function_id",
-          "site_id",
-          "status"
-        ],
-        "title": "V1DeployResult",
-        "type": "object"
       }
     },
     "securitySchemes": {
@@ -10494,7 +10494,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/app__routes__v1___common__Page_V1Domain___2"
+                  "$ref": "#/components/schemas/Page_V1RegisteredDomain_"
                 }
               }
             },
@@ -10541,7 +10541,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/app__routes__v1__domains__V1Domain"
+                  "$ref": "#/components/schemas/V1RegisteredDomain"
                 }
               }
             },
@@ -12450,7 +12450,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/app__routes__v1__apps__V1DeployResult"
+                  "$ref": "#/components/schemas/V1AppDeployResult"
                 }
               }
             },
@@ -12529,7 +12529,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/app__routes__v1___common__Page_V1Domain___1"
+                  "$ref": "#/components/schemas/Page_V1AppDomain_"
                 }
               }
             },
@@ -12593,7 +12593,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/app__routes__v1__apps__V1Domain"
+                  "$ref": "#/components/schemas/V1AppDomain"
                 }
               }
             },
@@ -13700,7 +13700,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/app__routes__v1__functions__V1DeployResult"
+                  "$ref": "#/components/schemas/V1FunctionDeployResult"
                 }
               }
             },
