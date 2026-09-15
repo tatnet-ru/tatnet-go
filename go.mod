@@ -1,4 +1,4 @@
-module github.com/manzhikov/tatnet-go
+module github.com/tatnet-ru/tatnet-go
 
 go 1.26.2
 

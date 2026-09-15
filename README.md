@@ -4,7 +4,7 @@ Go-клиент публичного API TatNet (`/v1`). **Генерирует�
 править `tatnet/client.gen.go` руками бессмысленно, следующая генерация затрёт.
 
 ```go
-import "github.com/manzhikov/tatnet-go/tatnet"
+import "github.com/tatnet-ru/tatnet-go/tatnet"
 
 c, err := tatnet.New(os.Getenv("TATNET_API_KEY"))
 if err != nil { return err }
