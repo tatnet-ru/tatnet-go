@@ -1540,17 +1540,19 @@ type V1BucketUsage struct {
 
 // V1Build defines model for V1Build.
 type V1Build struct {
-	AppId         string  `json:"app_id"`
-	BootError     *string `json:"boot_error,omitempty"`
-	CommitMessage *string `json:"commit_message,omitempty"`
-	CommitSha     *string `json:"commit_sha,omitempty"`
-	CreatedAt     *string `json:"created_at,omitempty"`
-	DeployState   *string `json:"deploy_state,omitempty"`
-	DurationMs    *int    `json:"duration_ms,omitempty"`
-	Error         *string `json:"error,omitempty"`
-	FinishedAt    *string `json:"finished_at,omitempty"`
-	Id            string  `json:"id"`
-	Status        string  `json:"status"`
+	AppId               string  `json:"app_id"`
+	BootError           *string `json:"boot_error,omitempty"`
+	CommitMessage       *string `json:"commit_message,omitempty"`
+	CommitSha           *string `json:"commit_sha,omitempty"`
+	CreatedAt           *string `json:"created_at,omitempty"`
+	DeployState         *string `json:"deploy_state,omitempty"`
+	DurationMs          *int    `json:"duration_ms,omitempty"`
+	Error               *string `json:"error,omitempty"`
+	FinishedAt          *string `json:"finished_at,omitempty"`
+	Id                  string  `json:"id"`
+	SourceArchiveBytes  *int    `json:"source_archive_bytes,omitempty"`
+	SourceArchiveSha256 *string `json:"source_archive_sha256,omitempty"`
+	Status              string  `json:"status"`
 }
 
 // V1Certificate defines model for V1Certificate.
@@ -3511,6 +3513,22 @@ type ClientInterface interface {
 	// Corresponds with GET /projects/{project_id}/apps/{app_id}/builds (the `AppsListBuilds` operationId).
 	AppsListBuilds(ctx context.Context, projectId string, appId string, params *AppsListBuildsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AppsStreamBuildLogs Stream build logs
+	//
+	// Stream the log of one build, live while it runs.
+	//
+	// Same generator the dashboard uses — deliberately, not a second
+	// implementation: it already knows the difference between a finished build
+	// (full history) and a running one (live tail), and two copies of that would
+	// drift.
+	//
+	// The stream ends with an explicit ``done`` event. Plain text would end with
+	// EOF, and EOF cannot tell "the log is over" from "the connection dropped" —
+	// a client would report a truncated build as a finished one.
+	//
+	// Corresponds with GET /projects/{project_id}/apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogs` operationId).
+	AppsStreamBuildLogs(ctx context.Context, projectId string, appId string, buildId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// AppsDeployAppWithBody Trigger a build & deploy
 	//
 	// Takes any type of body and a specified content type.
@@ -3524,6 +3542,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/apps/{app_id}/deploy (the `AppsDeployApp` operationId).
 	AppsDeployApp(ctx context.Context, projectId string, appId string, body AppsDeployAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsCreateDeploymentWithBody Deploy sources from a folder
+	//
+	// Deploy an app from a local folder: the request body IS the source.
+	//
+	// For apps with ``source_type=upload`` — no repository, no git provider. The
+	// body is a gzip-compressed tar of the folder; it is stored as the source of
+	// exactly this build, so a later rebuild of that build still means the same
+	// sources.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/deployments (the `AppsCreateDeployment` operationId).
+	AppsCreateDeploymentWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AppsListDomains List domains
 	//
@@ -5913,6 +5945,32 @@ func (c *Client) AppsListBuilds(ctx context.Context, projectId string, appId str
 	return c.Client.Do(req)
 }
 
+// AppsStreamBuildLogs Stream build logs
+//
+// Stream the log of one build, live while it runs.
+//
+// Same generator the dashboard uses — deliberately, not a second
+// implementation: it already knows the difference between a finished build
+// (full history) and a running one (live tail), and two copies of that would
+// drift.
+//
+// The stream ends with an explicit “done“ event. Plain text would end with
+// EOF, and EOF cannot tell "the log is over" from "the connection dropped" —
+// a client would report a truncated build as a finished one.
+//
+// Corresponds with GET /projects/{project_id}/apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogs` operationId).
+func (c *Client) AppsStreamBuildLogs(ctx context.Context, projectId string, appId string, buildId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsStreamBuildLogsRequest(c.Server, projectId, appId, buildId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // AppsDeployAppWithBody Trigger a build & deploy
 //
 // Takes any type of body and a specified content type.
@@ -5937,6 +5995,30 @@ func (c *Client) AppsDeployAppWithBody(ctx context.Context, projectId string, ap
 // Corresponds with POST /projects/{project_id}/apps/{app_id}/deploy (the `AppsDeployApp` operationId).
 func (c *Client) AppsDeployApp(ctx context.Context, projectId string, appId string, body AppsDeployAppJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAppsDeployAppRequest(c.Server, projectId, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsCreateDeploymentWithBody Deploy sources from a folder
+//
+// Deploy an app from a local folder: the request body IS the source.
+//
+// For apps with “source_type=upload“ — no repository, no git provider. The
+// body is a gzip-compressed tar of the folder; it is stored as the source of
+// exactly this build, so a later rebuild of that build still means the same
+// sources.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/deployments (the `AppsCreateDeployment` operationId).
+func (c *Client) AppsCreateDeploymentWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsCreateDeploymentRequestWithBody(c.Server, projectId, appId, contentType, body)
 	if err != nil {
 		return nil, err
 	}
@@ -11094,6 +11176,54 @@ func NewAppsListBuildsRequest(server string, projectId string, appId string, par
 	return req, nil
 }
 
+// NewAppsStreamBuildLogsRequest constructs an http.Request for the AppsStreamBuildLogs method
+func NewAppsStreamBuildLogsRequest(server string, projectId string, appId string, buildId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "build_id", buildId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/builds/%s/logs", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewAppsDeployAppRequest calls the generic AppsDeployApp builder with application/json body
 func NewAppsDeployAppRequest(server string, projectId string, appId string, body AppsDeployAppJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -11129,6 +11259,49 @@ func NewAppsDeployAppRequestWithBody(server string, projectId string, appId stri
 	}
 
 	operationPath := fmt.Sprintf("/projects/%s/apps/%s/deploy", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsCreateDeploymentRequestWithBody constructs an http.Request for the AppsCreateDeployment method, with any body, and a specified content type
+func NewAppsCreateDeploymentRequestWithBody(server string, projectId string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/deployments", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -17354,6 +17527,24 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /projects/{project_id}/apps/{app_id}/builds (the `AppsListBuilds` operationId).
 	AppsListBuildsWithResponse(ctx context.Context, projectId string, appId string, params *AppsListBuildsParams, reqEditors ...RequestEditorFn) (*AppsListBuildsResponse, error)
 
+	// AppsStreamBuildLogsWithResponse Stream build logs
+	//
+	// Stream the log of one build, live while it runs.
+	//
+	// Same generator the dashboard uses — deliberately, not a second
+	// implementation: it already knows the difference between a finished build
+	// (full history) and a running one (live tail), and two copies of that would
+	// drift.
+	//
+	// The stream ends with an explicit ``done`` event. Plain text would end with
+	// EOF, and EOF cannot tell "the log is over" from "the connection dropped" —
+	// a client would report a truncated build as a finished one.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogs` operationId).
+	AppsStreamBuildLogsWithResponse(ctx context.Context, projectId string, appId string, buildId string, reqEditors ...RequestEditorFn) (*AppsStreamBuildLogsResponse, error)
+
 	// AppsDeployAppWithBodyWithResponse Trigger a build & deploy
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -17367,6 +17558,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/apps/{app_id}/deploy (the `AppsDeployApp` operationId).
 	AppsDeployAppWithResponse(ctx context.Context, projectId string, appId string, body AppsDeployAppJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsDeployAppResponse, error)
+
+	// AppsCreateDeploymentWithBodyWithResponse Deploy sources from a folder
+	//
+	// Deploy an app from a local folder: the request body IS the source.
+	//
+	// For apps with ``source_type=upload`` — no repository, no git provider. The
+	// body is a gzip-compressed tar of the folder; it is stored as the source of
+	// exactly this build, so a later rebuild of that build still means the same
+	// sources.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/deployments (the `AppsCreateDeployment` operationId).
+	AppsCreateDeploymentWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateDeploymentResponse, error)
 
 	// AppsListDomainsWithResponse List domains
 	//
@@ -21083,6 +21288,47 @@ func (r AppsListBuildsResponse) ContentType() string {
 	return ""
 }
 
+type AppsStreamBuildLogsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsStreamBuildLogsResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsStreamBuildLogsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsStreamBuildLogsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsStreamBuildLogsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsStreamBuildLogsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type AppsDeployAppResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -21125,6 +21371,54 @@ func (r AppsDeployAppResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AppsDeployAppResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsCreateDeploymentResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *V1AppDeployResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r AppsCreateDeploymentResponse) GetJSON202() *V1AppDeployResult {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsCreateDeploymentResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsCreateDeploymentResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsCreateDeploymentResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsCreateDeploymentResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsCreateDeploymentResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -27211,6 +27505,30 @@ func (c *ClientWithResponses) AppsListBuildsWithResponse(ctx context.Context, pr
 	return ParseAppsListBuildsResponse(rsp)
 }
 
+// AppsStreamBuildLogsWithResponse Stream build logs
+//
+// Stream the log of one build, live while it runs.
+//
+// Same generator the dashboard uses — deliberately, not a second
+// implementation: it already knows the difference between a finished build
+// (full history) and a running one (live tail), and two copies of that would
+// drift.
+//
+// The stream ends with an explicit “done“ event. Plain text would end with
+// EOF, and EOF cannot tell "the log is over" from "the connection dropped" —
+// a client would report a truncated build as a finished one.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogs` operationId).
+func (c *ClientWithResponses) AppsStreamBuildLogsWithResponse(ctx context.Context, projectId string, appId string, buildId string, reqEditors ...RequestEditorFn) (*AppsStreamBuildLogsResponse, error) {
+	rsp, err := c.AppsStreamBuildLogs(ctx, projectId, appId, buildId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsStreamBuildLogsResponse(rsp)
+}
+
 // AppsDeployAppWithBodyWithResponse Trigger a build & deploy
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -27235,6 +27553,26 @@ func (c *ClientWithResponses) AppsDeployAppWithResponse(ctx context.Context, pro
 		return nil, err
 	}
 	return ParseAppsDeployAppResponse(rsp)
+}
+
+// AppsCreateDeploymentWithBodyWithResponse Deploy sources from a folder
+//
+// Deploy an app from a local folder: the request body IS the source.
+//
+// For apps with “source_type=upload“ — no repository, no git provider. The
+// body is a gzip-compressed tar of the folder; it is stored as the source of
+// exactly this build, so a later rebuild of that build still means the same
+// sources.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/deployments (the `AppsCreateDeployment` operationId).
+func (c *ClientWithResponses) AppsCreateDeploymentWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateDeploymentResponse, error) {
+	rsp, err := c.AppsCreateDeploymentWithBody(ctx, projectId, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsCreateDeploymentResponse(rsp)
 }
 
 // AppsListDomainsWithResponse List domains
@@ -31104,6 +31442,32 @@ func ParseAppsListBuildsResponse(rsp *http.Response) (*AppsListBuildsResponse, e
 	return response, nil
 }
 
+// ParseAppsStreamBuildLogsResponse parses an HTTP response from a AppsStreamBuildLogsWithResponse call
+func ParseAppsStreamBuildLogsResponse(rsp *http.Response) (*AppsStreamBuildLogsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsStreamBuildLogsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseAppsDeployAppResponse parses an HTTP response from a AppsDeployAppWithResponse call
 func ParseAppsDeployAppResponse(rsp *http.Response) (*AppsDeployAppResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -31124,6 +31488,39 @@ func ParseAppsDeployAppResponse(rsp *http.Response) (*AppsDeployAppResponse, err
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsCreateDeploymentResponse parses an HTTP response from a AppsCreateDeploymentWithResponse call
+func ParseAppsCreateDeploymentResponse(rsp *http.Response) (*AppsCreateDeploymentResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsCreateDeploymentResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest V1AppDeployResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
