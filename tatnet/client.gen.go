@@ -1220,11 +1220,12 @@ type PgRegionResponse struct {
 // Верхнеуровневые “pg_versions“/“default_pg_version“ — объединение по
 // регионам (legacy-читатели); пер-регион — в “regions[]“.
 type PgRegionsListResponse struct {
-	DefaultPgVersion *string              `json:"default_pg_version,omitempty"`
-	PgVersions       []string             `json:"pg_versions"`
-	Plans            []PgPlanResponse     `json:"plans"`
-	Regions          []PgRegionResponse   `json:"regions"`
-	Topologies       []PgTopologyResponse `json:"topologies"`
+	DefaultPgVersion      *string              `json:"default_pg_version,omitempty"`
+	PgVersions            []string             `json:"pg_versions"`
+	Plans                 []PgPlanResponse     `json:"plans"`
+	PublicIpPricePerMonth *float32             `json:"public_ip_price_per_month,omitempty"`
+	Regions               []PgRegionResponse   `json:"regions"`
+	Topologies            []PgTopologyResponse `json:"topologies"`
 }
 
 // PgReplaceNodesResponse Ответ ручек замены: сколько узлов получили намерение «заменить».
@@ -2326,77 +2327,79 @@ type ValkeyCaResponse struct {
 // было свойством контракта, а не договорённостью. В обычной карточке поля
 // нет вовсе: пароль лежит в keystore, api его не хранит и прочитать не может.
 type ValkeyClusterCreatedResponse struct {
-	AccessMode      *string               `json:"access_mode,omitempty"`
-	AccountId       string                `json:"account_id"`
-	CaAvailable     *bool                 `json:"ca_available,omitempty"`
-	CreatedAt       *time.Time            `json:"created_at,omitempty"`
-	EndpointDns     *string               `json:"endpoint_dns,omitempty"`
-	EndpointHost    *string               `json:"endpoint_host,omitempty"`
-	EndpointIp      *string               `json:"endpoint_ip,omitempty"`
-	EndpointPort    int                   `json:"endpoint_port"`
-	EvictionPolicy  string                `json:"eviction_policy"`
-	Id              string                `json:"id"`
-	IpAllowlist     *[]string             `json:"ip_allowlist,omitempty"`
-	Maxclients      int                   `json:"maxclients"`
-	MaxmemoryMb     int                   `json:"maxmemory_mb"`
-	MonthlyCost     *float32              `json:"monthly_cost,omitempty"`
-	Name            string                `json:"name"`
-	NodeCount       int                   `json:"node_count"`
-	Nodes           *[]ValkeyNodeResponse `json:"nodes,omitempty"`
-	NodesOutdated   *int                  `json:"nodes_outdated,omitempty"`
-	Password        *string               `json:"password,omitempty"`
-	Persistence     string                `json:"persistence"`
-	Plan            *ValkeyPlanResponse   `json:"plan,omitempty"`
-	ProjectId       string                `json:"project_id"`
-	ReadHost        *string               `json:"read_host,omitempty"`
-	RegionClusterId string                `json:"region_cluster_id"`
-	RegionName      *string               `json:"region_name,omitempty"`
-	ReplacePending  *bool                 `json:"replace_pending,omitempty"`
-	Status          string                `json:"status"`
-	StatusDetail    *string               `json:"status_detail,omitempty"`
-	Topology        string                `json:"topology"`
-	User            *string               `json:"user,omitempty"`
-	ValkeyVersion   string                `json:"valkey_version"`
-	VpcId           *string               `json:"vpc_id,omitempty"`
-	VpcName         *string               `json:"vpc_name,omitempty"`
-	VpcVip          *string               `json:"vpc_vip,omitempty"`
+	AccessMode        *string               `json:"access_mode,omitempty"`
+	AccountId         string                `json:"account_id"`
+	CaAvailable       *bool                 `json:"ca_available,omitempty"`
+	CreatedAt         *time.Time            `json:"created_at,omitempty"`
+	EndpointDns       *string               `json:"endpoint_dns,omitempty"`
+	EndpointHost      *string               `json:"endpoint_host,omitempty"`
+	EndpointIp        *string               `json:"endpoint_ip,omitempty"`
+	EndpointPort      int                   `json:"endpoint_port"`
+	EvictionPolicy    string                `json:"eviction_policy"`
+	Id                string                `json:"id"`
+	IpAllowlist       *[]string             `json:"ip_allowlist,omitempty"`
+	Maxclients        int                   `json:"maxclients"`
+	MaxmemoryMb       int                   `json:"maxmemory_mb"`
+	MonthlyCost       *float32              `json:"monthly_cost,omitempty"`
+	Name              string                `json:"name"`
+	NodeCount         int                   `json:"node_count"`
+	Nodes             *[]ValkeyNodeResponse `json:"nodes,omitempty"`
+	NodesOutdated     *int                  `json:"nodes_outdated,omitempty"`
+	ParametersApplied *bool                 `json:"parameters_applied,omitempty"`
+	Password          *string               `json:"password,omitempty"`
+	Persistence       string                `json:"persistence"`
+	Plan              *ValkeyPlanResponse   `json:"plan,omitempty"`
+	ProjectId         string                `json:"project_id"`
+	ReadHost          *string               `json:"read_host,omitempty"`
+	RegionClusterId   string                `json:"region_cluster_id"`
+	RegionName        *string               `json:"region_name,omitempty"`
+	ReplacePending    *bool                 `json:"replace_pending,omitempty"`
+	Status            string                `json:"status"`
+	StatusDetail      *string               `json:"status_detail,omitempty"`
+	Topology          string                `json:"topology"`
+	User              *string               `json:"user,omitempty"`
+	ValkeyVersion     string                `json:"valkey_version"`
+	VpcId             *string               `json:"vpc_id,omitempty"`
+	VpcName           *string               `json:"vpc_name,omitempty"`
+	VpcVip            *string               `json:"vpc_vip,omitempty"`
 }
 
 // ValkeyClusterDetailResponse defines model for ValkeyClusterDetailResponse.
 type ValkeyClusterDetailResponse struct {
-	AccessMode      *string               `json:"access_mode,omitempty"`
-	AccountId       string                `json:"account_id"`
-	CaAvailable     *bool                 `json:"ca_available,omitempty"`
-	CreatedAt       *time.Time            `json:"created_at,omitempty"`
-	EndpointDns     *string               `json:"endpoint_dns,omitempty"`
-	EndpointHost    *string               `json:"endpoint_host,omitempty"`
-	EndpointIp      *string               `json:"endpoint_ip,omitempty"`
-	EndpointPort    int                   `json:"endpoint_port"`
-	EvictionPolicy  string                `json:"eviction_policy"`
-	Id              string                `json:"id"`
-	IpAllowlist     *[]string             `json:"ip_allowlist,omitempty"`
-	Maxclients      int                   `json:"maxclients"`
-	MaxmemoryMb     int                   `json:"maxmemory_mb"`
-	MonthlyCost     *float32              `json:"monthly_cost,omitempty"`
-	Name            string                `json:"name"`
-	NodeCount       int                   `json:"node_count"`
-	Nodes           *[]ValkeyNodeResponse `json:"nodes,omitempty"`
-	NodesOutdated   *int                  `json:"nodes_outdated,omitempty"`
-	Persistence     string                `json:"persistence"`
-	Plan            *ValkeyPlanResponse   `json:"plan,omitempty"`
-	ProjectId       string                `json:"project_id"`
-	ReadHost        *string               `json:"read_host,omitempty"`
-	RegionClusterId string                `json:"region_cluster_id"`
-	RegionName      *string               `json:"region_name,omitempty"`
-	ReplacePending  *bool                 `json:"replace_pending,omitempty"`
-	Status          string                `json:"status"`
-	StatusDetail    *string               `json:"status_detail,omitempty"`
-	Topology        string                `json:"topology"`
-	User            *string               `json:"user,omitempty"`
-	ValkeyVersion   string                `json:"valkey_version"`
-	VpcId           *string               `json:"vpc_id,omitempty"`
-	VpcName         *string               `json:"vpc_name,omitempty"`
-	VpcVip          *string               `json:"vpc_vip,omitempty"`
+	AccessMode        *string               `json:"access_mode,omitempty"`
+	AccountId         string                `json:"account_id"`
+	CaAvailable       *bool                 `json:"ca_available,omitempty"`
+	CreatedAt         *time.Time            `json:"created_at,omitempty"`
+	EndpointDns       *string               `json:"endpoint_dns,omitempty"`
+	EndpointHost      *string               `json:"endpoint_host,omitempty"`
+	EndpointIp        *string               `json:"endpoint_ip,omitempty"`
+	EndpointPort      int                   `json:"endpoint_port"`
+	EvictionPolicy    string                `json:"eviction_policy"`
+	Id                string                `json:"id"`
+	IpAllowlist       *[]string             `json:"ip_allowlist,omitempty"`
+	Maxclients        int                   `json:"maxclients"`
+	MaxmemoryMb       int                   `json:"maxmemory_mb"`
+	MonthlyCost       *float32              `json:"monthly_cost,omitempty"`
+	Name              string                `json:"name"`
+	NodeCount         int                   `json:"node_count"`
+	Nodes             *[]ValkeyNodeResponse `json:"nodes,omitempty"`
+	NodesOutdated     *int                  `json:"nodes_outdated,omitempty"`
+	ParametersApplied *bool                 `json:"parameters_applied,omitempty"`
+	Persistence       string                `json:"persistence"`
+	Plan              *ValkeyPlanResponse   `json:"plan,omitempty"`
+	ProjectId         string                `json:"project_id"`
+	ReadHost          *string               `json:"read_host,omitempty"`
+	RegionClusterId   string                `json:"region_cluster_id"`
+	RegionName        *string               `json:"region_name,omitempty"`
+	ReplacePending    *bool                 `json:"replace_pending,omitempty"`
+	Status            string                `json:"status"`
+	StatusDetail      *string               `json:"status_detail,omitempty"`
+	Topology          string                `json:"topology"`
+	User              *string               `json:"user,omitempty"`
+	ValkeyVersion     string                `json:"valkey_version"`
+	VpcId             *string               `json:"vpc_id,omitempty"`
+	VpcName           *string               `json:"vpc_name,omitempty"`
+	VpcVip            *string               `json:"vpc_vip,omitempty"`
 }
 
 // ValkeyClusterResponse defines model for ValkeyClusterResponse.
@@ -2480,13 +2483,14 @@ type ValkeyRegionResponse struct {
 // Топологии отдаются ВСЕ (в отличие от pg): UI сам показывает недоступные
 // как «скоро», а сервер отклоняет их 422 на create.
 type ValkeyRegionsListResponse struct {
-	DefaultValkeyVersion *string                  `json:"default_valkey_version,omitempty"`
-	EvictionPolicies     []string                 `json:"eviction_policies"`
-	PersistenceModes     []string                 `json:"persistence_modes"`
-	Plans                []ValkeyPlanResponse     `json:"plans"`
-	Regions              []ValkeyRegionResponse   `json:"regions"`
-	Topologies           []ValkeyTopologyResponse `json:"topologies"`
-	ValkeyVersions       []string                 `json:"valkey_versions"`
+	DefaultValkeyVersion  *string                  `json:"default_valkey_version,omitempty"`
+	EvictionPolicies      []string                 `json:"eviction_policies"`
+	PersistenceModes      []string                 `json:"persistence_modes"`
+	Plans                 []ValkeyPlanResponse     `json:"plans"`
+	PublicIpPricePerMonth *float32                 `json:"public_ip_price_per_month,omitempty"`
+	Regions               []ValkeyRegionResponse   `json:"regions"`
+	Topologies            []ValkeyTopologyResponse `json:"topologies"`
+	ValkeyVersions        []string                 `json:"valkey_versions"`
 }
 
 // ValkeyReplaceNodesResponse Ответ ручек замены: сколько узлов получили намерение «заменить».
@@ -2505,6 +2509,45 @@ type WhoAmIResponse struct {
 	AccountId string              `json:"account_id"`
 	KeyId     string              `json:"key_id"`
 	Policy    []V1PolicyStatement `json:"policy"`
+}
+
+// AppsListAppsByAccountParams defines parameters for AppsListAppsByAccount.
+type AppsListAppsByAccountParams struct {
+	// ProjectId Only apps of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// AppsListBuildsByIdParams defines parameters for AppsListBuildsById.
+type AppsListBuildsByIdParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// AppsListDomainsByIdParams defines parameters for AppsListDomainsById.
+type AppsListDomainsByIdParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// AppsListEnvVarsByIdParams defines parameters for AppsListEnvVarsById.
+type AppsListEnvVarsByIdParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// AppsListRunsByIdParams defines parameters for AppsListRunsById.
+type AppsListRunsByIdParams struct {
+	JobId  *string `form:"job_id,omitempty" json:"job_id,omitempty"`
+	Limit  *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// AppsListJobsByIdParams defines parameters for AppsListJobsById.
+type AppsListJobsByIdParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
 // CertificatesListCertificatesParams defines parameters for CertificatesListCertificates.
@@ -2688,6 +2731,24 @@ type NetworkingListVpcsParams struct {
 
 // NetworkingEnableNatGatewayJSONBody defines parameters for NetworkingEnableNatGateway.
 type NetworkingEnableNatGatewayJSONBody = V1NatGatewayEnable
+
+// AppsUpdateAppByIdJSONRequestBody defines body for AppsUpdateAppById for application/json ContentType.
+type AppsUpdateAppByIdJSONRequestBody = V1AppUpdate
+
+// AppsDeployAppByIdJSONRequestBody defines body for AppsDeployAppById for application/json ContentType.
+type AppsDeployAppByIdJSONRequestBody = V1DeployRequest
+
+// AppsAddDomainByIdJSONRequestBody defines body for AppsAddDomainById for application/json ContentType.
+type AppsAddDomainByIdJSONRequestBody = V1DomainCreate
+
+// AppsAddEnvVarByIdJSONRequestBody defines body for AppsAddEnvVarById for application/json ContentType.
+type AppsAddEnvVarByIdJSONRequestBody = V1EnvVarCreate
+
+// AppsCreateJobByIdJSONRequestBody defines body for AppsCreateJobById for application/json ContentType.
+type AppsCreateJobByIdJSONRequestBody = AppJobCreateRequest
+
+// AppsUpdateJobByIdJSONRequestBody defines body for AppsUpdateJobById for application/json ContentType.
+type AppsUpdateJobByIdJSONRequestBody = AppJobUpdateRequest
 
 // DnsCreateZoneJSONRequestBody defines body for DnsCreateZone for application/json ContentType.
 type DnsCreateZoneJSONRequestBody = V1ZoneCreate
@@ -3020,6 +3081,170 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /account (the `AccountWhoami` operationId).
 	AccountWhoami(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsListAppsByAccount List apps across the account
+	//
+	// Все приложения аккаунта ключа, отфильтрованные его политикой — как
+	// панельный ``/account-inventory?kind=apps``, но в контракте.
+	//
+	// Corresponds with GET /apps (the `AppsListAppsByAccount` operationId).
+	AppsListAppsByAccount(ctx context.Context, params *AppsListAppsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsDeleteAppById Delete an app
+	//
+	// Corresponds with DELETE /apps/{app_id} (the `AppsDeleteAppById` operationId).
+	AppsDeleteAppById(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsGetAppById Get an app
+	//
+	// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
+	AppsGetAppById(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsUpdateAppByIdWithBody Update an app (scale / resources)
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+	AppsUpdateAppByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsUpdateAppById Update an app (scale / resources)
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+	AppsUpdateAppById(ctx context.Context, appId string, body AppsUpdateAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsListBuildsById List builds
+	//
+	// Corresponds with GET /apps/{app_id}/builds (the `AppsListBuildsById` operationId).
+	AppsListBuildsById(ctx context.Context, appId string, params *AppsListBuildsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsStreamBuildLogsById Stream build logs
+	//
+	// Corresponds with GET /apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogsById` operationId).
+	AppsStreamBuildLogsById(ctx context.Context, appId string, buildId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsDeployAppByIdWithBody Trigger a build & deploy
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+	AppsDeployAppByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsDeployAppById Trigger a build & deploy
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+	AppsDeployAppById(ctx context.Context, appId string, body AppsDeployAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsCreateDeploymentByIdWithBody Deploy sources from a folder
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /apps/{app_id}/deployments (the `AppsCreateDeploymentById` operationId).
+	AppsCreateDeploymentByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsListDomainsById List domains
+	//
+	// Corresponds with GET /apps/{app_id}/domains (the `AppsListDomainsById` operationId).
+	AppsListDomainsById(ctx context.Context, appId string, params *AppsListDomainsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsAddDomainByIdWithBody Add a custom domain
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+	AppsAddDomainByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsAddDomainById Add a custom domain
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+	AppsAddDomainById(ctx context.Context, appId string, body AppsAddDomainByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsRemoveDomainById Remove a domain
+	//
+	// Corresponds with DELETE /apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomainById` operationId).
+	AppsRemoveDomainById(ctx context.Context, appId string, domainId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsListEnvVarsById List environment variables
+	//
+	// Corresponds with GET /apps/{app_id}/env (the `AppsListEnvVarsById` operationId).
+	AppsListEnvVarsById(ctx context.Context, appId string, params *AppsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsAddEnvVarByIdWithBody Create or set an environment variable
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+	AppsAddEnvVarByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsAddEnvVarById Create or set an environment variable
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+	AppsAddEnvVarById(ctx context.Context, appId string, body AppsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsDeleteEnvVarById Delete an environment variable
+	//
+	// Corresponds with DELETE /apps/{app_id}/env/{env_var_id} (the `AppsDeleteEnvVarById` operationId).
+	AppsDeleteEnvVarById(ctx context.Context, appId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsListRunsById List job runs
+	//
+	// Corresponds with GET /apps/{app_id}/job-runs (the `AppsListRunsById` operationId).
+	AppsListRunsById(ctx context.Context, appId string, params *AppsListRunsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsGetRunById Get a job run
+	//
+	// Corresponds with GET /apps/{app_id}/job-runs/{run_id} (the `AppsGetRunById` operationId).
+	AppsGetRunById(ctx context.Context, appId string, runId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsListJobsById List app jobs
+	//
+	// Corresponds with GET /apps/{app_id}/jobs (the `AppsListJobsById` operationId).
+	AppsListJobsById(ctx context.Context, appId string, params *AppsListJobsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsCreateJobByIdWithBody Create an app job
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+	AppsCreateJobByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsCreateJobById Create an app job
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+	AppsCreateJobById(ctx context.Context, appId string, body AppsCreateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsDeleteJobById Delete an app job
+	//
+	// Corresponds with DELETE /apps/{app_id}/jobs/{job_id} (the `AppsDeleteJobById` operationId).
+	AppsDeleteJobById(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsUpdateJobByIdWithBody Update an app job
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+	AppsUpdateJobByIdWithBody(ctx context.Context, appId string, jobId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsUpdateJobById Update an app job
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+	AppsUpdateJobById(ctx context.Context, appId string, jobId string, body AppsUpdateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsRunJobById Run an app job now
+	//
+	// Corresponds with POST /apps/{app_id}/jobs/{job_id}/run (the `AppsRunJobById` operationId).
+	AppsRunJobById(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// CertificatesListCertificates List certificates
 	//
@@ -4753,6 +4978,440 @@ type ClientInterface interface {
 // Corresponds with GET /account (the `AccountWhoami` operationId).
 func (c *Client) AccountWhoami(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAccountWhoamiRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsListAppsByAccount List apps across the account
+//
+// Все приложения аккаунта ключа, отфильтрованные его политикой — как
+// панельный “/account-inventory?kind=apps“, но в контракте.
+//
+// Corresponds with GET /apps (the `AppsListAppsByAccount` operationId).
+func (c *Client) AppsListAppsByAccount(ctx context.Context, params *AppsListAppsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsListAppsByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsDeleteAppById Delete an app
+//
+// Corresponds with DELETE /apps/{app_id} (the `AppsDeleteAppById` operationId).
+func (c *Client) AppsDeleteAppById(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsDeleteAppByIdRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsGetAppById Get an app
+//
+// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
+func (c *Client) AppsGetAppById(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsGetAppByIdRequest(c.Server, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsUpdateAppByIdWithBody Update an app (scale / resources)
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+func (c *Client) AppsUpdateAppByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsUpdateAppByIdRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsUpdateAppById Update an app (scale / resources)
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+func (c *Client) AppsUpdateAppById(ctx context.Context, appId string, body AppsUpdateAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsUpdateAppByIdRequest(c.Server, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsListBuildsById List builds
+//
+// Corresponds with GET /apps/{app_id}/builds (the `AppsListBuildsById` operationId).
+func (c *Client) AppsListBuildsById(ctx context.Context, appId string, params *AppsListBuildsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsListBuildsByIdRequest(c.Server, appId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsStreamBuildLogsById Stream build logs
+//
+// Corresponds with GET /apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogsById` operationId).
+func (c *Client) AppsStreamBuildLogsById(ctx context.Context, appId string, buildId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsStreamBuildLogsByIdRequest(c.Server, appId, buildId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsDeployAppByIdWithBody Trigger a build & deploy
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+func (c *Client) AppsDeployAppByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsDeployAppByIdRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsDeployAppById Trigger a build & deploy
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+func (c *Client) AppsDeployAppById(ctx context.Context, appId string, body AppsDeployAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsDeployAppByIdRequest(c.Server, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsCreateDeploymentByIdWithBody Deploy sources from a folder
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /apps/{app_id}/deployments (the `AppsCreateDeploymentById` operationId).
+func (c *Client) AppsCreateDeploymentByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsCreateDeploymentByIdRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsListDomainsById List domains
+//
+// Corresponds with GET /apps/{app_id}/domains (the `AppsListDomainsById` operationId).
+func (c *Client) AppsListDomainsById(ctx context.Context, appId string, params *AppsListDomainsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsListDomainsByIdRequest(c.Server, appId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsAddDomainByIdWithBody Add a custom domain
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+func (c *Client) AppsAddDomainByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsAddDomainByIdRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsAddDomainById Add a custom domain
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+func (c *Client) AppsAddDomainById(ctx context.Context, appId string, body AppsAddDomainByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsAddDomainByIdRequest(c.Server, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsRemoveDomainById Remove a domain
+//
+// Corresponds with DELETE /apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomainById` operationId).
+func (c *Client) AppsRemoveDomainById(ctx context.Context, appId string, domainId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsRemoveDomainByIdRequest(c.Server, appId, domainId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsListEnvVarsById List environment variables
+//
+// Corresponds with GET /apps/{app_id}/env (the `AppsListEnvVarsById` operationId).
+func (c *Client) AppsListEnvVarsById(ctx context.Context, appId string, params *AppsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsListEnvVarsByIdRequest(c.Server, appId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsAddEnvVarByIdWithBody Create or set an environment variable
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+func (c *Client) AppsAddEnvVarByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsAddEnvVarByIdRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsAddEnvVarById Create or set an environment variable
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+func (c *Client) AppsAddEnvVarById(ctx context.Context, appId string, body AppsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsAddEnvVarByIdRequest(c.Server, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsDeleteEnvVarById Delete an environment variable
+//
+// Corresponds with DELETE /apps/{app_id}/env/{env_var_id} (the `AppsDeleteEnvVarById` operationId).
+func (c *Client) AppsDeleteEnvVarById(ctx context.Context, appId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsDeleteEnvVarByIdRequest(c.Server, appId, envVarId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsListRunsById List job runs
+//
+// Corresponds with GET /apps/{app_id}/job-runs (the `AppsListRunsById` operationId).
+func (c *Client) AppsListRunsById(ctx context.Context, appId string, params *AppsListRunsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsListRunsByIdRequest(c.Server, appId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsGetRunById Get a job run
+//
+// Corresponds with GET /apps/{app_id}/job-runs/{run_id} (the `AppsGetRunById` operationId).
+func (c *Client) AppsGetRunById(ctx context.Context, appId string, runId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsGetRunByIdRequest(c.Server, appId, runId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsListJobsById List app jobs
+//
+// Corresponds with GET /apps/{app_id}/jobs (the `AppsListJobsById` operationId).
+func (c *Client) AppsListJobsById(ctx context.Context, appId string, params *AppsListJobsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsListJobsByIdRequest(c.Server, appId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsCreateJobByIdWithBody Create an app job
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+func (c *Client) AppsCreateJobByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsCreateJobByIdRequestWithBody(c.Server, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsCreateJobById Create an app job
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+func (c *Client) AppsCreateJobById(ctx context.Context, appId string, body AppsCreateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsCreateJobByIdRequest(c.Server, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsDeleteJobById Delete an app job
+//
+// Corresponds with DELETE /apps/{app_id}/jobs/{job_id} (the `AppsDeleteJobById` operationId).
+func (c *Client) AppsDeleteJobById(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsDeleteJobByIdRequest(c.Server, appId, jobId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsUpdateJobByIdWithBody Update an app job
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+func (c *Client) AppsUpdateJobByIdWithBody(ctx context.Context, appId string, jobId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsUpdateJobByIdRequestWithBody(c.Server, appId, jobId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsUpdateJobById Update an app job
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+func (c *Client) AppsUpdateJobById(ctx context.Context, appId string, jobId string, body AppsUpdateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsUpdateJobByIdRequest(c.Server, appId, jobId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsRunJobById Run an app job now
+//
+// Corresponds with POST /apps/{app_id}/jobs/{job_id}/run (the `AppsRunJobById` operationId).
+func (c *Client) AppsRunJobById(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsRunJobByIdRequest(c.Server, appId, jobId)
 	if err != nil {
 		return nil, err
 	}
@@ -8757,6 +9416,1100 @@ func NewAccountWhoamiRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsListAppsByAccountRequest constructs an http.Request for the AppsListAppsByAccount method
+func NewAppsListAppsByAccountRequest(server string, params *AppsListAppsByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsDeleteAppByIdRequest constructs an http.Request for the AppsDeleteAppById method
+func NewAppsDeleteAppByIdRequest(server string, appId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsGetAppByIdRequest constructs an http.Request for the AppsGetAppById method
+func NewAppsGetAppByIdRequest(server string, appId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsUpdateAppByIdRequest calls the generic AppsUpdateAppById builder with application/json body
+func NewAppsUpdateAppByIdRequest(server string, appId string, body AppsUpdateAppByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsUpdateAppByIdRequestWithBody(server, appId, "application/json", bodyReader)
+}
+
+// NewAppsUpdateAppByIdRequestWithBody constructs an http.Request for the AppsUpdateAppById method, with any body, and a specified content type
+func NewAppsUpdateAppByIdRequestWithBody(server string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsListBuildsByIdRequest constructs an http.Request for the AppsListBuildsById method
+func NewAppsListBuildsByIdRequest(server string, appId string, params *AppsListBuildsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/builds", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsStreamBuildLogsByIdRequest constructs an http.Request for the AppsStreamBuildLogsById method
+func NewAppsStreamBuildLogsByIdRequest(server string, appId string, buildId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "build_id", buildId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/builds/%s/logs", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsDeployAppByIdRequest calls the generic AppsDeployAppById builder with application/json body
+func NewAppsDeployAppByIdRequest(server string, appId string, body AppsDeployAppByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsDeployAppByIdRequestWithBody(server, appId, "application/json", bodyReader)
+}
+
+// NewAppsDeployAppByIdRequestWithBody constructs an http.Request for the AppsDeployAppById method, with any body, and a specified content type
+func NewAppsDeployAppByIdRequestWithBody(server string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/deploy", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsCreateDeploymentByIdRequestWithBody constructs an http.Request for the AppsCreateDeploymentById method, with any body, and a specified content type
+func NewAppsCreateDeploymentByIdRequestWithBody(server string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/deployments", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsListDomainsByIdRequest constructs an http.Request for the AppsListDomainsById method
+func NewAppsListDomainsByIdRequest(server string, appId string, params *AppsListDomainsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/domains", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsAddDomainByIdRequest calls the generic AppsAddDomainById builder with application/json body
+func NewAppsAddDomainByIdRequest(server string, appId string, body AppsAddDomainByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsAddDomainByIdRequestWithBody(server, appId, "application/json", bodyReader)
+}
+
+// NewAppsAddDomainByIdRequestWithBody constructs an http.Request for the AppsAddDomainById method, with any body, and a specified content type
+func NewAppsAddDomainByIdRequestWithBody(server string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/domains", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsRemoveDomainByIdRequest constructs an http.Request for the AppsRemoveDomainById method
+func NewAppsRemoveDomainByIdRequest(server string, appId string, domainId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "domain_id", domainId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/domains/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsListEnvVarsByIdRequest constructs an http.Request for the AppsListEnvVarsById method
+func NewAppsListEnvVarsByIdRequest(server string, appId string, params *AppsListEnvVarsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/env", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsAddEnvVarByIdRequest calls the generic AppsAddEnvVarById builder with application/json body
+func NewAppsAddEnvVarByIdRequest(server string, appId string, body AppsAddEnvVarByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsAddEnvVarByIdRequestWithBody(server, appId, "application/json", bodyReader)
+}
+
+// NewAppsAddEnvVarByIdRequestWithBody constructs an http.Request for the AppsAddEnvVarById method, with any body, and a specified content type
+func NewAppsAddEnvVarByIdRequestWithBody(server string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/env", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsDeleteEnvVarByIdRequest constructs an http.Request for the AppsDeleteEnvVarById method
+func NewAppsDeleteEnvVarByIdRequest(server string, appId string, envVarId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "env_var_id", envVarId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/env/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsListRunsByIdRequest constructs an http.Request for the AppsListRunsById method
+func NewAppsListRunsByIdRequest(server string, appId string, params *AppsListRunsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/job-runs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.JobId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "job_id", *params.JobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsGetRunByIdRequest constructs an http.Request for the AppsGetRunById method
+func NewAppsGetRunByIdRequest(server string, appId string, runId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "run_id", runId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/job-runs/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsListJobsByIdRequest constructs an http.Request for the AppsListJobsById method
+func NewAppsListJobsByIdRequest(server string, appId string, params *AppsListJobsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/jobs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsCreateJobByIdRequest calls the generic AppsCreateJobById builder with application/json body
+func NewAppsCreateJobByIdRequest(server string, appId string, body AppsCreateJobByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsCreateJobByIdRequestWithBody(server, appId, "application/json", bodyReader)
+}
+
+// NewAppsCreateJobByIdRequestWithBody constructs an http.Request for the AppsCreateJobById method, with any body, and a specified content type
+func NewAppsCreateJobByIdRequestWithBody(server string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/jobs", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsDeleteJobByIdRequest constructs an http.Request for the AppsDeleteJobById method
+func NewAppsDeleteJobByIdRequest(server string, appId string, jobId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/jobs/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsUpdateJobByIdRequest calls the generic AppsUpdateJobById builder with application/json body
+func NewAppsUpdateJobByIdRequest(server string, appId string, jobId string, body AppsUpdateJobByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsUpdateJobByIdRequestWithBody(server, appId, jobId, "application/json", bodyReader)
+}
+
+// NewAppsUpdateJobByIdRequestWithBody constructs an http.Request for the AppsUpdateJobById method, with any body, and a specified content type
+func NewAppsUpdateJobByIdRequestWithBody(server string, appId string, jobId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/jobs/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsRunJobByIdRequest constructs an http.Request for the AppsRunJobById method
+func NewAppsRunJobByIdRequest(server string, appId string, jobId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "job_id", jobId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/apps/%s/jobs/%s/run", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -16969,6 +18722,198 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /account (the `AccountWhoami` operationId).
 	AccountWhoamiWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AccountWhoamiResponse, error)
 
+	// AppsListAppsByAccountWithResponse List apps across the account
+	//
+	// Все приложения аккаунта ключа, отфильтрованные его политикой — как
+	// панельный ``/account-inventory?kind=apps``, но в контракте.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps (the `AppsListAppsByAccount` operationId).
+	AppsListAppsByAccountWithResponse(ctx context.Context, params *AppsListAppsByAccountParams, reqEditors ...RequestEditorFn) (*AppsListAppsByAccountResponse, error)
+
+	// AppsDeleteAppByIdWithResponse Delete an app
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /apps/{app_id} (the `AppsDeleteAppById` operationId).
+	AppsDeleteAppByIdWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*AppsDeleteAppByIdResponse, error)
+
+	// AppsGetAppByIdWithResponse Get an app
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
+	AppsGetAppByIdWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppByIdResponse, error)
+
+	// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources)
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+	AppsUpdateAppByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateAppByIdResponse, error)
+
+	// AppsUpdateAppByIdWithResponse Update an app (scale / resources)
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+	AppsUpdateAppByIdWithResponse(ctx context.Context, appId string, body AppsUpdateAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsUpdateAppByIdResponse, error)
+
+	// AppsListBuildsByIdWithResponse List builds
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/builds (the `AppsListBuildsById` operationId).
+	AppsListBuildsByIdWithResponse(ctx context.Context, appId string, params *AppsListBuildsByIdParams, reqEditors ...RequestEditorFn) (*AppsListBuildsByIdResponse, error)
+
+	// AppsStreamBuildLogsByIdWithResponse Stream build logs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogsById` operationId).
+	AppsStreamBuildLogsByIdWithResponse(ctx context.Context, appId string, buildId string, reqEditors ...RequestEditorFn) (*AppsStreamBuildLogsByIdResponse, error)
+
+	// AppsDeployAppByIdWithBodyWithResponse Trigger a build & deploy
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+	AppsDeployAppByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsDeployAppByIdResponse, error)
+
+	// AppsDeployAppByIdWithResponse Trigger a build & deploy
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+	AppsDeployAppByIdWithResponse(ctx context.Context, appId string, body AppsDeployAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsDeployAppByIdResponse, error)
+
+	// AppsCreateDeploymentByIdWithBodyWithResponse Deploy sources from a folder
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/deployments (the `AppsCreateDeploymentById` operationId).
+	AppsCreateDeploymentByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateDeploymentByIdResponse, error)
+
+	// AppsListDomainsByIdWithResponse List domains
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/domains (the `AppsListDomainsById` operationId).
+	AppsListDomainsByIdWithResponse(ctx context.Context, appId string, params *AppsListDomainsByIdParams, reqEditors ...RequestEditorFn) (*AppsListDomainsByIdResponse, error)
+
+	// AppsAddDomainByIdWithBodyWithResponse Add a custom domain
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+	AppsAddDomainByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsAddDomainByIdResponse, error)
+
+	// AppsAddDomainByIdWithResponse Add a custom domain
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+	AppsAddDomainByIdWithResponse(ctx context.Context, appId string, body AppsAddDomainByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsAddDomainByIdResponse, error)
+
+	// AppsRemoveDomainByIdWithResponse Remove a domain
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomainById` operationId).
+	AppsRemoveDomainByIdWithResponse(ctx context.Context, appId string, domainId string, reqEditors ...RequestEditorFn) (*AppsRemoveDomainByIdResponse, error)
+
+	// AppsListEnvVarsByIdWithResponse List environment variables
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/env (the `AppsListEnvVarsById` operationId).
+	AppsListEnvVarsByIdWithResponse(ctx context.Context, appId string, params *AppsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*AppsListEnvVarsByIdResponse, error)
+
+	// AppsAddEnvVarByIdWithBodyWithResponse Create or set an environment variable
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+	AppsAddEnvVarByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsAddEnvVarByIdResponse, error)
+
+	// AppsAddEnvVarByIdWithResponse Create or set an environment variable
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+	AppsAddEnvVarByIdWithResponse(ctx context.Context, appId string, body AppsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsAddEnvVarByIdResponse, error)
+
+	// AppsDeleteEnvVarByIdWithResponse Delete an environment variable
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /apps/{app_id}/env/{env_var_id} (the `AppsDeleteEnvVarById` operationId).
+	AppsDeleteEnvVarByIdWithResponse(ctx context.Context, appId string, envVarId string, reqEditors ...RequestEditorFn) (*AppsDeleteEnvVarByIdResponse, error)
+
+	// AppsListRunsByIdWithResponse List job runs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/job-runs (the `AppsListRunsById` operationId).
+	AppsListRunsByIdWithResponse(ctx context.Context, appId string, params *AppsListRunsByIdParams, reqEditors ...RequestEditorFn) (*AppsListRunsByIdResponse, error)
+
+	// AppsGetRunByIdWithResponse Get a job run
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/job-runs/{run_id} (the `AppsGetRunById` operationId).
+	AppsGetRunByIdWithResponse(ctx context.Context, appId string, runId string, reqEditors ...RequestEditorFn) (*AppsGetRunByIdResponse, error)
+
+	// AppsListJobsByIdWithResponse List app jobs
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /apps/{app_id}/jobs (the `AppsListJobsById` operationId).
+	AppsListJobsByIdWithResponse(ctx context.Context, appId string, params *AppsListJobsByIdParams, reqEditors ...RequestEditorFn) (*AppsListJobsByIdResponse, error)
+
+	// AppsCreateJobByIdWithBodyWithResponse Create an app job
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+	AppsCreateJobByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateJobByIdResponse, error)
+
+	// AppsCreateJobByIdWithResponse Create an app job
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+	AppsCreateJobByIdWithResponse(ctx context.Context, appId string, body AppsCreateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsCreateJobByIdResponse, error)
+
+	// AppsDeleteJobByIdWithResponse Delete an app job
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /apps/{app_id}/jobs/{job_id} (the `AppsDeleteJobById` operationId).
+	AppsDeleteJobByIdWithResponse(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*AppsDeleteJobByIdResponse, error)
+
+	// AppsUpdateJobByIdWithBodyWithResponse Update an app job
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+	AppsUpdateJobByIdWithBodyWithResponse(ctx context.Context, appId string, jobId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateJobByIdResponse, error)
+
+	// AppsUpdateJobByIdWithResponse Update an app job
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+	AppsUpdateJobByIdWithResponse(ctx context.Context, appId string, jobId string, body AppsUpdateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsUpdateJobByIdResponse, error)
+
+	// AppsRunJobByIdWithResponse Run an app job now
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /apps/{app_id}/jobs/{job_id}/run (the `AppsRunJobById` operationId).
+	AppsRunJobByIdWithResponse(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*AppsRunJobByIdResponse, error)
+
 	// CertificatesListCertificatesWithResponse List certificates
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -18925,6 +20870,979 @@ func (r AccountWhoamiResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AccountWhoamiResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsListAppsByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1App
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsListAppsByAccountResponse) GetJSON200() *PageV1App {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsListAppsByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsListAppsByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsListAppsByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsListAppsByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsListAppsByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsDeleteAppByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsDeleteAppByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsDeleteAppByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsDeleteAppByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsDeleteAppByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsDeleteAppByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsGetAppByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1App
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsGetAppByIdResponse) GetJSON200() *V1App {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsGetAppByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsGetAppByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsGetAppByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsGetAppByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsGetAppByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsUpdateAppByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1App
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsUpdateAppByIdResponse) GetJSON200() *V1App {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsUpdateAppByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsUpdateAppByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsUpdateAppByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsUpdateAppByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsUpdateAppByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsListBuildsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1Build
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsListBuildsByIdResponse) GetJSON200() *PageV1Build {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsListBuildsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsListBuildsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsListBuildsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsListBuildsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsListBuildsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsStreamBuildLogsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsStreamBuildLogsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsStreamBuildLogsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsStreamBuildLogsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsStreamBuildLogsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsStreamBuildLogsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsDeployAppByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1AppDeployResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsDeployAppByIdResponse) GetJSON200() *V1AppDeployResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsDeployAppByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsDeployAppByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsDeployAppByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsDeployAppByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsDeployAppByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsCreateDeploymentByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *V1AppDeployResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r AppsCreateDeploymentByIdResponse) GetJSON202() *V1AppDeployResult {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsCreateDeploymentByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsCreateDeploymentByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsCreateDeploymentByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsCreateDeploymentByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsCreateDeploymentByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsListDomainsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1AppDomain
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsListDomainsByIdResponse) GetJSON200() *PageV1AppDomain {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsListDomainsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsListDomainsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsListDomainsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsListDomainsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsListDomainsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsAddDomainByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *V1AppDomain
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r AppsAddDomainByIdResponse) GetJSON201() *V1AppDomain {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsAddDomainByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsAddDomainByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsAddDomainByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsAddDomainByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsAddDomainByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsRemoveDomainByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsRemoveDomainByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsRemoveDomainByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsRemoveDomainByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsRemoveDomainByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsRemoveDomainByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsListEnvVarsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1EnvVar
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsListEnvVarsByIdResponse) GetJSON200() *PageV1EnvVar {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsListEnvVarsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsListEnvVarsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsListEnvVarsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsListEnvVarsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsListEnvVarsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsAddEnvVarByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *V1EnvVar
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r AppsAddEnvVarByIdResponse) GetJSON201() *V1EnvVar {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsAddEnvVarByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsAddEnvVarByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsAddEnvVarByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsAddEnvVarByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsAddEnvVarByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsDeleteEnvVarByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsDeleteEnvVarByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsDeleteEnvVarByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsDeleteEnvVarByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsDeleteEnvVarByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsDeleteEnvVarByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsListRunsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageAppJobRunResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsListRunsByIdResponse) GetJSON200() *PageAppJobRunResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsListRunsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsListRunsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsListRunsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsListRunsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsListRunsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsGetRunByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppJobRunResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsGetRunByIdResponse) GetJSON200() *AppJobRunResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsGetRunByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsGetRunByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsGetRunByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsGetRunByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsGetRunByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsListJobsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageAppJobResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsListJobsByIdResponse) GetJSON200() *PageAppJobResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsListJobsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsListJobsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsListJobsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsListJobsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsListJobsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsCreateJobByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *AppJobResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r AppsCreateJobByIdResponse) GetJSON201() *AppJobResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsCreateJobByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsCreateJobByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsCreateJobByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsCreateJobByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsCreateJobByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsDeleteJobByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsDeleteJobByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsDeleteJobByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsDeleteJobByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsDeleteJobByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsDeleteJobByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsUpdateJobByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppJobResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsUpdateJobByIdResponse) GetJSON200() *AppJobResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsUpdateJobByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsUpdateJobByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsUpdateJobByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsUpdateJobByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsUpdateJobByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsRunJobByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *AppJobRunResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r AppsRunJobByIdResponse) GetJSON202() *AppJobRunResponse {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsRunJobByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsRunJobByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsRunJobByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsRunJobByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsRunJobByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -26533,6 +29451,360 @@ func (c *ClientWithResponses) AccountWhoamiWithResponse(ctx context.Context, req
 	return ParseAccountWhoamiResponse(rsp)
 }
 
+// AppsListAppsByAccountWithResponse List apps across the account
+//
+// Все приложения аккаунта ключа, отфильтрованные его политикой — как
+// панельный “/account-inventory?kind=apps“, но в контракте.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps (the `AppsListAppsByAccount` operationId).
+func (c *ClientWithResponses) AppsListAppsByAccountWithResponse(ctx context.Context, params *AppsListAppsByAccountParams, reqEditors ...RequestEditorFn) (*AppsListAppsByAccountResponse, error) {
+	rsp, err := c.AppsListAppsByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsListAppsByAccountResponse(rsp)
+}
+
+// AppsDeleteAppByIdWithResponse Delete an app
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /apps/{app_id} (the `AppsDeleteAppById` operationId).
+func (c *ClientWithResponses) AppsDeleteAppByIdWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*AppsDeleteAppByIdResponse, error) {
+	rsp, err := c.AppsDeleteAppById(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsDeleteAppByIdResponse(rsp)
+}
+
+// AppsGetAppByIdWithResponse Get an app
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
+func (c *ClientWithResponses) AppsGetAppByIdWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppByIdResponse, error) {
+	rsp, err := c.AppsGetAppById(ctx, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsGetAppByIdResponse(rsp)
+}
+
+// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources)
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+func (c *ClientWithResponses) AppsUpdateAppByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateAppByIdResponse, error) {
+	rsp, err := c.AppsUpdateAppByIdWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsUpdateAppByIdResponse(rsp)
+}
+
+// AppsUpdateAppByIdWithResponse Update an app (scale / resources)
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
+func (c *ClientWithResponses) AppsUpdateAppByIdWithResponse(ctx context.Context, appId string, body AppsUpdateAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsUpdateAppByIdResponse, error) {
+	rsp, err := c.AppsUpdateAppById(ctx, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsUpdateAppByIdResponse(rsp)
+}
+
+// AppsListBuildsByIdWithResponse List builds
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/builds (the `AppsListBuildsById` operationId).
+func (c *ClientWithResponses) AppsListBuildsByIdWithResponse(ctx context.Context, appId string, params *AppsListBuildsByIdParams, reqEditors ...RequestEditorFn) (*AppsListBuildsByIdResponse, error) {
+	rsp, err := c.AppsListBuildsById(ctx, appId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsListBuildsByIdResponse(rsp)
+}
+
+// AppsStreamBuildLogsByIdWithResponse Stream build logs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/builds/{build_id}/logs (the `AppsStreamBuildLogsById` operationId).
+func (c *ClientWithResponses) AppsStreamBuildLogsByIdWithResponse(ctx context.Context, appId string, buildId string, reqEditors ...RequestEditorFn) (*AppsStreamBuildLogsByIdResponse, error) {
+	rsp, err := c.AppsStreamBuildLogsById(ctx, appId, buildId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsStreamBuildLogsByIdResponse(rsp)
+}
+
+// AppsDeployAppByIdWithBodyWithResponse Trigger a build & deploy
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+func (c *ClientWithResponses) AppsDeployAppByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsDeployAppByIdResponse, error) {
+	rsp, err := c.AppsDeployAppByIdWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsDeployAppByIdResponse(rsp)
+}
+
+// AppsDeployAppByIdWithResponse Trigger a build & deploy
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/deploy (the `AppsDeployAppById` operationId).
+func (c *ClientWithResponses) AppsDeployAppByIdWithResponse(ctx context.Context, appId string, body AppsDeployAppByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsDeployAppByIdResponse, error) {
+	rsp, err := c.AppsDeployAppById(ctx, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsDeployAppByIdResponse(rsp)
+}
+
+// AppsCreateDeploymentByIdWithBodyWithResponse Deploy sources from a folder
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/deployments (the `AppsCreateDeploymentById` operationId).
+func (c *ClientWithResponses) AppsCreateDeploymentByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateDeploymentByIdResponse, error) {
+	rsp, err := c.AppsCreateDeploymentByIdWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsCreateDeploymentByIdResponse(rsp)
+}
+
+// AppsListDomainsByIdWithResponse List domains
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/domains (the `AppsListDomainsById` operationId).
+func (c *ClientWithResponses) AppsListDomainsByIdWithResponse(ctx context.Context, appId string, params *AppsListDomainsByIdParams, reqEditors ...RequestEditorFn) (*AppsListDomainsByIdResponse, error) {
+	rsp, err := c.AppsListDomainsById(ctx, appId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsListDomainsByIdResponse(rsp)
+}
+
+// AppsAddDomainByIdWithBodyWithResponse Add a custom domain
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+func (c *ClientWithResponses) AppsAddDomainByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsAddDomainByIdResponse, error) {
+	rsp, err := c.AppsAddDomainByIdWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsAddDomainByIdResponse(rsp)
+}
+
+// AppsAddDomainByIdWithResponse Add a custom domain
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/domains (the `AppsAddDomainById` operationId).
+func (c *ClientWithResponses) AppsAddDomainByIdWithResponse(ctx context.Context, appId string, body AppsAddDomainByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsAddDomainByIdResponse, error) {
+	rsp, err := c.AppsAddDomainById(ctx, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsAddDomainByIdResponse(rsp)
+}
+
+// AppsRemoveDomainByIdWithResponse Remove a domain
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomainById` operationId).
+func (c *ClientWithResponses) AppsRemoveDomainByIdWithResponse(ctx context.Context, appId string, domainId string, reqEditors ...RequestEditorFn) (*AppsRemoveDomainByIdResponse, error) {
+	rsp, err := c.AppsRemoveDomainById(ctx, appId, domainId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsRemoveDomainByIdResponse(rsp)
+}
+
+// AppsListEnvVarsByIdWithResponse List environment variables
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/env (the `AppsListEnvVarsById` operationId).
+func (c *ClientWithResponses) AppsListEnvVarsByIdWithResponse(ctx context.Context, appId string, params *AppsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*AppsListEnvVarsByIdResponse, error) {
+	rsp, err := c.AppsListEnvVarsById(ctx, appId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsListEnvVarsByIdResponse(rsp)
+}
+
+// AppsAddEnvVarByIdWithBodyWithResponse Create or set an environment variable
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+func (c *ClientWithResponses) AppsAddEnvVarByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsAddEnvVarByIdResponse, error) {
+	rsp, err := c.AppsAddEnvVarByIdWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsAddEnvVarByIdResponse(rsp)
+}
+
+// AppsAddEnvVarByIdWithResponse Create or set an environment variable
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/env (the `AppsAddEnvVarById` operationId).
+func (c *ClientWithResponses) AppsAddEnvVarByIdWithResponse(ctx context.Context, appId string, body AppsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsAddEnvVarByIdResponse, error) {
+	rsp, err := c.AppsAddEnvVarById(ctx, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsAddEnvVarByIdResponse(rsp)
+}
+
+// AppsDeleteEnvVarByIdWithResponse Delete an environment variable
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /apps/{app_id}/env/{env_var_id} (the `AppsDeleteEnvVarById` operationId).
+func (c *ClientWithResponses) AppsDeleteEnvVarByIdWithResponse(ctx context.Context, appId string, envVarId string, reqEditors ...RequestEditorFn) (*AppsDeleteEnvVarByIdResponse, error) {
+	rsp, err := c.AppsDeleteEnvVarById(ctx, appId, envVarId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsDeleteEnvVarByIdResponse(rsp)
+}
+
+// AppsListRunsByIdWithResponse List job runs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/job-runs (the `AppsListRunsById` operationId).
+func (c *ClientWithResponses) AppsListRunsByIdWithResponse(ctx context.Context, appId string, params *AppsListRunsByIdParams, reqEditors ...RequestEditorFn) (*AppsListRunsByIdResponse, error) {
+	rsp, err := c.AppsListRunsById(ctx, appId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsListRunsByIdResponse(rsp)
+}
+
+// AppsGetRunByIdWithResponse Get a job run
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/job-runs/{run_id} (the `AppsGetRunById` operationId).
+func (c *ClientWithResponses) AppsGetRunByIdWithResponse(ctx context.Context, appId string, runId string, reqEditors ...RequestEditorFn) (*AppsGetRunByIdResponse, error) {
+	rsp, err := c.AppsGetRunById(ctx, appId, runId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsGetRunByIdResponse(rsp)
+}
+
+// AppsListJobsByIdWithResponse List app jobs
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /apps/{app_id}/jobs (the `AppsListJobsById` operationId).
+func (c *ClientWithResponses) AppsListJobsByIdWithResponse(ctx context.Context, appId string, params *AppsListJobsByIdParams, reqEditors ...RequestEditorFn) (*AppsListJobsByIdResponse, error) {
+	rsp, err := c.AppsListJobsById(ctx, appId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsListJobsByIdResponse(rsp)
+}
+
+// AppsCreateJobByIdWithBodyWithResponse Create an app job
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+func (c *ClientWithResponses) AppsCreateJobByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateJobByIdResponse, error) {
+	rsp, err := c.AppsCreateJobByIdWithBody(ctx, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsCreateJobByIdResponse(rsp)
+}
+
+// AppsCreateJobByIdWithResponse Create an app job
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/jobs (the `AppsCreateJobById` operationId).
+func (c *ClientWithResponses) AppsCreateJobByIdWithResponse(ctx context.Context, appId string, body AppsCreateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsCreateJobByIdResponse, error) {
+	rsp, err := c.AppsCreateJobById(ctx, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsCreateJobByIdResponse(rsp)
+}
+
+// AppsDeleteJobByIdWithResponse Delete an app job
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /apps/{app_id}/jobs/{job_id} (the `AppsDeleteJobById` operationId).
+func (c *ClientWithResponses) AppsDeleteJobByIdWithResponse(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*AppsDeleteJobByIdResponse, error) {
+	rsp, err := c.AppsDeleteJobById(ctx, appId, jobId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsDeleteJobByIdResponse(rsp)
+}
+
+// AppsUpdateJobByIdWithBodyWithResponse Update an app job
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+func (c *ClientWithResponses) AppsUpdateJobByIdWithBodyWithResponse(ctx context.Context, appId string, jobId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateJobByIdResponse, error) {
+	rsp, err := c.AppsUpdateJobByIdWithBody(ctx, appId, jobId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsUpdateJobByIdResponse(rsp)
+}
+
+// AppsUpdateJobByIdWithResponse Update an app job
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /apps/{app_id}/jobs/{job_id} (the `AppsUpdateJobById` operationId).
+func (c *ClientWithResponses) AppsUpdateJobByIdWithResponse(ctx context.Context, appId string, jobId string, body AppsUpdateJobByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsUpdateJobByIdResponse, error) {
+	rsp, err := c.AppsUpdateJobById(ctx, appId, jobId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsUpdateJobByIdResponse(rsp)
+}
+
+// AppsRunJobByIdWithResponse Run an app job now
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /apps/{app_id}/jobs/{job_id}/run (the `AppsRunJobById` operationId).
+func (c *ClientWithResponses) AppsRunJobByIdWithResponse(ctx context.Context, appId string, jobId string, reqEditors ...RequestEditorFn) (*AppsRunJobByIdResponse, error) {
+	rsp, err := c.AppsRunJobById(ctx, appId, jobId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsRunJobByIdResponse(rsp)
+}
+
 // CertificatesListCertificatesWithResponse List certificates
 //
 // Returns a wrapper object for the known response body format(s).
@@ -29823,6 +33095,676 @@ func ParseAccountWhoamiResponse(rsp *http.Response) (*AccountWhoamiResponse, err
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsListAppsByAccountResponse parses an HTTP response from a AppsListAppsByAccountWithResponse call
+func ParseAppsListAppsByAccountResponse(rsp *http.Response) (*AppsListAppsByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsListAppsByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1App
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsDeleteAppByIdResponse parses an HTTP response from a AppsDeleteAppByIdWithResponse call
+func ParseAppsDeleteAppByIdResponse(rsp *http.Response) (*AppsDeleteAppByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsDeleteAppByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsGetAppByIdResponse parses an HTTP response from a AppsGetAppByIdWithResponse call
+func ParseAppsGetAppByIdResponse(rsp *http.Response) (*AppsGetAppByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsGetAppByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1App
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsUpdateAppByIdResponse parses an HTTP response from a AppsUpdateAppByIdWithResponse call
+func ParseAppsUpdateAppByIdResponse(rsp *http.Response) (*AppsUpdateAppByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsUpdateAppByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1App
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsListBuildsByIdResponse parses an HTTP response from a AppsListBuildsByIdWithResponse call
+func ParseAppsListBuildsByIdResponse(rsp *http.Response) (*AppsListBuildsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsListBuildsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1Build
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsStreamBuildLogsByIdResponse parses an HTTP response from a AppsStreamBuildLogsByIdWithResponse call
+func ParseAppsStreamBuildLogsByIdResponse(rsp *http.Response) (*AppsStreamBuildLogsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsStreamBuildLogsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsDeployAppByIdResponse parses an HTTP response from a AppsDeployAppByIdWithResponse call
+func ParseAppsDeployAppByIdResponse(rsp *http.Response) (*AppsDeployAppByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsDeployAppByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1AppDeployResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsCreateDeploymentByIdResponse parses an HTTP response from a AppsCreateDeploymentByIdWithResponse call
+func ParseAppsCreateDeploymentByIdResponse(rsp *http.Response) (*AppsCreateDeploymentByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsCreateDeploymentByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest V1AppDeployResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsListDomainsByIdResponse parses an HTTP response from a AppsListDomainsByIdWithResponse call
+func ParseAppsListDomainsByIdResponse(rsp *http.Response) (*AppsListDomainsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsListDomainsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1AppDomain
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsAddDomainByIdResponse parses an HTTP response from a AppsAddDomainByIdWithResponse call
+func ParseAppsAddDomainByIdResponse(rsp *http.Response) (*AppsAddDomainByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsAddDomainByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest V1AppDomain
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsRemoveDomainByIdResponse parses an HTTP response from a AppsRemoveDomainByIdWithResponse call
+func ParseAppsRemoveDomainByIdResponse(rsp *http.Response) (*AppsRemoveDomainByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsRemoveDomainByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsListEnvVarsByIdResponse parses an HTTP response from a AppsListEnvVarsByIdWithResponse call
+func ParseAppsListEnvVarsByIdResponse(rsp *http.Response) (*AppsListEnvVarsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsListEnvVarsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1EnvVar
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsAddEnvVarByIdResponse parses an HTTP response from a AppsAddEnvVarByIdWithResponse call
+func ParseAppsAddEnvVarByIdResponse(rsp *http.Response) (*AppsAddEnvVarByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsAddEnvVarByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest V1EnvVar
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsDeleteEnvVarByIdResponse parses an HTTP response from a AppsDeleteEnvVarByIdWithResponse call
+func ParseAppsDeleteEnvVarByIdResponse(rsp *http.Response) (*AppsDeleteEnvVarByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsDeleteEnvVarByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsListRunsByIdResponse parses an HTTP response from a AppsListRunsByIdWithResponse call
+func ParseAppsListRunsByIdResponse(rsp *http.Response) (*AppsListRunsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsListRunsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageAppJobRunResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsGetRunByIdResponse parses an HTTP response from a AppsGetRunByIdWithResponse call
+func ParseAppsGetRunByIdResponse(rsp *http.Response) (*AppsGetRunByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsGetRunByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppJobRunResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsListJobsByIdResponse parses an HTTP response from a AppsListJobsByIdWithResponse call
+func ParseAppsListJobsByIdResponse(rsp *http.Response) (*AppsListJobsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsListJobsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageAppJobResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsCreateJobByIdResponse parses an HTTP response from a AppsCreateJobByIdWithResponse call
+func ParseAppsCreateJobByIdResponse(rsp *http.Response) (*AppsCreateJobByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsCreateJobByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest AppJobResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsDeleteJobByIdResponse parses an HTTP response from a AppsDeleteJobByIdWithResponse call
+func ParseAppsDeleteJobByIdResponse(rsp *http.Response) (*AppsDeleteJobByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsDeleteJobByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsUpdateJobByIdResponse parses an HTTP response from a AppsUpdateJobByIdWithResponse call
+func ParseAppsUpdateJobByIdResponse(rsp *http.Response) (*AppsUpdateJobByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsUpdateJobByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppJobResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsRunJobByIdResponse parses an HTTP response from a AppsRunJobByIdWithResponse call
+func ParseAppsRunJobByIdResponse(rsp *http.Response) (*AppsRunJobByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsRunJobByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest AppJobRunResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
