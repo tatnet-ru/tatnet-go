@@ -387,6 +387,34 @@
         "title": "ChangePgTopologyRequest",
         "type": "object"
       },
+      "ChangeValkeyPlanRequest": {
+        "description": "Смена тарифа: только вверх (память, vCPU и диск не меньше текущих).\nУзлы ресайзятся по одному с перезагрузкой; продаваемые пределы\n(maxmemory/maxclients) поднимаются, когда все узлы на новых ресурсах.",
+        "properties": {
+          "plan_id": {
+            "title": "Plan Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "plan_id"
+        ],
+        "title": "ChangeValkeyPlanRequest",
+        "type": "object"
+      },
+      "ChangeValkeyTopologyRequest": {
+        "description": "Смена топологии: single ↔ ha. Рост — без простоя (реплика присоединяется\nк живому инстансу, появляется read-endpoint), сжатие — с переключением\nпервичного, если он сидит на выводимой реплике; read-endpoint исчезает.",
+        "properties": {
+          "topology": {
+            "title": "Topology",
+            "type": "string"
+          }
+        },
+        "required": [
+          "topology"
+        ],
+        "title": "ChangeValkeyTopologyRequest",
+        "type": "object"
+      },
       "CreatePgBackupRequest": {
         "properties": {
           "label": {
@@ -7856,6 +7884,12 @@
             "title": "Disk Size",
             "type": "integer"
           },
+          "ephemeral": {
+            "default": false,
+            "description": "Ephemeral VM: billed per second of lifetime at the plan's hourly rate, no prepaid period or subscription; cannot be resized",
+            "title": "Ephemeral",
+            "type": "boolean"
+          },
           "floating_ips": {
             "description": "Floating IPs attached to the VM's interfaces, with their computed status",
             "items": {
@@ -8003,6 +8037,12 @@
             ],
             "description": "Custom disk size in GB (within plan limits)",
             "title": "Disk Size Gb"
+          },
+          "ephemeral": {
+            "default": false,
+            "description": "Ephemeral VM: no prepaid period or subscription. Billed per second of lifetime — from creation to the deletion request — at the plan's hourly rate (plus extra disk and public IP) through an hourly usage meter. Meant for short-lived machines (CI runners, batch jobs). Mutually exclusive with period_months/period_days and backup_count; cannot be resized; insufficient funds → 402 and no capacity → 503 immediately instead of a queued VM.",
+            "title": "Ephemeral",
+            "type": "boolean"
           },
           "hostname": {
             "description": "VM hostname (lowercase letters, digits, hyphens)",
@@ -8855,6 +8895,11 @@
               }
             ]
           },
+          "plan_change_pending": {
+            "default": false,
+            "title": "Plan Change Pending",
+            "type": "boolean"
+          },
           "project_id": {
             "title": "Project Id",
             "type": "string"
@@ -8908,6 +8953,11 @@
           "topology": {
             "title": "Topology",
             "type": "string"
+          },
+          "topology_change_pending": {
+            "default": false,
+            "title": "Topology Change Pending",
+            "type": "boolean"
           },
           "user": {
             "default": "default",
@@ -9109,6 +9159,11 @@
               }
             ]
           },
+          "plan_change_pending": {
+            "default": false,
+            "title": "Plan Change Pending",
+            "type": "boolean"
+          },
           "project_id": {
             "title": "Project Id",
             "type": "string"
@@ -9162,6 +9217,11 @@
           "topology": {
             "title": "Topology",
             "type": "string"
+          },
+          "topology_change_pending": {
+            "default": false,
+            "title": "Topology Change Pending",
+            "type": "boolean"
           },
           "user": {
             "default": "default",
@@ -18923,6 +18983,73 @@
         ]
       }
     },
+    "/projects/{project_id}/valkey-clusters/{cluster_id}/plan": {
+      "put": {
+        "description": "Upgrade only: memory, vCPU and disk of the new plan must not be below\nthe current ones. Nodes are resized one at a time (each reboots); the\nmemory and connection limits rise once every node is on the new plan.\n`plan_change_pending` on the cluster shows the change is still in\nprogress.",
+        "operationId": "valkey_change_plan",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "title": "Cluster Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeValkeyPlanRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValkeyClusterDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Change the node plan",
+        "tags": [
+          "valkey"
+        ]
+      }
+    },
     "/projects/{project_id}/valkey-clusters/{cluster_id}/replace-nodes": {
       "post": {
         "description": "One node at a time, replicas before the leader. ``requested: 0`` means\nevery node is already on the newest image build in the region.",
@@ -18975,6 +19102,73 @@
           }
         ],
         "summary": "Replace outdated nodes with the newest image",
+        "tags": [
+          "valkey"
+        ]
+      }
+    },
+    "/projects/{project_id}/valkey-clusters/{cluster_id}/topology": {
+      "put": {
+        "description": "single ↔ ha. Growing adds a replica and a read endpoint without\ndowntime; shrinking removes the replica and the read endpoint at once\n(a switchover happens if the primary is on the replica).\n`topology_change_pending` on the cluster shows the change is still in\nprogress.",
+        "operationId": "valkey_change_topology",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "title": "Cluster Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeValkeyTopologyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValkeyClusterDetailResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Change the topology",
         "tags": [
           "valkey"
         ]
