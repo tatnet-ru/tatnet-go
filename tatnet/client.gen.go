@@ -421,6 +421,20 @@ type ChangePgTopologyRequest struct {
 	Topology string `json:"topology"`
 }
 
+// ChangeValkeyPlanRequest Смена тарифа: только вверх (память, vCPU и диск не меньше текущих).
+// Узлы ресайзятся по одному с перезагрузкой; продаваемые пределы
+// (maxmemory/maxclients) поднимаются, когда все узлы на новых ресурсах.
+type ChangeValkeyPlanRequest struct {
+	PlanId string `json:"plan_id"`
+}
+
+// ChangeValkeyTopologyRequest Смена топологии: single ↔ ha. Рост — без простоя (реплика присоединяется
+// к живому инстансу, появляется read-endpoint), сжатие — с переключением
+// первичного, если он сидит на выводимой реплике; read-endpoint исчезает.
+type ChangeValkeyTopologyRequest struct {
+	Topology string `json:"topology"`
+}
+
 // CreatePgBackupRequest defines model for CreatePgBackupRequest.
 type CreatePgBackupRequest struct {
 	Label string `json:"label"`
@@ -2070,6 +2084,9 @@ type V1Usage struct {
 type V1VM struct {
 	DiskSize int `json:"disk_size"`
 
+	// Ephemeral Ephemeral VM: billed per second of lifetime at the plan's hourly rate, no prepaid period or subscription; cannot be resized
+	Ephemeral *bool `json:"ephemeral,omitempty"`
+
 	// FloatingIps Floating IPs attached to the VM's interfaces, with their computed status
 	FloatingIps *[]V1VMFloatingIP `json:"floating_ips,omitempty"`
 
@@ -2113,6 +2130,9 @@ type V1VMCreate struct {
 
 	// DiskSizeGb Custom disk size in GB (within plan limits)
 	DiskSizeGb *int `json:"disk_size_gb,omitempty"`
+
+	// Ephemeral Ephemeral VM: no prepaid period or subscription. Billed per second of lifetime — from creation to the deletion request — at the plan's hourly rate (plus extra disk and public IP) through an hourly usage meter. Meant for short-lived machines (CI runners, batch jobs). Mutually exclusive with period_months/period_days and backup_count; cannot be resized; insufficient funds → 402 and no capacity → 503 immediately instead of a queued VM.
+	Ephemeral *bool `json:"ephemeral,omitempty"`
 
 	// Hostname VM hostname (lowercase letters, digits, hyphens)
 	Hostname string `json:"hostname"`
@@ -2327,79 +2347,83 @@ type ValkeyCaResponse struct {
 // было свойством контракта, а не договорённостью. В обычной карточке поля
 // нет вовсе: пароль лежит в keystore, api его не хранит и прочитать не может.
 type ValkeyClusterCreatedResponse struct {
-	AccessMode        *string               `json:"access_mode,omitempty"`
-	AccountId         string                `json:"account_id"`
-	CaAvailable       *bool                 `json:"ca_available,omitempty"`
-	CreatedAt         *time.Time            `json:"created_at,omitempty"`
-	EndpointDns       *string               `json:"endpoint_dns,omitempty"`
-	EndpointHost      *string               `json:"endpoint_host,omitempty"`
-	EndpointIp        *string               `json:"endpoint_ip,omitempty"`
-	EndpointPort      int                   `json:"endpoint_port"`
-	EvictionPolicy    string                `json:"eviction_policy"`
-	Id                string                `json:"id"`
-	IpAllowlist       *[]string             `json:"ip_allowlist,omitempty"`
-	Maxclients        int                   `json:"maxclients"`
-	MaxmemoryMb       int                   `json:"maxmemory_mb"`
-	MonthlyCost       *float32              `json:"monthly_cost,omitempty"`
-	Name              string                `json:"name"`
-	NodeCount         int                   `json:"node_count"`
-	Nodes             *[]ValkeyNodeResponse `json:"nodes,omitempty"`
-	NodesOutdated     *int                  `json:"nodes_outdated,omitempty"`
-	ParametersApplied *bool                 `json:"parameters_applied,omitempty"`
-	Password          *string               `json:"password,omitempty"`
-	Persistence       string                `json:"persistence"`
-	Plan              *ValkeyPlanResponse   `json:"plan,omitempty"`
-	ProjectId         string                `json:"project_id"`
-	ReadHost          *string               `json:"read_host,omitempty"`
-	RegionClusterId   string                `json:"region_cluster_id"`
-	RegionName        *string               `json:"region_name,omitempty"`
-	ReplacePending    *bool                 `json:"replace_pending,omitempty"`
-	Status            string                `json:"status"`
-	StatusDetail      *string               `json:"status_detail,omitempty"`
-	Topology          string                `json:"topology"`
-	User              *string               `json:"user,omitempty"`
-	ValkeyVersion     string                `json:"valkey_version"`
-	VpcId             *string               `json:"vpc_id,omitempty"`
-	VpcName           *string               `json:"vpc_name,omitempty"`
-	VpcVip            *string               `json:"vpc_vip,omitempty"`
+	AccessMode            *string               `json:"access_mode,omitempty"`
+	AccountId             string                `json:"account_id"`
+	CaAvailable           *bool                 `json:"ca_available,omitempty"`
+	CreatedAt             *time.Time            `json:"created_at,omitempty"`
+	EndpointDns           *string               `json:"endpoint_dns,omitempty"`
+	EndpointHost          *string               `json:"endpoint_host,omitempty"`
+	EndpointIp            *string               `json:"endpoint_ip,omitempty"`
+	EndpointPort          int                   `json:"endpoint_port"`
+	EvictionPolicy        string                `json:"eviction_policy"`
+	Id                    string                `json:"id"`
+	IpAllowlist           *[]string             `json:"ip_allowlist,omitempty"`
+	Maxclients            int                   `json:"maxclients"`
+	MaxmemoryMb           int                   `json:"maxmemory_mb"`
+	MonthlyCost           *float32              `json:"monthly_cost,omitempty"`
+	Name                  string                `json:"name"`
+	NodeCount             int                   `json:"node_count"`
+	Nodes                 *[]ValkeyNodeResponse `json:"nodes,omitempty"`
+	NodesOutdated         *int                  `json:"nodes_outdated,omitempty"`
+	ParametersApplied     *bool                 `json:"parameters_applied,omitempty"`
+	Password              *string               `json:"password,omitempty"`
+	Persistence           string                `json:"persistence"`
+	Plan                  *ValkeyPlanResponse   `json:"plan,omitempty"`
+	PlanChangePending     *bool                 `json:"plan_change_pending,omitempty"`
+	ProjectId             string                `json:"project_id"`
+	ReadHost              *string               `json:"read_host,omitempty"`
+	RegionClusterId       string                `json:"region_cluster_id"`
+	RegionName            *string               `json:"region_name,omitempty"`
+	ReplacePending        *bool                 `json:"replace_pending,omitempty"`
+	Status                string                `json:"status"`
+	StatusDetail          *string               `json:"status_detail,omitempty"`
+	Topology              string                `json:"topology"`
+	TopologyChangePending *bool                 `json:"topology_change_pending,omitempty"`
+	User                  *string               `json:"user,omitempty"`
+	ValkeyVersion         string                `json:"valkey_version"`
+	VpcId                 *string               `json:"vpc_id,omitempty"`
+	VpcName               *string               `json:"vpc_name,omitempty"`
+	VpcVip                *string               `json:"vpc_vip,omitempty"`
 }
 
 // ValkeyClusterDetailResponse defines model for ValkeyClusterDetailResponse.
 type ValkeyClusterDetailResponse struct {
-	AccessMode        *string               `json:"access_mode,omitempty"`
-	AccountId         string                `json:"account_id"`
-	CaAvailable       *bool                 `json:"ca_available,omitempty"`
-	CreatedAt         *time.Time            `json:"created_at,omitempty"`
-	EndpointDns       *string               `json:"endpoint_dns,omitempty"`
-	EndpointHost      *string               `json:"endpoint_host,omitempty"`
-	EndpointIp        *string               `json:"endpoint_ip,omitempty"`
-	EndpointPort      int                   `json:"endpoint_port"`
-	EvictionPolicy    string                `json:"eviction_policy"`
-	Id                string                `json:"id"`
-	IpAllowlist       *[]string             `json:"ip_allowlist,omitempty"`
-	Maxclients        int                   `json:"maxclients"`
-	MaxmemoryMb       int                   `json:"maxmemory_mb"`
-	MonthlyCost       *float32              `json:"monthly_cost,omitempty"`
-	Name              string                `json:"name"`
-	NodeCount         int                   `json:"node_count"`
-	Nodes             *[]ValkeyNodeResponse `json:"nodes,omitempty"`
-	NodesOutdated     *int                  `json:"nodes_outdated,omitempty"`
-	ParametersApplied *bool                 `json:"parameters_applied,omitempty"`
-	Persistence       string                `json:"persistence"`
-	Plan              *ValkeyPlanResponse   `json:"plan,omitempty"`
-	ProjectId         string                `json:"project_id"`
-	ReadHost          *string               `json:"read_host,omitempty"`
-	RegionClusterId   string                `json:"region_cluster_id"`
-	RegionName        *string               `json:"region_name,omitempty"`
-	ReplacePending    *bool                 `json:"replace_pending,omitempty"`
-	Status            string                `json:"status"`
-	StatusDetail      *string               `json:"status_detail,omitempty"`
-	Topology          string                `json:"topology"`
-	User              *string               `json:"user,omitempty"`
-	ValkeyVersion     string                `json:"valkey_version"`
-	VpcId             *string               `json:"vpc_id,omitempty"`
-	VpcName           *string               `json:"vpc_name,omitempty"`
-	VpcVip            *string               `json:"vpc_vip,omitempty"`
+	AccessMode            *string               `json:"access_mode,omitempty"`
+	AccountId             string                `json:"account_id"`
+	CaAvailable           *bool                 `json:"ca_available,omitempty"`
+	CreatedAt             *time.Time            `json:"created_at,omitempty"`
+	EndpointDns           *string               `json:"endpoint_dns,omitempty"`
+	EndpointHost          *string               `json:"endpoint_host,omitempty"`
+	EndpointIp            *string               `json:"endpoint_ip,omitempty"`
+	EndpointPort          int                   `json:"endpoint_port"`
+	EvictionPolicy        string                `json:"eviction_policy"`
+	Id                    string                `json:"id"`
+	IpAllowlist           *[]string             `json:"ip_allowlist,omitempty"`
+	Maxclients            int                   `json:"maxclients"`
+	MaxmemoryMb           int                   `json:"maxmemory_mb"`
+	MonthlyCost           *float32              `json:"monthly_cost,omitempty"`
+	Name                  string                `json:"name"`
+	NodeCount             int                   `json:"node_count"`
+	Nodes                 *[]ValkeyNodeResponse `json:"nodes,omitempty"`
+	NodesOutdated         *int                  `json:"nodes_outdated,omitempty"`
+	ParametersApplied     *bool                 `json:"parameters_applied,omitempty"`
+	Persistence           string                `json:"persistence"`
+	Plan                  *ValkeyPlanResponse   `json:"plan,omitempty"`
+	PlanChangePending     *bool                 `json:"plan_change_pending,omitempty"`
+	ProjectId             string                `json:"project_id"`
+	ReadHost              *string               `json:"read_host,omitempty"`
+	RegionClusterId       string                `json:"region_cluster_id"`
+	RegionName            *string               `json:"region_name,omitempty"`
+	ReplacePending        *bool                 `json:"replace_pending,omitempty"`
+	Status                string                `json:"status"`
+	StatusDetail          *string               `json:"status_detail,omitempty"`
+	Topology              string                `json:"topology"`
+	TopologyChangePending *bool                 `json:"topology_change_pending,omitempty"`
+	User                  *string               `json:"user,omitempty"`
+	ValkeyVersion         string                `json:"valkey_version"`
+	VpcId                 *string               `json:"vpc_id,omitempty"`
+	VpcName               *string               `json:"vpc_name,omitempty"`
+	VpcVip                *string               `json:"vpc_vip,omitempty"`
 }
 
 // ValkeyClusterResponse defines model for ValkeyClusterResponse.
@@ -2905,6 +2929,12 @@ type ValkeyUpdateAllowlistJSONRequestBody = UpdateValkeyAllowlistRequest
 
 // ValkeyUpdateParamsJSONRequestBody defines body for ValkeyUpdateParams for application/json ContentType.
 type ValkeyUpdateParamsJSONRequestBody = UpdateValkeyParamsRequest
+
+// ValkeyChangePlanJSONRequestBody defines body for ValkeyChangePlan for application/json ContentType.
+type ValkeyChangePlanJSONRequestBody = ChangeValkeyPlanRequest
+
+// ValkeyChangeTopologyJSONRequestBody defines body for ValkeyChangeTopology for application/json ContentType.
+type ValkeyChangeTopologyJSONRequestBody = ChangeValkeyTopologyRequest
 
 // VmsCreateVmJSONRequestBody defines body for VmsCreateVm for application/json ContentType.
 type VmsCreateVmJSONRequestBody = V1VMCreate
@@ -4683,6 +4713,32 @@ type ClientInterface interface {
 	// Corresponds with POST /projects/{project_id}/valkey-clusters/{cluster_id}/password (the `ValkeyResetPassword` operationId).
 	ValkeyResetPassword(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ValkeyChangePlanWithBody Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+	ValkeyChangePlanWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangePlan Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+	ValkeyChangePlan(ctx context.Context, projectId string, clusterId string, body ValkeyChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ValkeyReplaceOutdatedNodes Replace outdated nodes with the newest image
 	//
 	// One node at a time, replicas before the leader. ``requested: 0`` means
@@ -4690,6 +4746,32 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodes` operationId).
 	ValkeyReplaceOutdatedNodes(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangeTopologyWithBody Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+	ValkeyChangeTopologyWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangeTopology Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+	ValkeyChangeTopology(ctx context.Context, projectId string, clusterId string, body ValkeyChangeTopologyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// VmsListVms List VMs in a project
 	//
@@ -8699,6 +8781,52 @@ func (c *Client) ValkeyResetPassword(ctx context.Context, projectId string, clus
 	return c.Client.Do(req)
 }
 
+// ValkeyChangePlanWithBody Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+func (c *Client) ValkeyChangePlanWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangePlanRequestWithBody(c.Server, projectId, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangePlan Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+func (c *Client) ValkeyChangePlan(ctx context.Context, projectId string, clusterId string, body ValkeyChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangePlanRequest(c.Server, projectId, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ValkeyReplaceOutdatedNodes Replace outdated nodes with the newest image
 //
 // One node at a time, replicas before the leader. “requested: 0“ means
@@ -8707,6 +8835,52 @@ func (c *Client) ValkeyResetPassword(ctx context.Context, projectId string, clus
 // Corresponds with POST /projects/{project_id}/valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodes` operationId).
 func (c *Client) ValkeyReplaceOutdatedNodes(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewValkeyReplaceOutdatedNodesRequest(c.Server, projectId, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangeTopologyWithBody Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+func (c *Client) ValkeyChangeTopologyWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangeTopologyRequestWithBody(c.Server, projectId, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangeTopology Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+func (c *Client) ValkeyChangeTopology(ctx context.Context, projectId string, clusterId string, body ValkeyChangeTopologyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangeTopologyRequest(c.Server, projectId, clusterId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -17222,6 +17396,60 @@ func NewValkeyResetPasswordRequest(server string, projectId string, clusterId st
 	return req, nil
 }
 
+// NewValkeyChangePlanRequest calls the generic ValkeyChangePlan builder with application/json body
+func NewValkeyChangePlanRequest(server string, projectId string, clusterId string, body ValkeyChangePlanJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValkeyChangePlanRequestWithBody(server, projectId, clusterId, "application/json", bodyReader)
+}
+
+// NewValkeyChangePlanRequestWithBody constructs an http.Request for the ValkeyChangePlan method, with any body, and a specified content type
+func NewValkeyChangePlanRequestWithBody(server string, projectId string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/valkey-clusters/%s/plan", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewValkeyReplaceOutdatedNodesRequest constructs an http.Request for the ValkeyReplaceOutdatedNodes method
 func NewValkeyReplaceOutdatedNodesRequest(server string, projectId string, clusterId string) (*http.Request, error) {
 	var err error
@@ -17259,6 +17487,60 @@ func NewValkeyReplaceOutdatedNodesRequest(server string, projectId string, clust
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewValkeyChangeTopologyRequest calls the generic ValkeyChangeTopology builder with application/json body
+func NewValkeyChangeTopologyRequest(server string, projectId string, clusterId string, body ValkeyChangeTopologyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValkeyChangeTopologyRequestWithBody(server, projectId, clusterId, "application/json", bodyReader)
+}
+
+// NewValkeyChangeTopologyRequestWithBody constructs an http.Request for the ValkeyChangeTopology method, with any body, and a specified content type
+func NewValkeyChangeTopologyRequestWithBody(server string, projectId string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/valkey-clusters/%s/topology", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -20509,6 +20791,32 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /projects/{project_id}/valkey-clusters/{cluster_id}/password (the `ValkeyResetPassword` operationId).
 	ValkeyResetPasswordWithResponse(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyResetPasswordResponse, error)
 
+	// ValkeyChangePlanWithBodyWithResponse Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+	ValkeyChangePlanWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangePlanResponse, error)
+
+	// ValkeyChangePlanWithResponse Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+	ValkeyChangePlanWithResponse(ctx context.Context, projectId string, clusterId string, body ValkeyChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangePlanResponse, error)
+
 	// ValkeyReplaceOutdatedNodesWithResponse Replace outdated nodes with the newest image
 	//
 	// One node at a time, replicas before the leader. ``requested: 0`` means
@@ -20518,6 +20826,32 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodes` operationId).
 	ValkeyReplaceOutdatedNodesWithResponse(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyReplaceOutdatedNodesResponse, error)
+
+	// ValkeyChangeTopologyWithBodyWithResponse Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+	ValkeyChangeTopologyWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyResponse, error)
+
+	// ValkeyChangeTopologyWithResponse Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+	ValkeyChangeTopologyWithResponse(ctx context.Context, projectId string, clusterId string, body ValkeyChangeTopologyJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyResponse, error)
 
 	// VmsListVmsWithResponse List VMs in a project
 	//
@@ -28024,6 +28358,54 @@ func (r ValkeyResetPasswordResponse) ContentType() string {
 	return ""
 }
 
+type ValkeyChangePlanResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyChangePlanResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyChangePlanResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyChangePlanResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyChangePlanResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyChangePlanResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyChangePlanResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ValkeyReplaceOutdatedNodesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -28066,6 +28448,54 @@ func (r ValkeyReplaceOutdatedNodesResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ValkeyReplaceOutdatedNodesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyChangeTopologyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyChangeTopologyResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyChangeTopologyResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyChangeTopologyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyChangeTopologyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyChangeTopologyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyChangeTopologyResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -32504,6 +32934,44 @@ func (c *ClientWithResponses) ValkeyResetPasswordWithResponse(ctx context.Contex
 	return ParseValkeyResetPasswordResponse(rsp)
 }
 
+// ValkeyChangePlanWithBodyWithResponse Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+func (c *ClientWithResponses) ValkeyChangePlanWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangePlanResponse, error) {
+	rsp, err := c.ValkeyChangePlanWithBody(ctx, projectId, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangePlanResponse(rsp)
+}
+
+// ValkeyChangePlanWithResponse Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlan` operationId).
+func (c *ClientWithResponses) ValkeyChangePlanWithResponse(ctx context.Context, projectId string, clusterId string, body ValkeyChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangePlanResponse, error) {
+	rsp, err := c.ValkeyChangePlan(ctx, projectId, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangePlanResponse(rsp)
+}
+
 // ValkeyReplaceOutdatedNodesWithResponse Replace outdated nodes with the newest image
 //
 // One node at a time, replicas before the leader. “requested: 0“ means
@@ -32518,6 +32986,44 @@ func (c *ClientWithResponses) ValkeyReplaceOutdatedNodesWithResponse(ctx context
 		return nil, err
 	}
 	return ParseValkeyReplaceOutdatedNodesResponse(rsp)
+}
+
+// ValkeyChangeTopologyWithBodyWithResponse Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+func (c *ClientWithResponses) ValkeyChangeTopologyWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyResponse, error) {
+	rsp, err := c.ValkeyChangeTopologyWithBody(ctx, projectId, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangeTopologyResponse(rsp)
+}
+
+// ValkeyChangeTopologyWithResponse Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopology` operationId).
+func (c *ClientWithResponses) ValkeyChangeTopologyWithResponse(ctx context.Context, projectId string, clusterId string, body ValkeyChangeTopologyJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyResponse, error) {
+	rsp, err := c.ValkeyChangeTopology(ctx, projectId, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangeTopologyResponse(rsp)
 }
 
 // VmsListVmsWithResponse List VMs in a project
@@ -38014,6 +38520,39 @@ func ParseValkeyResetPasswordResponse(rsp *http.Response) (*ValkeyResetPasswordR
 	return response, nil
 }
 
+// ParseValkeyChangePlanResponse parses an HTTP response from a ValkeyChangePlanWithResponse call
+func ParseValkeyChangePlanResponse(rsp *http.Response) (*ValkeyChangePlanResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyChangePlanResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseValkeyReplaceOutdatedNodesResponse parses an HTTP response from a ValkeyReplaceOutdatedNodesWithResponse call
 func ParseValkeyReplaceOutdatedNodesResponse(rsp *http.Response) (*ValkeyReplaceOutdatedNodesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -38030,6 +38569,39 @@ func ParseValkeyReplaceOutdatedNodesResponse(rsp *http.Response) (*ValkeyReplace
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ValkeyReplaceNodesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyChangeTopologyResponse parses an HTTP response from a ValkeyChangeTopologyWithResponse call
+func ParseValkeyChangeTopologyResponse(rsp *http.Response) (*ValkeyChangeTopologyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyChangeTopologyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
