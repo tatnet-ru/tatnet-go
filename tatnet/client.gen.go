@@ -2610,6 +2610,36 @@ type NetworkingListFloatingIpsParams struct {
 	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
+// FunctionsListFunctionsByAccountParams defines parameters for FunctionsListFunctionsByAccount.
+type FunctionsListFunctionsByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// FunctionsListEnvVarsByIdParams defines parameters for FunctionsListEnvVarsById.
+type FunctionsListEnvVarsByIdParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// KubernetesListClustersByAccountParams defines parameters for KubernetesListClustersByAccount.
+type KubernetesListClustersByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// LoadBalancersListLbsByAccountParams defines parameters for LoadBalancersListLbsByAccount.
+type LoadBalancersListLbsByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
 // ObjectStorageListAccessKeysParams defines parameters for ObjectStorageListAccessKeys.
 type ObjectStorageListAccessKeysParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
@@ -2635,6 +2665,14 @@ type ObjectStorageListObjectsParams struct {
 
 	// ContinuationToken `next_continuation_token` from the previous page
 	ContinuationToken *string `form:"continuation_token,omitempty" json:"continuation_token,omitempty"`
+}
+
+// PostgresListClustersByAccountParams defines parameters for PostgresListClustersByAccount.
+type PostgresListClustersByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
 // ProjectsListProjectsParams defines parameters for ProjectsListProjects.
@@ -2746,6 +2784,42 @@ type SshKeysListSshKeysParams struct {
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
+// ValkeyListClustersByAccountParams defines parameters for ValkeyListClustersByAccount.
+type ValkeyListClustersByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// VmsListVmsByAccountParams defines parameters for VmsListVmsByAccount.
+type VmsListVmsByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// VmsListBackupsByIdParams defines parameters for VmsListBackupsById.
+type VmsListBackupsByIdParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// VmsStartVmByIdJSONBody defines parameters for VmsStartVmById.
+type VmsStartVmByIdJSONBody = VMStartRequest
+
+// VolumesListVolumesByAccountParams defines parameters for VolumesListVolumesByAccount.
+type VolumesListVolumesByAccountParams struct {
+	// ProjectId Only resources of this project (optional)
+	ProjectId *string `form:"project_id,omitempty" json:"project_id,omitempty"`
+	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// VolumesDetachVolumeByIdJSONBody defines parameters for VolumesDetachVolumeById.
+type VolumesDetachVolumeByIdJSONBody = V1VolumeDetach
+
 // NetworkingListVpcsParams defines parameters for NetworkingListVpcs.
 type NetworkingListVpcsParams struct {
 	ClusterId *string `form:"cluster_id,omitempty" json:"cluster_id,omitempty"`
@@ -2795,11 +2869,62 @@ type NetworkingUpdateFloatingIpJSONRequestBody = V1FloatingIPUpdate
 // NetworkingAttachFloatingIpJSONRequestBody defines body for NetworkingAttachFloatingIp for application/json ContentType.
 type NetworkingAttachFloatingIpJSONRequestBody = V1FloatingIPAttach
 
+// FunctionsUpdateFunctionRouteByIdJSONRequestBody defines body for FunctionsUpdateFunctionRouteById for application/json ContentType.
+type FunctionsUpdateFunctionRouteByIdJSONRequestBody = V1FunctionUpdate
+
+// FunctionsAddEnvVarByIdJSONRequestBody defines body for FunctionsAddEnvVarById for application/json ContentType.
+type FunctionsAddEnvVarByIdJSONRequestBody = V1EnvVarCreate
+
+// KubernetesScaleNodePoolByIdJSONRequestBody defines body for KubernetesScaleNodePoolById for application/json ContentType.
+type KubernetesScaleNodePoolByIdJSONRequestBody = V1K8sScale
+
+// KubernetesUpgradeClusterByIdJSONRequestBody defines body for KubernetesUpgradeClusterById for application/json ContentType.
+type KubernetesUpgradeClusterByIdJSONRequestBody = V1K8sUpgrade
+
 // LoadBalancersCreateLbUploadedCertificateJSONRequestBody defines body for LoadBalancersCreateLbUploadedCertificate for application/json ContentType.
 type LoadBalancersCreateLbUploadedCertificateJSONRequestBody = V1LBUploadedCertCreate
 
 // LoadBalancersCreateLbLeCertificateJSONRequestBody defines body for LoadBalancersCreateLbLeCertificate for application/json ContentType.
 type LoadBalancersCreateLbLeCertificateJSONRequestBody = V1LBLetsEncryptCreate
+
+// LoadBalancersUpdateLbByIdJSONRequestBody defines body for LoadBalancersUpdateLbById for application/json ContentType.
+type LoadBalancersUpdateLbByIdJSONRequestBody = V1LBUpdate
+
+// LoadBalancersPutLbConfigByIdJSONRequestBody defines body for LoadBalancersPutLbConfigById for application/json ContentType.
+type LoadBalancersPutLbConfigByIdJSONRequestBody = LBConfigSpec
+
+// LoadBalancersCreateListenerByIdJSONRequestBody defines body for LoadBalancersCreateListenerById for application/json ContentType.
+type LoadBalancersCreateListenerByIdJSONRequestBody = LBListenerSpec
+
+// LoadBalancersPatchListenerByIdJSONRequestBody defines body for LoadBalancersPatchListenerById for application/json ContentType.
+type LoadBalancersPatchListenerByIdJSONRequestBody = LBListenerPatchRequest
+
+// LoadBalancersPutListenerCertificatesByIdJSONRequestBody defines body for LoadBalancersPutListenerCertificatesById for application/json ContentType.
+type LoadBalancersPutListenerCertificatesByIdJSONRequestBody = LBListenerCertificatesPutRequest
+
+// LoadBalancersCreateListenerRuleByIdJSONRequestBody defines body for LoadBalancersCreateListenerRuleById for application/json ContentType.
+type LoadBalancersCreateListenerRuleByIdJSONRequestBody = LBListenerRuleSpec
+
+// LoadBalancersPutListenerRulesByIdJSONRequestBody defines body for LoadBalancersPutListenerRulesById for application/json ContentType.
+type LoadBalancersPutListenerRulesByIdJSONRequestBody = LBRulesPutRequest
+
+// LoadBalancersPatchListenerRuleByIdJSONRequestBody defines body for LoadBalancersPatchListenerRuleById for application/json ContentType.
+type LoadBalancersPatchListenerRuleByIdJSONRequestBody = LBRulePatchRequest
+
+// LoadBalancersPutLbManagedConfigByIdJSONRequestBody defines body for LoadBalancersPutLbManagedConfigById for application/json ContentType.
+type LoadBalancersPutLbManagedConfigByIdJSONRequestBody = LBConfigSpec
+
+// LoadBalancersCreateTargetGroupByIdJSONRequestBody defines body for LoadBalancersCreateTargetGroupById for application/json ContentType.
+type LoadBalancersCreateTargetGroupByIdJSONRequestBody = LBTargetGroupSpec
+
+// LoadBalancersPatchTargetGroupByIdJSONRequestBody defines body for LoadBalancersPatchTargetGroupById for application/json ContentType.
+type LoadBalancersPatchTargetGroupByIdJSONRequestBody = LBTargetGroupPatchRequest
+
+// LoadBalancersAddTargetByIdJSONRequestBody defines body for LoadBalancersAddTargetById for application/json ContentType.
+type LoadBalancersAddTargetByIdJSONRequestBody = LBTargetSpec
+
+// LoadBalancersPutTargetsByIdJSONRequestBody defines body for LoadBalancersPutTargetsById for application/json ContentType.
+type LoadBalancersPutTargetsByIdJSONRequestBody = LBTargetsPutRequest
 
 // ObjectStorageCreateAccessKeyJSONRequestBody defines body for ObjectStorageCreateAccessKey for application/json ContentType.
 type ObjectStorageCreateAccessKeyJSONRequestBody = V1AccessKeyCreate
@@ -2821,6 +2946,21 @@ type ObjectStorageDeleteObjectJSONRequestBody = V1ObjectKey
 
 // ObjectStoragePresignObjectJSONRequestBody defines body for ObjectStoragePresignObject for application/json ContentType.
 type ObjectStoragePresignObjectJSONRequestBody = V1Presign
+
+// PostgresUpdateAllowlistByIdJSONRequestBody defines body for PostgresUpdateAllowlistById for application/json ContentType.
+type PostgresUpdateAllowlistByIdJSONRequestBody = UpdatePgAllowlistRequest
+
+// PostgresCreateBackupByIdJSONRequestBody defines body for PostgresCreateBackupById for application/json ContentType.
+type PostgresCreateBackupByIdJSONRequestBody = CreatePgBackupRequest
+
+// PostgresUpdateParametersByIdJSONRequestBody defines body for PostgresUpdateParametersById for application/json ContentType.
+type PostgresUpdateParametersByIdJSONRequestBody = UpdatePgParametersRequest
+
+// PostgresChangePlanByIdJSONRequestBody defines body for PostgresChangePlanById for application/json ContentType.
+type PostgresChangePlanByIdJSONRequestBody = ChangePgPlanRequest
+
+// PostgresChangeTopologyByIdJSONRequestBody defines body for PostgresChangeTopologyById for application/json ContentType.
+type PostgresChangeTopologyByIdJSONRequestBody = ChangePgTopologyRequest
 
 // AppsCreateAppJSONRequestBody defines body for AppsCreateApp for application/json ContentType.
 type AppsCreateAppJSONRequestBody = V1AppCreate
@@ -2959,6 +3099,33 @@ type VolumesDetachVolumeJSONRequestBody = VolumesDetachVolumeJSONBody
 
 // SshKeysCreateSshKeyJSONRequestBody defines body for SshKeysCreateSshKey for application/json ContentType.
 type SshKeysCreateSshKeyJSONRequestBody = V1SshKeyCreate
+
+// ValkeyUpdateAllowlistByIdJSONRequestBody defines body for ValkeyUpdateAllowlistById for application/json ContentType.
+type ValkeyUpdateAllowlistByIdJSONRequestBody = UpdateValkeyAllowlistRequest
+
+// ValkeyUpdateParamsByIdJSONRequestBody defines body for ValkeyUpdateParamsById for application/json ContentType.
+type ValkeyUpdateParamsByIdJSONRequestBody = UpdateValkeyParamsRequest
+
+// ValkeyChangePlanByIdJSONRequestBody defines body for ValkeyChangePlanById for application/json ContentType.
+type ValkeyChangePlanByIdJSONRequestBody = ChangeValkeyPlanRequest
+
+// ValkeyChangeTopologyByIdJSONRequestBody defines body for ValkeyChangeTopologyById for application/json ContentType.
+type ValkeyChangeTopologyByIdJSONRequestBody = ChangeValkeyTopologyRequest
+
+// VmsCreateBackupByIdJSONRequestBody defines body for VmsCreateBackupById for application/json ContentType.
+type VmsCreateBackupByIdJSONRequestBody = V1BackupCreate
+
+// VmsStartVmByIdJSONRequestBody defines body for VmsStartVmById for application/json ContentType.
+type VmsStartVmByIdJSONRequestBody = VmsStartVmByIdJSONBody
+
+// VolumesResizeVolumeByIdJSONRequestBody defines body for VolumesResizeVolumeById for application/json ContentType.
+type VolumesResizeVolumeByIdJSONRequestBody = V1VolumeResize
+
+// VolumesAttachVolumeByIdJSONRequestBody defines body for VolumesAttachVolumeById for application/json ContentType.
+type VolumesAttachVolumeByIdJSONRequestBody = V1VolumeAttach
+
+// VolumesDetachVolumeByIdJSONRequestBody defines body for VolumesDetachVolumeById for application/json ContentType.
+type VolumesDetachVolumeByIdJSONRequestBody = VolumesDetachVolumeByIdJSONBody
 
 // NetworkingCreateVpcJSONRequestBody defines body for NetworkingCreateVpc for application/json ContentType.
 type NetworkingCreateVpcJSONRequestBody = V1VpcCreate
@@ -3452,10 +3619,152 @@ type ClientInterface interface {
 	// Corresponds with POST /floating-ips/{fip_id}/detach (the `NetworkingDetachFloatingIp` operationId).
 	NetworkingDetachFloatingIp(ctx context.Context, fipId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// FunctionsListFunctionsByAccount List functions
+	//
+	// Corresponds with GET /functions (the `FunctionsListFunctionsByAccount` operationId).
+	FunctionsListFunctionsByAccount(ctx context.Context, params *FunctionsListFunctionsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsDeleteFunctionRouteById Delete a function
+	//
+	// Corresponds with DELETE /functions/{function_id} (the `FunctionsDeleteFunctionRouteById` operationId).
+	FunctionsDeleteFunctionRouteById(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsGetFunctionRouteById Get a function
+	//
+	// Corresponds with GET /functions/{function_id} (the `FunctionsGetFunctionRouteById` operationId).
+	FunctionsGetFunctionRouteById(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsUpdateFunctionRouteByIdWithBody Update a function (code and/or configuration)
+	//
+	// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+	// PATCH the file map / handler / runtime / name / vpc_id, then POST
+	// …/deploy to build and roll the new code (the "publish" analogue).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+	FunctionsUpdateFunctionRouteByIdWithBody(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsUpdateFunctionRouteById Update a function (code and/or configuration)
+	//
+	// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+	// PATCH the file map / handler / runtime / name / vpc_id, then POST
+	// …/deploy to build and roll the new code (the "publish" analogue).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+	FunctionsUpdateFunctionRouteById(ctx context.Context, functionId string, body FunctionsUpdateFunctionRouteByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsDeployFunctionRouteById Build & deploy a function
+	//
+	// Corresponds with POST /functions/{function_id}/deploy (the `FunctionsDeployFunctionRouteById` operationId).
+	FunctionsDeployFunctionRouteById(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsListEnvVarsById List environment variables
+	//
+	// Corresponds with GET /functions/{function_id}/env (the `FunctionsListEnvVarsById` operationId).
+	FunctionsListEnvVarsById(ctx context.Context, functionId string, params *FunctionsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsAddEnvVarByIdWithBody Create or set an environment variable
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+	FunctionsAddEnvVarByIdWithBody(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsAddEnvVarById Create or set an environment variable
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+	FunctionsAddEnvVarById(ctx context.Context, functionId string, body FunctionsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// FunctionsDeleteEnvVarRouteById Delete an environment variable
+	//
+	// Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
+	FunctionsDeleteEnvVarRouteById(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesListClustersByAccount List Kubernetes clusters in a project
+	//
+	// Corresponds with GET /kubernetes-clusters (the `KubernetesListClustersByAccount` operationId).
+	KubernetesListClustersByAccount(ctx context.Context, params *KubernetesListClustersByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesDeleteClusterById Delete a Kubernetes cluster
+	//
+	// Corresponds with DELETE /kubernetes-clusters/{cluster_id} (the `KubernetesDeleteClusterById` operationId).
+	KubernetesDeleteClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesGetClusterById Get a Kubernetes cluster
+	//
+	// Corresponds with GET /kubernetes-clusters/{cluster_id} (the `KubernetesGetClusterById` operationId).
+	KubernetesGetClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesGetKubeconfigById Download the cluster-admin kubeconfig
+	//
+	// Corresponds with GET /kubernetes-clusters/{cluster_id}/kubeconfig (the `KubernetesGetKubeconfigById` operationId).
+	KubernetesGetKubeconfigById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesScaleNodePoolByIdWithBody Scale a worker node pool
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+	KubernetesScaleNodePoolByIdWithBody(ctx context.Context, clusterId string, poolId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesScaleNodePoolById Scale a worker node pool
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+	KubernetesScaleNodePoolById(ctx context.Context, clusterId string, poolId string, body KubernetesScaleNodePoolByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesListClusterNodesById List the cluster's nodes and their backing VMs
+	//
+	// Кто есть кто: нода Kubernetes ↔ машина TatNet.
+	//
+	// Нужен CSI-драйверу, у которого нет другого способа это узнать. Общего имени
+	// у ноды и машины нет (Kubernetes зовёт ноду `talos-b25-9uq`, мы — своим
+	// hostname), а положить идентичность в машинный конфиг нельзя: Talos не
+	// принимает `machine.files` в immediate-режиме, и попытка доставить их так
+	// роняет ЛЮБУЮ конвергенцию конфига живой ноды. Поэтому связка — ЗАПРОС по
+	// адресу, а не снимок, розданный заранее: ноды добавляются и уезжают, и ответ
+	// обязан пересчитываться.
+	//
+	// Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
+	KubernetesListClusterNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesUpgradeClusterByIdWithBody Upgrade the Kubernetes version
+	//
+	// Bump the desired Kubernetes version; nodes are rolled one at a time
+	// (control plane first) by the platform. Track progress via ``upgrading``
+	// on the cluster resource.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+	KubernetesUpgradeClusterByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KubernetesUpgradeClusterById Upgrade the Kubernetes version
+	//
+	// Bump the desired Kubernetes version; nodes are rolled one at a time
+	// (control plane first) by the platform. Track progress via ``upgrading``
+	// on the cluster resource.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+	KubernetesUpgradeClusterById(ctx context.Context, clusterId string, body KubernetesUpgradeClusterByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// KubernetesListRegions Kubernetes regions and offered versions
 	//
 	// Corresponds with GET /kubernetes/regions (the `KubernetesListRegions` operationId).
 	KubernetesListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersListLbsByAccount List load balancers
+	//
+	// Corresponds with GET /load-balancers (the `LoadBalancersListLbsByAccount` operationId).
+	LoadBalancersListLbsByAccount(ctx context.Context, params *LoadBalancersListLbsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// LoadBalancersListLbCertificates List LB certificates
 	//
@@ -3505,6 +3814,269 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /load-balancers/regions (the `LoadBalancersListRegions` operationId).
 	LoadBalancersListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersDeleteLbById Delete a load balancer
+	//
+	// Flips the INTENT (desired_state='deleting'); the api reconciler removes
+	// the node VMs and stamps nodes_released_at, the region tears down OVN.
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id} (the `LoadBalancersDeleteLbById` operationId).
+	LoadBalancersDeleteLbById(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersGetLbById Get a load balancer
+	//
+	// Corresponds with GET /load-balancers/{lb_id} (the `LoadBalancersGetLbById` operationId).
+	LoadBalancersGetLbById(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersUpdateLbByIdWithBody Update a load balancer
+	//
+	// node_count only — listeners/rules/groups/targets live under /config and
+	// the granular sub-resources (the legacy flat body 422s in the schema).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+	LoadBalancersUpdateLbByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersUpdateLbById Update a load balancer
+	//
+	// node_count only — listeners/rules/groups/targets live under /config and
+	// the granular sub-resources (the legacy flat body 422s in the schema).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+	LoadBalancersUpdateLbById(ctx context.Context, lbId string, body LoadBalancersUpdateLbByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersGetLbConfigById Get the LB config document
+	//
+	// The whole document; CCM-owned objects are included and marked
+	// managed_by='ccm' (read-only for the user PUT).
+	//
+	// Corresponds with GET /load-balancers/{lb_id}/config (the `LoadBalancersGetLbConfigById` operationId).
+	LoadBalancersGetLbConfigById(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutLbConfigByIdWithBody Replace the user-owned LB config
+	//
+	// Declarative replacement of the USER-owned scope (§5.3 write order);
+	// CCM-owned objects are untouched.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+	LoadBalancersPutLbConfigByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutLbConfigById Replace the user-owned LB config
+	//
+	// Declarative replacement of the USER-owned scope (§5.3 write order);
+	// CCM-owned objects are untouched.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+	LoadBalancersPutLbConfigById(ctx context.Context, lbId string, body LoadBalancersPutLbConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersCreateListenerByIdWithBody Add a listener
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+	LoadBalancersCreateListenerByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersCreateListenerById Add a listener
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+	LoadBalancersCreateListenerById(ctx context.Context, lbId string, body LoadBalancersCreateListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersDeleteListenerById Delete a listener
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersDeleteListenerById` operationId).
+	LoadBalancersDeleteListenerById(ctx context.Context, lbId string, listenerId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPatchListenerByIdWithBody Update a listener
+	//
+	// protocol never changes here (extra='forbid' in the schema → 422): the
+	// generated `mode` column anchors the composite FKs — a protocol change is
+	// delete+recreate through PUT /config.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+	LoadBalancersPatchListenerByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPatchListenerById Update a listener
+	//
+	// protocol never changes here (extra='forbid' in the schema → 422): the
+	// generated `mode` column anchors the composite FKs — a protocol change is
+	// delete+recreate through PUT /config.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+	LoadBalancersPatchListenerById(ctx context.Context, lbId string, listenerId string, body LoadBalancersPatchListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutListenerCertificatesByIdWithBody Replace a listener's certificates
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+	LoadBalancersPutListenerCertificatesByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutListenerCertificatesById Replace a listener's certificates
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+	LoadBalancersPutListenerCertificatesById(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerCertificatesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersCreateListenerRuleByIdWithBody Add a rule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+	LoadBalancersCreateListenerRuleByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersCreateListenerRuleById Add a rule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+	LoadBalancersCreateListenerRuleById(ctx context.Context, lbId string, listenerId string, body LoadBalancersCreateListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutListenerRulesByIdWithBody Replace the rule set
+	//
+	// Replace the prioritized rule set; the listener's default_action row is
+	// kept (it belongs to the listener, PATCH it there).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+	LoadBalancersPutListenerRulesByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutListenerRulesById Replace the rule set
+	//
+	// Replace the prioritized rule set; the listener's default_action row is
+	// kept (it belongs to the listener, PATCH it there).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+	LoadBalancersPutListenerRulesById(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerRulesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersDeleteListenerRuleById Delete a rule
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersDeleteListenerRuleById` operationId).
+	LoadBalancersDeleteListenerRuleById(ctx context.Context, lbId string, listenerId string, ruleId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPatchListenerRuleByIdWithBody Update a rule
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+	LoadBalancersPatchListenerRuleByIdWithBody(ctx context.Context, lbId string, listenerId string, ruleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPatchListenerRuleById Update a rule
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+	LoadBalancersPatchListenerRuleById(ctx context.Context, lbId string, listenerId string, ruleId string, body LoadBalancersPatchListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutLbManagedConfigByIdWithBody Replace the CCM-owned LB config (cloud-controller-manager)
+	//
+	// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+	// reconciles Services through it; user-owned objects are untouched (the
+	// CCM's blast radius stays its own scope).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+	LoadBalancersPutLbManagedConfigByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutLbManagedConfigById Replace the CCM-owned LB config (cloud-controller-manager)
+	//
+	// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+	// reconciles Services through it; user-owned objects are untouched (the
+	// CCM's blast radius stays its own scope).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+	LoadBalancersPutLbManagedConfigById(ctx context.Context, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersCreateTargetGroupByIdWithBody Add a target group
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+	LoadBalancersCreateTargetGroupByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersCreateTargetGroupById Add a target group
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+	LoadBalancersCreateTargetGroupById(ctx context.Context, lbId string, body LoadBalancersCreateTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersDeleteTargetGroupById Delete a target group
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersDeleteTargetGroupById` operationId).
+	LoadBalancersDeleteTargetGroupById(ctx context.Context, lbId string, tgId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPatchTargetGroupByIdWithBody Update a target group
+	//
+	// protocol / target_type never change here (extra='forbid' → 422): both
+	// define the row's identity (generated `mode` anchors the composite FKs).
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+	LoadBalancersPatchTargetGroupByIdWithBody(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPatchTargetGroupById Update a target group
+	//
+	// protocol / target_type never change here (extra='forbid' → 422): both
+	// define the row's identity (generated `mode` anchors the composite FKs).
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+	LoadBalancersPatchTargetGroupById(ctx context.Context, lbId string, tgId string, body LoadBalancersPatchTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersAddTargetByIdWithBody Add a target
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+	LoadBalancersAddTargetByIdWithBody(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersAddTargetById Add a target
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+	LoadBalancersAddTargetById(ctx context.Context, lbId string, tgId string, body LoadBalancersAddTargetByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutTargetsByIdWithBody Replace the target set
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+	LoadBalancersPutTargetsByIdWithBody(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersPutTargetsById Replace the target set
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+	LoadBalancersPutTargetsById(ctx context.Context, lbId string, tgId string, body LoadBalancersPutTargetsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersDeleteTargetById Remove a target
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id}/targets/{target_id} (the `LoadBalancersDeleteTargetById` operationId).
+	LoadBalancersDeleteTargetById(ctx context.Context, lbId string, tgId string, targetId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ObjectStorageListAccessKeys List S3 access keys
 	//
@@ -3690,6 +4262,208 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /object-storage/usage (the `ObjectStorageGetUsage` operationId).
 	ObjectStorageGetUsage(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresListClustersByAccount List Postgres clusters in a project
+	//
+	// Corresponds with GET /pg-clusters (the `PostgresListClustersByAccount` operationId).
+	PostgresListClustersByAccount(ctx context.Context, params *PostgresListClustersByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresDeleteClusterById Delete a Postgres cluster
+	//
+	// 202: the row goes to ``deleting`` and the region tears the cluster down.
+	// The backup repository outlives it by 14 days, so a restore is still possible
+	// after this call.
+	//
+	// Corresponds with DELETE /pg-clusters/{cluster_id} (the `PostgresDeleteClusterById` operationId).
+	PostgresDeleteClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresGetClusterById Get a Postgres cluster
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id} (the `PostgresGetClusterById` operationId).
+	PostgresGetClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresUpdateAllowlistByIdWithBody Replace the allowed IP list
+	//
+	// Public clusters only — a cluster in a VPC has no public address (422).
+	// For a public cluster the allowlist is the whole network filter: an empty
+	// list means nobody can connect.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+	PostgresUpdateAllowlistByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresUpdateAllowlistById Replace the allowed IP list
+	//
+	// Public clusters only — a cluster in a VPC has no public address (422).
+	// For a public cluster the allowlist is the whole network filter: an empty
+	// list means nobody can connect.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+	PostgresUpdateAllowlistById(ctx context.Context, clusterId string, body PostgresUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresListBackupsById List backups and the PITR window
+	//
+	// ``pitr_window`` spans the oldest completed backup to the last archived
+	// WAL. Either bound being null means there is no window — restore is not
+	// possible yet, which is not the same as "no backups".
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id}/backups (the `PostgresListBackupsById` operationId).
+	PostgresListBackupsById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresCreateBackupByIdWithBody Request a manual backup
+	//
+	// Manual backups never expire, so at most 5 live ones per cluster — they
+	// would otherwise eat the repository quota the nightly automatic backups need.
+	// The row starts ``requested``; the node takes it from there.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+	PostgresCreateBackupByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresCreateBackupById Request a manual backup
+	//
+	// Manual backups never expire, so at most 5 live ones per cluster — they
+	// would otherwise eat the repository quota the nightly automatic backups need.
+	// The row starts ``requested``; the node takes it from there.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+	PostgresCreateBackupById(ctx context.Context, clusterId string, body PostgresCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresDeleteBackupById Delete a backup
+	//
+	// 202: the row goes to ``deleting`` and the region expires it. The newest
+	// completed backup cannot be deleted — the region never expires it, so the
+	// request would hang forever.
+	//
+	// Corresponds with DELETE /pg-clusters/{cluster_id}/backups/{backup_id} (the `PostgresDeleteBackupById` operationId).
+	PostgresDeleteBackupById(ctx context.Context, clusterId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresGetClusterCaById Download the cluster CA certificate
+	//
+	// Per-cluster CA, for connecting with ``sslmode=verify-full``.
+	// ``ready: false`` while the region has not issued it yet.
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id}/ca (the `PostgresGetClusterCaById` operationId).
+	PostgresGetClusterCaById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresReplaceNodeById Replace one node
+	//
+	// Re-create one node, current image or not — the ops escape hatch.
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/nodes/{ordinal}/replace (the `PostgresReplaceNodeById` operationId).
+	PostgresReplaceNodeById(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresGetParametersById Server parameters and their catalog
+	//
+	// ``parameters`` is the intent, ``applied_parameters`` is what the region
+	// confirmed reached the cluster, and ``catalog`` carries the allowed range of
+	// each parameter already computed for this cluster's plan.
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id}/parameters (the `PostgresGetParametersById` operationId).
+	PostgresGetParametersById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresUpdateParametersByIdWithBody Replace server parameters
+	//
+	// A full replacement, not a merge: a parameter absent from the request is
+	// cleared. Parameters marked ``restart`` in the catalog only take effect after
+	// ``POST …/restart``.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+	PostgresUpdateParametersByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresUpdateParametersById Replace server parameters
+	//
+	// A full replacement, not a merge: a parameter absent from the request is
+	// cleared. Parameters marked ``restart`` in the catalog only take effect after
+	// ``POST …/restart``.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+	PostgresUpdateParametersById(ctx context.Context, clusterId string, body PostgresUpdateParametersByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangePlanByIdWithBody Change the node plan
+	//
+	// Upwards only: memory, vCPU and disk of the new plan must be at least the
+	// current ones. Nodes are resized one at a time, replicas first and the leader
+	// last — a single-node cluster is down for about a minute, an ha one fails
+	// over once. Watch ``plan_change_pending``.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+	PostgresChangePlanByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangePlanById Change the node plan
+	//
+	// Upwards only: memory, vCPU and disk of the new plan must be at least the
+	// current ones. Nodes are resized one at a time, replicas first and the leader
+	// last — a single-node cluster is down for about a minute, an ha one fails
+	// over once. Watch ``plan_change_pending``.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+	PostgresChangePlanById(ctx context.Context, clusterId string, body PostgresChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresReplaceOutdatedNodesById Replace outdated nodes with the newest image
+	//
+	// Marks every live node whose VM is not on the newest ready image build in
+	// the region. Replacements run one at a time — replicas, leader, witness — and
+	// the database stays reachable throughout. ``requested: 0`` means every node
+	// is already current.
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/replace-nodes (the `PostgresReplaceOutdatedNodesById` operationId).
+	PostgresReplaceOutdatedNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresRestartClusterById Request a restart
+	//
+	// Restarts nodes to apply postmaster-level parameters — replicas first,
+	// leader last. ``restart_pending_ack`` stays true until the region confirms.
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/restart (the `PostgresRestartClusterById` operationId).
+	PostgresRestartClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresResetRolePasswordById Issue a new password for a role
+	//
+	// The new password is in this response and nowhere else.
+	//
+	// ``applied: false`` means the region has not run ``ALTER ROLE`` yet — **the
+	// database still accepts the old password until it does.** Do not treat the
+	// 200 as the moment the old one stopped working.
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/roles/{role}/password (the `PostgresResetRolePasswordById` operationId).
+	PostgresResetRolePasswordById(ctx context.Context, clusterId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangeTopologyByIdWithBody Change the topology (single ↔ ha)
+	//
+	// Growing to ha adds nodes without downtime; shrinking switches the leader
+	// off any node being removed first. Price follows immediately (plan × nodes).
+	// Watch ``topology_change_pending``.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+	PostgresChangeTopologyByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangeTopologyById Change the topology (single ↔ ha)
+	//
+	// Growing to ha adds nodes without downtime; shrinking switches the leader
+	// off any node being removed first. Price follows immediately (plan × nodes).
+	// Watch ``topology_change_pending``.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+	PostgresChangeTopologyById(ctx context.Context, clusterId string, body PostgresChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostgresListRegions Postgres regions, versions, plans and topologies
 	//
@@ -4956,6 +5730,149 @@ type ClientInterface interface {
 	// Corresponds with DELETE /ssh-keys/{key_id} (the `SshKeysDeleteSshKey` operationId).
 	SshKeysDeleteSshKey(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// ValkeyListClustersByAccount List Valkey clusters in a project
+	//
+	// Corresponds with GET /valkey-clusters (the `ValkeyListClustersByAccount` operationId).
+	ValkeyListClustersByAccount(ctx context.Context, params *ValkeyListClustersByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyDeleteClusterById Delete a Valkey cluster
+	//
+	// 202: the row goes to ``deleting`` and the region tears it down. A cache
+	// has no backups — the data is gone.
+	//
+	// Corresponds with DELETE /valkey-clusters/{cluster_id} (the `ValkeyDeleteClusterById` operationId).
+	ValkeyDeleteClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyGetClusterById Get a Valkey cluster
+	//
+	// Corresponds with GET /valkey-clusters/{cluster_id} (the `ValkeyGetClusterById` operationId).
+	ValkeyGetClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyUpdateAllowlistByIdWithBody Replace the allowed IP list
+	//
+	// For a public cluster this list **is** the network filter — there is no
+	// second layer behind it. An empty list means no client can connect.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+	ValkeyUpdateAllowlistByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyUpdateAllowlistById Replace the allowed IP list
+	//
+	// For a public cluster this list **is** the network filter — there is no
+	// second layer behind it. An empty list means no client can connect.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+	ValkeyUpdateAllowlistById(ctx context.Context, clusterId string, body ValkeyUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyGetClusterCaById Download the cluster CA certificate
+	//
+	// The cluster is TLS-only; this CA is what a ``rediss://`` client verifies
+	// against. ``ready: false`` while the region has not issued it — the same
+	// shape as the Postgres CA and the Kubernetes kubeconfig.
+	//
+	// Corresponds with GET /valkey-clusters/{cluster_id}/ca (the `ValkeyGetClusterCaById` operationId).
+	ValkeyGetClusterCaById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyReplaceNodeById Replace one node
+	//
+	// Re-create one node, current image or not — the ops escape hatch.
+	//
+	// Corresponds with POST /valkey-clusters/{cluster_id}/nodes/{ordinal}/replace (the `ValkeyReplaceNodeById` operationId).
+	ValkeyReplaceNodeById(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyUpdateParamsByIdWithBody Update cache parameters
+	//
+	// maxmemory, eviction policy, max clients and persistence. The region
+	// applies them to the running server, so no restart is needed.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+	ValkeyUpdateParamsByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyUpdateParamsById Update cache parameters
+	//
+	// maxmemory, eviction policy, max clients and persistence. The region
+	// applies them to the running server, so no restart is needed.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+	ValkeyUpdateParamsById(ctx context.Context, clusterId string, body ValkeyUpdateParamsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyResetPasswordById Issue a new password
+	//
+	// The new password is in this response and nowhere else. ``applied:
+	// false`` means the region has not pushed it to the server yet — **the old
+	// password still works until it does.**
+	//
+	// Corresponds with POST /valkey-clusters/{cluster_id}/password (the `ValkeyResetPasswordById` operationId).
+	ValkeyResetPasswordById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangePlanByIdWithBody Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+	ValkeyChangePlanByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangePlanById Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+	ValkeyChangePlanById(ctx context.Context, clusterId string, body ValkeyChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyReplaceOutdatedNodesById Replace outdated nodes with the newest image
+	//
+	// One node at a time, replicas before the leader. ``requested: 0`` means
+	// every node is already on the newest image build in the region.
+	//
+	// Corresponds with POST /valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodesById` operationId).
+	ValkeyReplaceOutdatedNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangeTopologyByIdWithBody Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+	ValkeyChangeTopologyByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ValkeyChangeTopologyById Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+	ValkeyChangeTopologyById(ctx context.Context, clusterId string, body ValkeyChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// ValkeyListRegions Valkey regions, versions, plans and cache modes
 	//
 	// Versions are per-region: one is offered only where a ready node image is
@@ -4963,6 +5880,137 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /valkey/regions (the `ValkeyListRegions` operationId).
 	ValkeyListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsListVmsByAccount List VMs in a project
+	//
+	// Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
+	VmsListVmsByAccount(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsDeleteVmById Delete a VM
+	//
+	// 202, and the body says which of the two things happened.
+	//
+	// A VM that was never provisioned is gone when this returns (``deleted``).
+	// A provisioned one is moved to ``deleting`` and a region tears it down over
+	// the following minutes — it stays visible in ``GET …/vms`` until then, so a
+	// script that deletes and immediately re-creates by name has to wait.
+	//
+	// This used to answer 204, which could not express the difference; the
+	// service's own return value cannot either (it reports ``success`` for both
+	// and puts the distinction in a human-readable message).
+	//
+	// Corresponds with DELETE /vms/{vm_id} (the `VmsDeleteVmById` operationId).
+	VmsDeleteVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsGetVmById Get a VM
+	//
+	// Corresponds with GET /vms/{vm_id} (the `VmsGetVmById` operationId).
+	VmsGetVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsListBackupsById List VM backups
+	//
+	// Corresponds with GET /vms/{vm_id}/backups (the `VmsListBackupsById` operationId).
+	VmsListBackupsById(ctx context.Context, vmId string, params *VmsListBackupsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsCreateBackupByIdWithBody Create a VM backup
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+	VmsCreateBackupByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsCreateBackupById Create a VM backup
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+	VmsCreateBackupById(ctx context.Context, vmId string, body VmsCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsDeleteBackupById Delete a VM backup
+	//
+	// Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
+	VmsDeleteBackupById(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsRestartVmById Restart a VM
+	//
+	// Corresponds with POST /vms/{vm_id}/restart (the `VmsRestartVmById` operationId).
+	VmsRestartVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsStartVmByIdWithBody Start a VM
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+	VmsStartVmByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsStartVmById Start a VM
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+	VmsStartVmById(ctx context.Context, vmId string, body VmsStartVmByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsStopVmById Stop a VM
+	//
+	// Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
+	VmsStopVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesListVolumesByAccount List block volumes in a project
+	//
+	// Corresponds with GET /volumes (the `VolumesListVolumesByAccount` operationId).
+	VolumesListVolumesByAccount(ctx context.Context, params *VolumesListVolumesByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesDeleteVolumeById Delete a block volume
+	//
+	// Corresponds with DELETE /volumes/{volume_id} (the `VolumesDeleteVolumeById` operationId).
+	VolumesDeleteVolumeById(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesGetVolumeById Get a block volume
+	//
+	// Corresponds with GET /volumes/{volume_id} (the `VolumesGetVolumeById` operationId).
+	VolumesGetVolumeById(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesResizeVolumeByIdWithBody Grow a block volume
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+	VolumesResizeVolumeByIdWithBody(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesResizeVolumeById Grow a block volume
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+	VolumesResizeVolumeById(ctx context.Context, volumeId string, body VolumesResizeVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesAttachVolumeByIdWithBody Attach a volume to a VM
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+	VolumesAttachVolumeByIdWithBody(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesAttachVolumeById Attach a volume to a VM
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+	VolumesAttachVolumeById(ctx context.Context, volumeId string, body VolumesAttachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesDetachVolumeByIdWithBody Detach a volume from its VM
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+	VolumesDetachVolumeByIdWithBody(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VolumesDetachVolumeById Detach a volume from its VM
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+	VolumesDetachVolumeById(ctx context.Context, volumeId string, body VolumesDetachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// NetworkingListVpcs List VPCs
 	//
@@ -5960,11 +7008,353 @@ func (c *Client) NetworkingDetachFloatingIp(ctx context.Context, fipId string, r
 	return c.Client.Do(req)
 }
 
+// FunctionsListFunctionsByAccount List functions
+//
+// Corresponds with GET /functions (the `FunctionsListFunctionsByAccount` operationId).
+func (c *Client) FunctionsListFunctionsByAccount(ctx context.Context, params *FunctionsListFunctionsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsListFunctionsByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsDeleteFunctionRouteById Delete a function
+//
+// Corresponds with DELETE /functions/{function_id} (the `FunctionsDeleteFunctionRouteById` operationId).
+func (c *Client) FunctionsDeleteFunctionRouteById(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsDeleteFunctionRouteByIdRequest(c.Server, functionId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsGetFunctionRouteById Get a function
+//
+// Corresponds with GET /functions/{function_id} (the `FunctionsGetFunctionRouteById` operationId).
+func (c *Client) FunctionsGetFunctionRouteById(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsGetFunctionRouteByIdRequest(c.Server, functionId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsUpdateFunctionRouteByIdWithBody Update a function (code and/or configuration)
+//
+// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+// PATCH the file map / handler / runtime / name / vpc_id, then POST
+// …/deploy to build and roll the new code (the "publish" analogue).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+func (c *Client) FunctionsUpdateFunctionRouteByIdWithBody(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsUpdateFunctionRouteByIdRequestWithBody(c.Server, functionId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsUpdateFunctionRouteById Update a function (code and/or configuration)
+//
+// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+// PATCH the file map / handler / runtime / name / vpc_id, then POST
+// …/deploy to build and roll the new code (the "publish" analogue).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+func (c *Client) FunctionsUpdateFunctionRouteById(ctx context.Context, functionId string, body FunctionsUpdateFunctionRouteByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsUpdateFunctionRouteByIdRequest(c.Server, functionId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsDeployFunctionRouteById Build & deploy a function
+//
+// Corresponds with POST /functions/{function_id}/deploy (the `FunctionsDeployFunctionRouteById` operationId).
+func (c *Client) FunctionsDeployFunctionRouteById(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsDeployFunctionRouteByIdRequest(c.Server, functionId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsListEnvVarsById List environment variables
+//
+// Corresponds with GET /functions/{function_id}/env (the `FunctionsListEnvVarsById` operationId).
+func (c *Client) FunctionsListEnvVarsById(ctx context.Context, functionId string, params *FunctionsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsListEnvVarsByIdRequest(c.Server, functionId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsAddEnvVarByIdWithBody Create or set an environment variable
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+func (c *Client) FunctionsAddEnvVarByIdWithBody(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsAddEnvVarByIdRequestWithBody(c.Server, functionId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsAddEnvVarById Create or set an environment variable
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+func (c *Client) FunctionsAddEnvVarById(ctx context.Context, functionId string, body FunctionsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsAddEnvVarByIdRequest(c.Server, functionId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// FunctionsDeleteEnvVarRouteById Delete an environment variable
+//
+// Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
+func (c *Client) FunctionsDeleteEnvVarRouteById(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewFunctionsDeleteEnvVarRouteByIdRequest(c.Server, functionId, envVarId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesListClustersByAccount List Kubernetes clusters in a project
+//
+// Corresponds with GET /kubernetes-clusters (the `KubernetesListClustersByAccount` operationId).
+func (c *Client) KubernetesListClustersByAccount(ctx context.Context, params *KubernetesListClustersByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesListClustersByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesDeleteClusterById Delete a Kubernetes cluster
+//
+// Corresponds with DELETE /kubernetes-clusters/{cluster_id} (the `KubernetesDeleteClusterById` operationId).
+func (c *Client) KubernetesDeleteClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesDeleteClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesGetClusterById Get a Kubernetes cluster
+//
+// Corresponds with GET /kubernetes-clusters/{cluster_id} (the `KubernetesGetClusterById` operationId).
+func (c *Client) KubernetesGetClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesGetClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesGetKubeconfigById Download the cluster-admin kubeconfig
+//
+// Corresponds with GET /kubernetes-clusters/{cluster_id}/kubeconfig (the `KubernetesGetKubeconfigById` operationId).
+func (c *Client) KubernetesGetKubeconfigById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesGetKubeconfigByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesScaleNodePoolByIdWithBody Scale a worker node pool
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+func (c *Client) KubernetesScaleNodePoolByIdWithBody(ctx context.Context, clusterId string, poolId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesScaleNodePoolByIdRequestWithBody(c.Server, clusterId, poolId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesScaleNodePoolById Scale a worker node pool
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+func (c *Client) KubernetesScaleNodePoolById(ctx context.Context, clusterId string, poolId string, body KubernetesScaleNodePoolByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesScaleNodePoolByIdRequest(c.Server, clusterId, poolId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesListClusterNodesById List the cluster's nodes and their backing VMs
+//
+// Кто есть кто: нода Kubernetes ↔ машина TatNet.
+//
+// Нужен CSI-драйверу, у которого нет другого способа это узнать. Общего имени
+// у ноды и машины нет (Kubernetes зовёт ноду `talos-b25-9uq`, мы — своим
+// hostname), а положить идентичность в машинный конфиг нельзя: Talos не
+// принимает `machine.files` в immediate-режиме, и попытка доставить их так
+// роняет ЛЮБУЮ конвергенцию конфига живой ноды. Поэтому связка — ЗАПРОС по
+// адресу, а не снимок, розданный заранее: ноды добавляются и уезжают, и ответ
+// обязан пересчитываться.
+//
+// Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
+func (c *Client) KubernetesListClusterNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesListClusterNodesByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesUpgradeClusterByIdWithBody Upgrade the Kubernetes version
+//
+// Bump the desired Kubernetes version; nodes are rolled one at a time
+// (control plane first) by the platform. Track progress via “upgrading“
+// on the cluster resource.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+func (c *Client) KubernetesUpgradeClusterByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesUpgradeClusterByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KubernetesUpgradeClusterById Upgrade the Kubernetes version
+//
+// Bump the desired Kubernetes version; nodes are rolled one at a time
+// (control plane first) by the platform. Track progress via “upgrading“
+// on the cluster resource.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+func (c *Client) KubernetesUpgradeClusterById(ctx context.Context, clusterId string, body KubernetesUpgradeClusterByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKubernetesUpgradeClusterByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // KubernetesListRegions Kubernetes regions and offered versions
 //
 // Corresponds with GET /kubernetes/regions (the `KubernetesListRegions` operationId).
 func (c *Client) KubernetesListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewKubernetesListRegionsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersListLbsByAccount List load balancers
+//
+// Corresponds with GET /load-balancers (the `LoadBalancersListLbsByAccount` operationId).
+func (c *Client) LoadBalancersListLbsByAccount(ctx context.Context, params *LoadBalancersListLbsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersListLbsByAccountRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -6084,6 +7474,599 @@ func (c *Client) LoadBalancersDeleteLbCertificate(ctx context.Context, certifica
 // Corresponds with GET /load-balancers/regions (the `LoadBalancersListRegions` operationId).
 func (c *Client) LoadBalancersListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewLoadBalancersListRegionsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersDeleteLbById Delete a load balancer
+//
+// Flips the INTENT (desired_state='deleting'); the api reconciler removes
+// the node VMs and stamps nodes_released_at, the region tears down OVN.
+//
+// Corresponds with DELETE /load-balancers/{lb_id} (the `LoadBalancersDeleteLbById` operationId).
+func (c *Client) LoadBalancersDeleteLbById(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersDeleteLbByIdRequest(c.Server, lbId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersGetLbById Get a load balancer
+//
+// Corresponds with GET /load-balancers/{lb_id} (the `LoadBalancersGetLbById` operationId).
+func (c *Client) LoadBalancersGetLbById(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersGetLbByIdRequest(c.Server, lbId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersUpdateLbByIdWithBody Update a load balancer
+//
+// node_count only — listeners/rules/groups/targets live under /config and
+// the granular sub-resources (the legacy flat body 422s in the schema).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+func (c *Client) LoadBalancersUpdateLbByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersUpdateLbByIdRequestWithBody(c.Server, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersUpdateLbById Update a load balancer
+//
+// node_count only — listeners/rules/groups/targets live under /config and
+// the granular sub-resources (the legacy flat body 422s in the schema).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+func (c *Client) LoadBalancersUpdateLbById(ctx context.Context, lbId string, body LoadBalancersUpdateLbByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersUpdateLbByIdRequest(c.Server, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersGetLbConfigById Get the LB config document
+//
+// The whole document; CCM-owned objects are included and marked
+// managed_by='ccm' (read-only for the user PUT).
+//
+// Corresponds with GET /load-balancers/{lb_id}/config (the `LoadBalancersGetLbConfigById` operationId).
+func (c *Client) LoadBalancersGetLbConfigById(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersGetLbConfigByIdRequest(c.Server, lbId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutLbConfigByIdWithBody Replace the user-owned LB config
+//
+// Declarative replacement of the USER-owned scope (§5.3 write order);
+// CCM-owned objects are untouched.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+func (c *Client) LoadBalancersPutLbConfigByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutLbConfigByIdRequestWithBody(c.Server, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutLbConfigById Replace the user-owned LB config
+//
+// Declarative replacement of the USER-owned scope (§5.3 write order);
+// CCM-owned objects are untouched.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+func (c *Client) LoadBalancersPutLbConfigById(ctx context.Context, lbId string, body LoadBalancersPutLbConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutLbConfigByIdRequest(c.Server, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersCreateListenerByIdWithBody Add a listener
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+func (c *Client) LoadBalancersCreateListenerByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersCreateListenerByIdRequestWithBody(c.Server, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersCreateListenerById Add a listener
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+func (c *Client) LoadBalancersCreateListenerById(ctx context.Context, lbId string, body LoadBalancersCreateListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersCreateListenerByIdRequest(c.Server, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersDeleteListenerById Delete a listener
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersDeleteListenerById` operationId).
+func (c *Client) LoadBalancersDeleteListenerById(ctx context.Context, lbId string, listenerId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersDeleteListenerByIdRequest(c.Server, lbId, listenerId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPatchListenerByIdWithBody Update a listener
+//
+// protocol never changes here (extra='forbid' in the schema → 422): the
+// generated `mode` column anchors the composite FKs — a protocol change is
+// delete+recreate through PUT /config.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+func (c *Client) LoadBalancersPatchListenerByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPatchListenerByIdRequestWithBody(c.Server, lbId, listenerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPatchListenerById Update a listener
+//
+// protocol never changes here (extra='forbid' in the schema → 422): the
+// generated `mode` column anchors the composite FKs — a protocol change is
+// delete+recreate through PUT /config.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+func (c *Client) LoadBalancersPatchListenerById(ctx context.Context, lbId string, listenerId string, body LoadBalancersPatchListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPatchListenerByIdRequest(c.Server, lbId, listenerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutListenerCertificatesByIdWithBody Replace a listener's certificates
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+func (c *Client) LoadBalancersPutListenerCertificatesByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutListenerCertificatesByIdRequestWithBody(c.Server, lbId, listenerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutListenerCertificatesById Replace a listener's certificates
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+func (c *Client) LoadBalancersPutListenerCertificatesById(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerCertificatesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutListenerCertificatesByIdRequest(c.Server, lbId, listenerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersCreateListenerRuleByIdWithBody Add a rule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+func (c *Client) LoadBalancersCreateListenerRuleByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersCreateListenerRuleByIdRequestWithBody(c.Server, lbId, listenerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersCreateListenerRuleById Add a rule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+func (c *Client) LoadBalancersCreateListenerRuleById(ctx context.Context, lbId string, listenerId string, body LoadBalancersCreateListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersCreateListenerRuleByIdRequest(c.Server, lbId, listenerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutListenerRulesByIdWithBody Replace the rule set
+//
+// Replace the prioritized rule set; the listener's default_action row is
+// kept (it belongs to the listener, PATCH it there).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+func (c *Client) LoadBalancersPutListenerRulesByIdWithBody(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutListenerRulesByIdRequestWithBody(c.Server, lbId, listenerId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutListenerRulesById Replace the rule set
+//
+// Replace the prioritized rule set; the listener's default_action row is
+// kept (it belongs to the listener, PATCH it there).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+func (c *Client) LoadBalancersPutListenerRulesById(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerRulesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutListenerRulesByIdRequest(c.Server, lbId, listenerId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersDeleteListenerRuleById Delete a rule
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersDeleteListenerRuleById` operationId).
+func (c *Client) LoadBalancersDeleteListenerRuleById(ctx context.Context, lbId string, listenerId string, ruleId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersDeleteListenerRuleByIdRequest(c.Server, lbId, listenerId, ruleId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPatchListenerRuleByIdWithBody Update a rule
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+func (c *Client) LoadBalancersPatchListenerRuleByIdWithBody(ctx context.Context, lbId string, listenerId string, ruleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPatchListenerRuleByIdRequestWithBody(c.Server, lbId, listenerId, ruleId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPatchListenerRuleById Update a rule
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+func (c *Client) LoadBalancersPatchListenerRuleById(ctx context.Context, lbId string, listenerId string, ruleId string, body LoadBalancersPatchListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPatchListenerRuleByIdRequest(c.Server, lbId, listenerId, ruleId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutLbManagedConfigByIdWithBody Replace the CCM-owned LB config (cloud-controller-manager)
+//
+// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+// reconciles Services through it; user-owned objects are untouched (the
+// CCM's blast radius stays its own scope).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+func (c *Client) LoadBalancersPutLbManagedConfigByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutLbManagedConfigByIdRequestWithBody(c.Server, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutLbManagedConfigById Replace the CCM-owned LB config (cloud-controller-manager)
+//
+// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+// reconciles Services through it; user-owned objects are untouched (the
+// CCM's blast radius stays its own scope).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+func (c *Client) LoadBalancersPutLbManagedConfigById(ctx context.Context, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutLbManagedConfigByIdRequest(c.Server, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersCreateTargetGroupByIdWithBody Add a target group
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+func (c *Client) LoadBalancersCreateTargetGroupByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersCreateTargetGroupByIdRequestWithBody(c.Server, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersCreateTargetGroupById Add a target group
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+func (c *Client) LoadBalancersCreateTargetGroupById(ctx context.Context, lbId string, body LoadBalancersCreateTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersCreateTargetGroupByIdRequest(c.Server, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersDeleteTargetGroupById Delete a target group
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersDeleteTargetGroupById` operationId).
+func (c *Client) LoadBalancersDeleteTargetGroupById(ctx context.Context, lbId string, tgId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersDeleteTargetGroupByIdRequest(c.Server, lbId, tgId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPatchTargetGroupByIdWithBody Update a target group
+//
+// protocol / target_type never change here (extra='forbid' → 422): both
+// define the row's identity (generated `mode` anchors the composite FKs).
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+func (c *Client) LoadBalancersPatchTargetGroupByIdWithBody(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPatchTargetGroupByIdRequestWithBody(c.Server, lbId, tgId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPatchTargetGroupById Update a target group
+//
+// protocol / target_type never change here (extra='forbid' → 422): both
+// define the row's identity (generated `mode` anchors the composite FKs).
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+func (c *Client) LoadBalancersPatchTargetGroupById(ctx context.Context, lbId string, tgId string, body LoadBalancersPatchTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPatchTargetGroupByIdRequest(c.Server, lbId, tgId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersAddTargetByIdWithBody Add a target
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+func (c *Client) LoadBalancersAddTargetByIdWithBody(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersAddTargetByIdRequestWithBody(c.Server, lbId, tgId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersAddTargetById Add a target
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+func (c *Client) LoadBalancersAddTargetById(ctx context.Context, lbId string, tgId string, body LoadBalancersAddTargetByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersAddTargetByIdRequest(c.Server, lbId, tgId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutTargetsByIdWithBody Replace the target set
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+func (c *Client) LoadBalancersPutTargetsByIdWithBody(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutTargetsByIdRequestWithBody(c.Server, lbId, tgId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersPutTargetsById Replace the target set
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+func (c *Client) LoadBalancersPutTargetsById(ctx context.Context, lbId string, tgId string, body LoadBalancersPutTargetsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersPutTargetsByIdRequest(c.Server, lbId, tgId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersDeleteTargetById Remove a target
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id}/targets/{target_id} (the `LoadBalancersDeleteTargetById` operationId).
+func (c *Client) LoadBalancersDeleteTargetById(ctx context.Context, lbId string, tgId string, targetId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersDeleteTargetByIdRequest(c.Server, lbId, tgId, targetId)
 	if err != nil {
 		return nil, err
 	}
@@ -6489,6 +8472,418 @@ func (c *Client) ObjectStorageGetConnectionInfo(ctx context.Context, reqEditors 
 // Corresponds with GET /object-storage/usage (the `ObjectStorageGetUsage` operationId).
 func (c *Client) ObjectStorageGetUsage(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewObjectStorageGetUsageRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresListClustersByAccount List Postgres clusters in a project
+//
+// Corresponds with GET /pg-clusters (the `PostgresListClustersByAccount` operationId).
+func (c *Client) PostgresListClustersByAccount(ctx context.Context, params *PostgresListClustersByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresListClustersByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresDeleteClusterById Delete a Postgres cluster
+//
+// 202: the row goes to “deleting“ and the region tears the cluster down.
+// The backup repository outlives it by 14 days, so a restore is still possible
+// after this call.
+//
+// Corresponds with DELETE /pg-clusters/{cluster_id} (the `PostgresDeleteClusterById` operationId).
+func (c *Client) PostgresDeleteClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresDeleteClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresGetClusterById Get a Postgres cluster
+//
+// Corresponds with GET /pg-clusters/{cluster_id} (the `PostgresGetClusterById` operationId).
+func (c *Client) PostgresGetClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresGetClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresUpdateAllowlistByIdWithBody Replace the allowed IP list
+//
+// Public clusters only — a cluster in a VPC has no public address (422).
+// For a public cluster the allowlist is the whole network filter: an empty
+// list means nobody can connect.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+func (c *Client) PostgresUpdateAllowlistByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresUpdateAllowlistByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresUpdateAllowlistById Replace the allowed IP list
+//
+// Public clusters only — a cluster in a VPC has no public address (422).
+// For a public cluster the allowlist is the whole network filter: an empty
+// list means nobody can connect.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+func (c *Client) PostgresUpdateAllowlistById(ctx context.Context, clusterId string, body PostgresUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresUpdateAllowlistByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresListBackupsById List backups and the PITR window
+//
+// “pitr_window“ spans the oldest completed backup to the last archived
+// WAL. Either bound being null means there is no window — restore is not
+// possible yet, which is not the same as "no backups".
+//
+// Corresponds with GET /pg-clusters/{cluster_id}/backups (the `PostgresListBackupsById` operationId).
+func (c *Client) PostgresListBackupsById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresListBackupsByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresCreateBackupByIdWithBody Request a manual backup
+//
+// Manual backups never expire, so at most 5 live ones per cluster — they
+// would otherwise eat the repository quota the nightly automatic backups need.
+// The row starts “requested“; the node takes it from there.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+func (c *Client) PostgresCreateBackupByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresCreateBackupByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresCreateBackupById Request a manual backup
+//
+// Manual backups never expire, so at most 5 live ones per cluster — they
+// would otherwise eat the repository quota the nightly automatic backups need.
+// The row starts “requested“; the node takes it from there.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+func (c *Client) PostgresCreateBackupById(ctx context.Context, clusterId string, body PostgresCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresCreateBackupByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresDeleteBackupById Delete a backup
+//
+// 202: the row goes to “deleting“ and the region expires it. The newest
+// completed backup cannot be deleted — the region never expires it, so the
+// request would hang forever.
+//
+// Corresponds with DELETE /pg-clusters/{cluster_id}/backups/{backup_id} (the `PostgresDeleteBackupById` operationId).
+func (c *Client) PostgresDeleteBackupById(ctx context.Context, clusterId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresDeleteBackupByIdRequest(c.Server, clusterId, backupId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresGetClusterCaById Download the cluster CA certificate
+//
+// Per-cluster CA, for connecting with “sslmode=verify-full“.
+// “ready: false“ while the region has not issued it yet.
+//
+// Corresponds with GET /pg-clusters/{cluster_id}/ca (the `PostgresGetClusterCaById` operationId).
+func (c *Client) PostgresGetClusterCaById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresGetClusterCaByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresReplaceNodeById Replace one node
+//
+// Re-create one node, current image or not — the ops escape hatch.
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/nodes/{ordinal}/replace (the `PostgresReplaceNodeById` operationId).
+func (c *Client) PostgresReplaceNodeById(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresReplaceNodeByIdRequest(c.Server, clusterId, ordinal)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresGetParametersById Server parameters and their catalog
+//
+// “parameters“ is the intent, “applied_parameters“ is what the region
+// confirmed reached the cluster, and “catalog“ carries the allowed range of
+// each parameter already computed for this cluster's plan.
+//
+// Corresponds with GET /pg-clusters/{cluster_id}/parameters (the `PostgresGetParametersById` operationId).
+func (c *Client) PostgresGetParametersById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresGetParametersByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresUpdateParametersByIdWithBody Replace server parameters
+//
+// A full replacement, not a merge: a parameter absent from the request is
+// cleared. Parameters marked “restart“ in the catalog only take effect after
+// “POST …/restart“.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+func (c *Client) PostgresUpdateParametersByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresUpdateParametersByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresUpdateParametersById Replace server parameters
+//
+// A full replacement, not a merge: a parameter absent from the request is
+// cleared. Parameters marked “restart“ in the catalog only take effect after
+// “POST …/restart“.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+func (c *Client) PostgresUpdateParametersById(ctx context.Context, clusterId string, body PostgresUpdateParametersByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresUpdateParametersByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangePlanByIdWithBody Change the node plan
+//
+// Upwards only: memory, vCPU and disk of the new plan must be at least the
+// current ones. Nodes are resized one at a time, replicas first and the leader
+// last — a single-node cluster is down for about a minute, an ha one fails
+// over once. Watch “plan_change_pending“.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+func (c *Client) PostgresChangePlanByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangePlanByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangePlanById Change the node plan
+//
+// Upwards only: memory, vCPU and disk of the new plan must be at least the
+// current ones. Nodes are resized one at a time, replicas first and the leader
+// last — a single-node cluster is down for about a minute, an ha one fails
+// over once. Watch “plan_change_pending“.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+func (c *Client) PostgresChangePlanById(ctx context.Context, clusterId string, body PostgresChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangePlanByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresReplaceOutdatedNodesById Replace outdated nodes with the newest image
+//
+// Marks every live node whose VM is not on the newest ready image build in
+// the region. Replacements run one at a time — replicas, leader, witness — and
+// the database stays reachable throughout. “requested: 0“ means every node
+// is already current.
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/replace-nodes (the `PostgresReplaceOutdatedNodesById` operationId).
+func (c *Client) PostgresReplaceOutdatedNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresReplaceOutdatedNodesByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresRestartClusterById Request a restart
+//
+// Restarts nodes to apply postmaster-level parameters — replicas first,
+// leader last. “restart_pending_ack“ stays true until the region confirms.
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/restart (the `PostgresRestartClusterById` operationId).
+func (c *Client) PostgresRestartClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresRestartClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresResetRolePasswordById Issue a new password for a role
+//
+// The new password is in this response and nowhere else.
+//
+// “applied: false“ means the region has not run “ALTER ROLE“ yet — **the
+// database still accepts the old password until it does.** Do not treat the
+// 200 as the moment the old one stopped working.
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/roles/{role}/password (the `PostgresResetRolePasswordById` operationId).
+func (c *Client) PostgresResetRolePasswordById(ctx context.Context, clusterId string, role string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresResetRolePasswordByIdRequest(c.Server, clusterId, role)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangeTopologyByIdWithBody Change the topology (single ↔ ha)
+//
+// Growing to ha adds nodes without downtime; shrinking switches the leader
+// off any node being removed first. Price follows immediately (plan × nodes).
+// Watch “topology_change_pending“.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+func (c *Client) PostgresChangeTopologyByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangeTopologyByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangeTopologyById Change the topology (single ↔ ha)
+//
+// Growing to ha adds nodes without downtime; shrinking switches the leader
+// off any node being removed first. Price follows immediately (plan × nodes).
+// Watch “topology_change_pending“.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+func (c *Client) PostgresChangeTopologyById(ctx context.Context, clusterId string, body PostgresChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangeTopologyByIdRequest(c.Server, clusterId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -9354,6 +11749,299 @@ func (c *Client) SshKeysDeleteSshKey(ctx context.Context, keyId string, reqEdito
 	return c.Client.Do(req)
 }
 
+// ValkeyListClustersByAccount List Valkey clusters in a project
+//
+// Corresponds with GET /valkey-clusters (the `ValkeyListClustersByAccount` operationId).
+func (c *Client) ValkeyListClustersByAccount(ctx context.Context, params *ValkeyListClustersByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyListClustersByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyDeleteClusterById Delete a Valkey cluster
+//
+// 202: the row goes to “deleting“ and the region tears it down. A cache
+// has no backups — the data is gone.
+//
+// Corresponds with DELETE /valkey-clusters/{cluster_id} (the `ValkeyDeleteClusterById` operationId).
+func (c *Client) ValkeyDeleteClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyDeleteClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyGetClusterById Get a Valkey cluster
+//
+// Corresponds with GET /valkey-clusters/{cluster_id} (the `ValkeyGetClusterById` operationId).
+func (c *Client) ValkeyGetClusterById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyGetClusterByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyUpdateAllowlistByIdWithBody Replace the allowed IP list
+//
+// For a public cluster this list **is** the network filter — there is no
+// second layer behind it. An empty list means no client can connect.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+func (c *Client) ValkeyUpdateAllowlistByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyUpdateAllowlistByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyUpdateAllowlistById Replace the allowed IP list
+//
+// For a public cluster this list **is** the network filter — there is no
+// second layer behind it. An empty list means no client can connect.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+func (c *Client) ValkeyUpdateAllowlistById(ctx context.Context, clusterId string, body ValkeyUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyUpdateAllowlistByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyGetClusterCaById Download the cluster CA certificate
+//
+// The cluster is TLS-only; this CA is what a “rediss://“ client verifies
+// against. “ready: false“ while the region has not issued it — the same
+// shape as the Postgres CA and the Kubernetes kubeconfig.
+//
+// Corresponds with GET /valkey-clusters/{cluster_id}/ca (the `ValkeyGetClusterCaById` operationId).
+func (c *Client) ValkeyGetClusterCaById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyGetClusterCaByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyReplaceNodeById Replace one node
+//
+// Re-create one node, current image or not — the ops escape hatch.
+//
+// Corresponds with POST /valkey-clusters/{cluster_id}/nodes/{ordinal}/replace (the `ValkeyReplaceNodeById` operationId).
+func (c *Client) ValkeyReplaceNodeById(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyReplaceNodeByIdRequest(c.Server, clusterId, ordinal)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyUpdateParamsByIdWithBody Update cache parameters
+//
+// maxmemory, eviction policy, max clients and persistence. The region
+// applies them to the running server, so no restart is needed.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+func (c *Client) ValkeyUpdateParamsByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyUpdateParamsByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyUpdateParamsById Update cache parameters
+//
+// maxmemory, eviction policy, max clients and persistence. The region
+// applies them to the running server, so no restart is needed.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+func (c *Client) ValkeyUpdateParamsById(ctx context.Context, clusterId string, body ValkeyUpdateParamsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyUpdateParamsByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyResetPasswordById Issue a new password
+//
+// The new password is in this response and nowhere else. “applied:
+// false“ means the region has not pushed it to the server yet — **the old
+// password still works until it does.**
+//
+// Corresponds with POST /valkey-clusters/{cluster_id}/password (the `ValkeyResetPasswordById` operationId).
+func (c *Client) ValkeyResetPasswordById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyResetPasswordByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangePlanByIdWithBody Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+func (c *Client) ValkeyChangePlanByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangePlanByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangePlanById Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+func (c *Client) ValkeyChangePlanById(ctx context.Context, clusterId string, body ValkeyChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangePlanByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyReplaceOutdatedNodesById Replace outdated nodes with the newest image
+//
+// One node at a time, replicas before the leader. “requested: 0“ means
+// every node is already on the newest image build in the region.
+//
+// Corresponds with POST /valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodesById` operationId).
+func (c *Client) ValkeyReplaceOutdatedNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyReplaceOutdatedNodesByIdRequest(c.Server, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangeTopologyByIdWithBody Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+func (c *Client) ValkeyChangeTopologyByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangeTopologyByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ValkeyChangeTopologyById Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+func (c *Client) ValkeyChangeTopologyById(ctx context.Context, clusterId string, body ValkeyChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewValkeyChangeTopologyByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // ValkeyListRegions Valkey regions, versions, plans and cache modes
 //
 // Versions are per-region: one is offered only where a ready node image is
@@ -9362,6 +12050,337 @@ func (c *Client) SshKeysDeleteSshKey(ctx context.Context, keyId string, reqEdito
 // Corresponds with GET /valkey/regions (the `ValkeyListRegions` operationId).
 func (c *Client) ValkeyListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewValkeyListRegionsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsListVmsByAccount List VMs in a project
+//
+// Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
+func (c *Client) VmsListVmsByAccount(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsListVmsByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsDeleteVmById Delete a VM
+//
+// 202, and the body says which of the two things happened.
+//
+// A VM that was never provisioned is gone when this returns (“deleted“).
+// A provisioned one is moved to “deleting“ and a region tears it down over
+// the following minutes — it stays visible in “GET …/vms“ until then, so a
+// script that deletes and immediately re-creates by name has to wait.
+//
+// This used to answer 204, which could not express the difference; the
+// service's own return value cannot either (it reports “success“ for both
+// and puts the distinction in a human-readable message).
+//
+// Corresponds with DELETE /vms/{vm_id} (the `VmsDeleteVmById` operationId).
+func (c *Client) VmsDeleteVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsDeleteVmByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsGetVmById Get a VM
+//
+// Corresponds with GET /vms/{vm_id} (the `VmsGetVmById` operationId).
+func (c *Client) VmsGetVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsGetVmByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsListBackupsById List VM backups
+//
+// Corresponds with GET /vms/{vm_id}/backups (the `VmsListBackupsById` operationId).
+func (c *Client) VmsListBackupsById(ctx context.Context, vmId string, params *VmsListBackupsByIdParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsListBackupsByIdRequest(c.Server, vmId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsCreateBackupByIdWithBody Create a VM backup
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+func (c *Client) VmsCreateBackupByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsCreateBackupByIdRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsCreateBackupById Create a VM backup
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+func (c *Client) VmsCreateBackupById(ctx context.Context, vmId string, body VmsCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsCreateBackupByIdRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsDeleteBackupById Delete a VM backup
+//
+// Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
+func (c *Client) VmsDeleteBackupById(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsDeleteBackupByIdRequest(c.Server, vmId, backupId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsRestartVmById Restart a VM
+//
+// Corresponds with POST /vms/{vm_id}/restart (the `VmsRestartVmById` operationId).
+func (c *Client) VmsRestartVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsRestartVmByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsStartVmByIdWithBody Start a VM
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+func (c *Client) VmsStartVmByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsStartVmByIdRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsStartVmById Start a VM
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+func (c *Client) VmsStartVmById(ctx context.Context, vmId string, body VmsStartVmByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsStartVmByIdRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsStopVmById Stop a VM
+//
+// Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
+func (c *Client) VmsStopVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsStopVmByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesListVolumesByAccount List block volumes in a project
+//
+// Corresponds with GET /volumes (the `VolumesListVolumesByAccount` operationId).
+func (c *Client) VolumesListVolumesByAccount(ctx context.Context, params *VolumesListVolumesByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesListVolumesByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesDeleteVolumeById Delete a block volume
+//
+// Corresponds with DELETE /volumes/{volume_id} (the `VolumesDeleteVolumeById` operationId).
+func (c *Client) VolumesDeleteVolumeById(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesDeleteVolumeByIdRequest(c.Server, volumeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesGetVolumeById Get a block volume
+//
+// Corresponds with GET /volumes/{volume_id} (the `VolumesGetVolumeById` operationId).
+func (c *Client) VolumesGetVolumeById(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesGetVolumeByIdRequest(c.Server, volumeId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesResizeVolumeByIdWithBody Grow a block volume
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+func (c *Client) VolumesResizeVolumeByIdWithBody(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesResizeVolumeByIdRequestWithBody(c.Server, volumeId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesResizeVolumeById Grow a block volume
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+func (c *Client) VolumesResizeVolumeById(ctx context.Context, volumeId string, body VolumesResizeVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesResizeVolumeByIdRequest(c.Server, volumeId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesAttachVolumeByIdWithBody Attach a volume to a VM
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+func (c *Client) VolumesAttachVolumeByIdWithBody(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesAttachVolumeByIdRequestWithBody(c.Server, volumeId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesAttachVolumeById Attach a volume to a VM
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+func (c *Client) VolumesAttachVolumeById(ctx context.Context, volumeId string, body VolumesAttachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesAttachVolumeByIdRequest(c.Server, volumeId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesDetachVolumeByIdWithBody Detach a volume from its VM
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+func (c *Client) VolumesDetachVolumeByIdWithBody(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesDetachVolumeByIdRequestWithBody(c.Server, volumeId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VolumesDetachVolumeById Detach a volume from its VM
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+func (c *Client) VolumesDetachVolumeById(ctx context.Context, volumeId string, body VolumesDetachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVolumesDetachVolumeByIdRequest(c.Server, volumeId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -11742,6 +14761,709 @@ func NewNetworkingDetachFloatingIpRequest(server string, fipId string) (*http.Re
 	return req, nil
 }
 
+// NewFunctionsListFunctionsByAccountRequest constructs an http.Request for the FunctionsListFunctionsByAccount method
+func NewFunctionsListFunctionsByAccountRequest(server string, params *FunctionsListFunctionsByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFunctionsDeleteFunctionRouteByIdRequest constructs an http.Request for the FunctionsDeleteFunctionRouteById method
+func NewFunctionsDeleteFunctionRouteByIdRequest(server string, functionId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFunctionsGetFunctionRouteByIdRequest constructs an http.Request for the FunctionsGetFunctionRouteById method
+func NewFunctionsGetFunctionRouteByIdRequest(server string, functionId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFunctionsUpdateFunctionRouteByIdRequest calls the generic FunctionsUpdateFunctionRouteById builder with application/json body
+func NewFunctionsUpdateFunctionRouteByIdRequest(server string, functionId string, body FunctionsUpdateFunctionRouteByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFunctionsUpdateFunctionRouteByIdRequestWithBody(server, functionId, "application/json", bodyReader)
+}
+
+// NewFunctionsUpdateFunctionRouteByIdRequestWithBody constructs an http.Request for the FunctionsUpdateFunctionRouteById method, with any body, and a specified content type
+func NewFunctionsUpdateFunctionRouteByIdRequestWithBody(server string, functionId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFunctionsDeployFunctionRouteByIdRequest constructs an http.Request for the FunctionsDeployFunctionRouteById method
+func NewFunctionsDeployFunctionRouteByIdRequest(server string, functionId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s/deploy", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFunctionsListEnvVarsByIdRequest constructs an http.Request for the FunctionsListEnvVarsById method
+func NewFunctionsListEnvVarsByIdRequest(server string, functionId string, params *FunctionsListEnvVarsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s/env", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewFunctionsAddEnvVarByIdRequest calls the generic FunctionsAddEnvVarById builder with application/json body
+func NewFunctionsAddEnvVarByIdRequest(server string, functionId string, body FunctionsAddEnvVarByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewFunctionsAddEnvVarByIdRequestWithBody(server, functionId, "application/json", bodyReader)
+}
+
+// NewFunctionsAddEnvVarByIdRequestWithBody constructs an http.Request for the FunctionsAddEnvVarById method, with any body, and a specified content type
+func NewFunctionsAddEnvVarByIdRequestWithBody(server string, functionId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s/env", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewFunctionsDeleteEnvVarRouteByIdRequest constructs an http.Request for the FunctionsDeleteEnvVarRouteById method
+func NewFunctionsDeleteEnvVarRouteByIdRequest(server string, functionId string, envVarId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "function_id", functionId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "env_var_id", envVarId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/functions/%s/env/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKubernetesListClustersByAccountRequest constructs an http.Request for the KubernetesListClustersByAccount method
+func NewKubernetesListClustersByAccountRequest(server string, params *KubernetesListClustersByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKubernetesDeleteClusterByIdRequest constructs an http.Request for the KubernetesDeleteClusterById method
+func NewKubernetesDeleteClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKubernetesGetClusterByIdRequest constructs an http.Request for the KubernetesGetClusterById method
+func NewKubernetesGetClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKubernetesGetKubeconfigByIdRequest constructs an http.Request for the KubernetesGetKubeconfigById method
+func NewKubernetesGetKubeconfigByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters/%s/kubeconfig", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKubernetesScaleNodePoolByIdRequest calls the generic KubernetesScaleNodePoolById builder with application/json body
+func NewKubernetesScaleNodePoolByIdRequest(server string, clusterId string, poolId string, body KubernetesScaleNodePoolByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewKubernetesScaleNodePoolByIdRequestWithBody(server, clusterId, poolId, "application/json", bodyReader)
+}
+
+// NewKubernetesScaleNodePoolByIdRequestWithBody constructs an http.Request for the KubernetesScaleNodePoolById method, with any body, and a specified content type
+func NewKubernetesScaleNodePoolByIdRequestWithBody(server string, clusterId string, poolId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "pool_id", poolId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters/%s/node-pools/%s/scale", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewKubernetesListClusterNodesByIdRequest constructs an http.Request for the KubernetesListClusterNodesById method
+func NewKubernetesListClusterNodesByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters/%s/nodes", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKubernetesUpgradeClusterByIdRequest calls the generic KubernetesUpgradeClusterById builder with application/json body
+func NewKubernetesUpgradeClusterByIdRequest(server string, clusterId string, body KubernetesUpgradeClusterByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewKubernetesUpgradeClusterByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewKubernetesUpgradeClusterByIdRequestWithBody constructs an http.Request for the KubernetesUpgradeClusterById method, with any body, and a specified content type
+func NewKubernetesUpgradeClusterByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kubernetes-clusters/%s/upgrade", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewKubernetesListRegionsRequest constructs an http.Request for the KubernetesListRegions method
 func NewKubernetesListRegionsRequest(server string) (*http.Request, error) {
 	var err error
@@ -11759,6 +15481,84 @@ func NewKubernetesListRegionsRequest(server string) (*http.Request, error) {
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersListLbsByAccountRequest constructs an http.Request for the LoadBalancersListLbsByAccount method
+func NewLoadBalancersListLbsByAccountRequest(server string, params *LoadBalancersListLbsByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
@@ -11930,6 +15730,960 @@ func NewLoadBalancersListRegionsRequest(server string) (*http.Request, error) {
 	}
 
 	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersDeleteLbByIdRequest constructs an http.Request for the LoadBalancersDeleteLbById method
+func NewLoadBalancersDeleteLbByIdRequest(server string, lbId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersGetLbByIdRequest constructs an http.Request for the LoadBalancersGetLbById method
+func NewLoadBalancersGetLbByIdRequest(server string, lbId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersUpdateLbByIdRequest calls the generic LoadBalancersUpdateLbById builder with application/json body
+func NewLoadBalancersUpdateLbByIdRequest(server string, lbId string, body LoadBalancersUpdateLbByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersUpdateLbByIdRequestWithBody(server, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersUpdateLbByIdRequestWithBody constructs an http.Request for the LoadBalancersUpdateLbById method, with any body, and a specified content type
+func NewLoadBalancersUpdateLbByIdRequestWithBody(server string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersGetLbConfigByIdRequest constructs an http.Request for the LoadBalancersGetLbConfigById method
+func NewLoadBalancersGetLbConfigByIdRequest(server string, lbId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/config", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersPutLbConfigByIdRequest calls the generic LoadBalancersPutLbConfigById builder with application/json body
+func NewLoadBalancersPutLbConfigByIdRequest(server string, lbId string, body LoadBalancersPutLbConfigByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPutLbConfigByIdRequestWithBody(server, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPutLbConfigByIdRequestWithBody constructs an http.Request for the LoadBalancersPutLbConfigById method, with any body, and a specified content type
+func NewLoadBalancersPutLbConfigByIdRequestWithBody(server string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/config", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersCreateListenerByIdRequest calls the generic LoadBalancersCreateListenerById builder with application/json body
+func NewLoadBalancersCreateListenerByIdRequest(server string, lbId string, body LoadBalancersCreateListenerByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersCreateListenerByIdRequestWithBody(server, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersCreateListenerByIdRequestWithBody constructs an http.Request for the LoadBalancersCreateListenerById method, with any body, and a specified content type
+func NewLoadBalancersCreateListenerByIdRequestWithBody(server string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersDeleteListenerByIdRequest constructs an http.Request for the LoadBalancersDeleteListenerById method
+func NewLoadBalancersDeleteListenerByIdRequest(server string, lbId string, listenerId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersPatchListenerByIdRequest calls the generic LoadBalancersPatchListenerById builder with application/json body
+func NewLoadBalancersPatchListenerByIdRequest(server string, lbId string, listenerId string, body LoadBalancersPatchListenerByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPatchListenerByIdRequestWithBody(server, lbId, listenerId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPatchListenerByIdRequestWithBody constructs an http.Request for the LoadBalancersPatchListenerById method, with any body, and a specified content type
+func NewLoadBalancersPatchListenerByIdRequestWithBody(server string, lbId string, listenerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersPutListenerCertificatesByIdRequest calls the generic LoadBalancersPutListenerCertificatesById builder with application/json body
+func NewLoadBalancersPutListenerCertificatesByIdRequest(server string, lbId string, listenerId string, body LoadBalancersPutListenerCertificatesByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPutListenerCertificatesByIdRequestWithBody(server, lbId, listenerId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPutListenerCertificatesByIdRequestWithBody constructs an http.Request for the LoadBalancersPutListenerCertificatesById method, with any body, and a specified content type
+func NewLoadBalancersPutListenerCertificatesByIdRequestWithBody(server string, lbId string, listenerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s/certificates", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersCreateListenerRuleByIdRequest calls the generic LoadBalancersCreateListenerRuleById builder with application/json body
+func NewLoadBalancersCreateListenerRuleByIdRequest(server string, lbId string, listenerId string, body LoadBalancersCreateListenerRuleByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersCreateListenerRuleByIdRequestWithBody(server, lbId, listenerId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersCreateListenerRuleByIdRequestWithBody constructs an http.Request for the LoadBalancersCreateListenerRuleById method, with any body, and a specified content type
+func NewLoadBalancersCreateListenerRuleByIdRequestWithBody(server string, lbId string, listenerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s/rules", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersPutListenerRulesByIdRequest calls the generic LoadBalancersPutListenerRulesById builder with application/json body
+func NewLoadBalancersPutListenerRulesByIdRequest(server string, lbId string, listenerId string, body LoadBalancersPutListenerRulesByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPutListenerRulesByIdRequestWithBody(server, lbId, listenerId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPutListenerRulesByIdRequestWithBody constructs an http.Request for the LoadBalancersPutListenerRulesById method, with any body, and a specified content type
+func NewLoadBalancersPutListenerRulesByIdRequestWithBody(server string, lbId string, listenerId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s/rules", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersDeleteListenerRuleByIdRequest constructs an http.Request for the LoadBalancersDeleteListenerRuleById method
+func NewLoadBalancersDeleteListenerRuleByIdRequest(server string, lbId string, listenerId string, ruleId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "rule_id", ruleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s/rules/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersPatchListenerRuleByIdRequest calls the generic LoadBalancersPatchListenerRuleById builder with application/json body
+func NewLoadBalancersPatchListenerRuleByIdRequest(server string, lbId string, listenerId string, ruleId string, body LoadBalancersPatchListenerRuleByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPatchListenerRuleByIdRequestWithBody(server, lbId, listenerId, ruleId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPatchListenerRuleByIdRequestWithBody constructs an http.Request for the LoadBalancersPatchListenerRuleById method, with any body, and a specified content type
+func NewLoadBalancersPatchListenerRuleByIdRequestWithBody(server string, lbId string, listenerId string, ruleId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "listener_id", listenerId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "rule_id", ruleId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/listeners/%s/rules/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersPutLbManagedConfigByIdRequest calls the generic LoadBalancersPutLbManagedConfigById builder with application/json body
+func NewLoadBalancersPutLbManagedConfigByIdRequest(server string, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPutLbManagedConfigByIdRequestWithBody(server, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPutLbManagedConfigByIdRequestWithBody constructs an http.Request for the LoadBalancersPutLbManagedConfigById method, with any body, and a specified content type
+func NewLoadBalancersPutLbManagedConfigByIdRequestWithBody(server string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/managed-config", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersCreateTargetGroupByIdRequest calls the generic LoadBalancersCreateTargetGroupById builder with application/json body
+func NewLoadBalancersCreateTargetGroupByIdRequest(server string, lbId string, body LoadBalancersCreateTargetGroupByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersCreateTargetGroupByIdRequestWithBody(server, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersCreateTargetGroupByIdRequestWithBody constructs an http.Request for the LoadBalancersCreateTargetGroupById method, with any body, and a specified content type
+func NewLoadBalancersCreateTargetGroupByIdRequestWithBody(server string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/target-groups", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersDeleteTargetGroupByIdRequest constructs an http.Request for the LoadBalancersDeleteTargetGroupById method
+func NewLoadBalancersDeleteTargetGroupByIdRequest(server string, lbId string, tgId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tg_id", tgId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/target-groups/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewLoadBalancersPatchTargetGroupByIdRequest calls the generic LoadBalancersPatchTargetGroupById builder with application/json body
+func NewLoadBalancersPatchTargetGroupByIdRequest(server string, lbId string, tgId string, body LoadBalancersPatchTargetGroupByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPatchTargetGroupByIdRequestWithBody(server, lbId, tgId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPatchTargetGroupByIdRequestWithBody constructs an http.Request for the LoadBalancersPatchTargetGroupById method, with any body, and a specified content type
+func NewLoadBalancersPatchTargetGroupByIdRequestWithBody(server string, lbId string, tgId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tg_id", tgId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/target-groups/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersAddTargetByIdRequest calls the generic LoadBalancersAddTargetById builder with application/json body
+func NewLoadBalancersAddTargetByIdRequest(server string, lbId string, tgId string, body LoadBalancersAddTargetByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersAddTargetByIdRequestWithBody(server, lbId, tgId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersAddTargetByIdRequestWithBody constructs an http.Request for the LoadBalancersAddTargetById method, with any body, and a specified content type
+func NewLoadBalancersAddTargetByIdRequestWithBody(server string, lbId string, tgId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tg_id", tgId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/target-groups/%s/targets", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersPutTargetsByIdRequest calls the generic LoadBalancersPutTargetsById builder with application/json body
+func NewLoadBalancersPutTargetsByIdRequest(server string, lbId string, tgId string, body LoadBalancersPutTargetsByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersPutTargetsByIdRequestWithBody(server, lbId, tgId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersPutTargetsByIdRequestWithBody constructs an http.Request for the LoadBalancersPutTargetsById method, with any body, and a specified content type
+func NewLoadBalancersPutTargetsByIdRequestWithBody(server string, lbId string, tgId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tg_id", tgId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/target-groups/%s/targets", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersDeleteTargetByIdRequest constructs an http.Request for the LoadBalancersDeleteTargetById method
+func NewLoadBalancersDeleteTargetByIdRequest(server string, lbId string, tgId string, targetId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "tg_id", tgId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "target_id", targetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/target-groups/%s/targets/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -12636,6 +17390,680 @@ func NewObjectStorageGetUsageRequest(server string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewPostgresListClustersByAccountRequest constructs an http.Request for the PostgresListClustersByAccount method
+func NewPostgresListClustersByAccountRequest(server string, params *PostgresListClustersByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresDeleteClusterByIdRequest constructs an http.Request for the PostgresDeleteClusterById method
+func NewPostgresDeleteClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresGetClusterByIdRequest constructs an http.Request for the PostgresGetClusterById method
+func NewPostgresGetClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresUpdateAllowlistByIdRequest calls the generic PostgresUpdateAllowlistById builder with application/json body
+func NewPostgresUpdateAllowlistByIdRequest(server string, clusterId string, body PostgresUpdateAllowlistByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresUpdateAllowlistByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresUpdateAllowlistByIdRequestWithBody constructs an http.Request for the PostgresUpdateAllowlistById method, with any body, and a specified content type
+func NewPostgresUpdateAllowlistByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/allowlist", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostgresListBackupsByIdRequest constructs an http.Request for the PostgresListBackupsById method
+func NewPostgresListBackupsByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/backups", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresCreateBackupByIdRequest calls the generic PostgresCreateBackupById builder with application/json body
+func NewPostgresCreateBackupByIdRequest(server string, clusterId string, body PostgresCreateBackupByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresCreateBackupByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresCreateBackupByIdRequestWithBody constructs an http.Request for the PostgresCreateBackupById method, with any body, and a specified content type
+func NewPostgresCreateBackupByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/backups", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostgresDeleteBackupByIdRequest constructs an http.Request for the PostgresDeleteBackupById method
+func NewPostgresDeleteBackupByIdRequest(server string, clusterId string, backupId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "backup_id", backupId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/backups/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresGetClusterCaByIdRequest constructs an http.Request for the PostgresGetClusterCaById method
+func NewPostgresGetClusterCaByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/ca", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresReplaceNodeByIdRequest constructs an http.Request for the PostgresReplaceNodeById method
+func NewPostgresReplaceNodeByIdRequest(server string, clusterId string, ordinal int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "ordinal", ordinal, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/nodes/%s/replace", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresGetParametersByIdRequest constructs an http.Request for the PostgresGetParametersById method
+func NewPostgresGetParametersByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/parameters", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresUpdateParametersByIdRequest calls the generic PostgresUpdateParametersById builder with application/json body
+func NewPostgresUpdateParametersByIdRequest(server string, clusterId string, body PostgresUpdateParametersByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresUpdateParametersByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresUpdateParametersByIdRequestWithBody constructs an http.Request for the PostgresUpdateParametersById method, with any body, and a specified content type
+func NewPostgresUpdateParametersByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/parameters", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostgresChangePlanByIdRequest calls the generic PostgresChangePlanById builder with application/json body
+func NewPostgresChangePlanByIdRequest(server string, clusterId string, body PostgresChangePlanByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresChangePlanByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresChangePlanByIdRequestWithBody constructs an http.Request for the PostgresChangePlanById method, with any body, and a specified content type
+func NewPostgresChangePlanByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostgresReplaceOutdatedNodesByIdRequest constructs an http.Request for the PostgresReplaceOutdatedNodesById method
+func NewPostgresReplaceOutdatedNodesByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/replace-nodes", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresRestartClusterByIdRequest constructs an http.Request for the PostgresRestartClusterById method
+func NewPostgresRestartClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/restart", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresResetRolePasswordByIdRequest constructs an http.Request for the PostgresResetRolePasswordById method
+func NewPostgresResetRolePasswordByIdRequest(server string, clusterId string, role string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "role", role, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/roles/%s/password", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostgresChangeTopologyByIdRequest calls the generic PostgresChangeTopologyById builder with application/json body
+func NewPostgresChangeTopologyByIdRequest(server string, clusterId string, body PostgresChangeTopologyByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresChangeTopologyByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresChangeTopologyByIdRequestWithBody constructs an http.Request for the PostgresChangeTopologyById method, with any body, and a specified content type
+func NewPostgresChangeTopologyByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/topology", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -18569,6 +23997,483 @@ func NewSshKeysDeleteSshKeyRequest(server string, keyId string) (*http.Request, 
 	return req, nil
 }
 
+// NewValkeyListClustersByAccountRequest constructs an http.Request for the ValkeyListClustersByAccount method
+func NewValkeyListClustersByAccountRequest(server string, params *ValkeyListClustersByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyDeleteClusterByIdRequest constructs an http.Request for the ValkeyDeleteClusterById method
+func NewValkeyDeleteClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyGetClusterByIdRequest constructs an http.Request for the ValkeyGetClusterById method
+func NewValkeyGetClusterByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyUpdateAllowlistByIdRequest calls the generic ValkeyUpdateAllowlistById builder with application/json body
+func NewValkeyUpdateAllowlistByIdRequest(server string, clusterId string, body ValkeyUpdateAllowlistByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValkeyUpdateAllowlistByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewValkeyUpdateAllowlistByIdRequestWithBody constructs an http.Request for the ValkeyUpdateAllowlistById method, with any body, and a specified content type
+func NewValkeyUpdateAllowlistByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/allowlist", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewValkeyGetClusterCaByIdRequest constructs an http.Request for the ValkeyGetClusterCaById method
+func NewValkeyGetClusterCaByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/ca", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyReplaceNodeByIdRequest constructs an http.Request for the ValkeyReplaceNodeById method
+func NewValkeyReplaceNodeByIdRequest(server string, clusterId string, ordinal int) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "ordinal", ordinal, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "integer", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/nodes/%s/replace", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyUpdateParamsByIdRequest calls the generic ValkeyUpdateParamsById builder with application/json body
+func NewValkeyUpdateParamsByIdRequest(server string, clusterId string, body ValkeyUpdateParamsByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValkeyUpdateParamsByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewValkeyUpdateParamsByIdRequestWithBody constructs an http.Request for the ValkeyUpdateParamsById method, with any body, and a specified content type
+func NewValkeyUpdateParamsByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/params", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewValkeyResetPasswordByIdRequest constructs an http.Request for the ValkeyResetPasswordById method
+func NewValkeyResetPasswordByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/password", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyChangePlanByIdRequest calls the generic ValkeyChangePlanById builder with application/json body
+func NewValkeyChangePlanByIdRequest(server string, clusterId string, body ValkeyChangePlanByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValkeyChangePlanByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewValkeyChangePlanByIdRequestWithBody constructs an http.Request for the ValkeyChangePlanById method, with any body, and a specified content type
+func NewValkeyChangePlanByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/plan", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewValkeyReplaceOutdatedNodesByIdRequest constructs an http.Request for the ValkeyReplaceOutdatedNodesById method
+func NewValkeyReplaceOutdatedNodesByIdRequest(server string, clusterId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/replace-nodes", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewValkeyChangeTopologyByIdRequest calls the generic ValkeyChangeTopologyById builder with application/json body
+func NewValkeyChangeTopologyByIdRequest(server string, clusterId string, body ValkeyChangeTopologyByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewValkeyChangeTopologyByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewValkeyChangeTopologyByIdRequestWithBody constructs an http.Request for the ValkeyChangeTopologyById method, with any body, and a specified content type
+func NewValkeyChangeTopologyByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/valkey-clusters/%s/topology", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewValkeyListRegionsRequest constructs an http.Request for the ValkeyListRegions method
 func NewValkeyListRegionsRequest(server string) (*http.Request, error) {
 	var err error
@@ -18592,6 +24497,715 @@ func NewValkeyListRegionsRequest(server string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewVmsListVmsByAccountRequest constructs an http.Request for the VmsListVmsByAccount method
+func NewVmsListVmsByAccountRequest(server string, params *VmsListVmsByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsDeleteVmByIdRequest constructs an http.Request for the VmsDeleteVmById method
+func NewVmsDeleteVmByIdRequest(server string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsGetVmByIdRequest constructs an http.Request for the VmsGetVmById method
+func NewVmsGetVmByIdRequest(server string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsListBackupsByIdRequest constructs an http.Request for the VmsListBackupsById method
+func NewVmsListBackupsByIdRequest(server string, vmId string, params *VmsListBackupsByIdParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/backups", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsCreateBackupByIdRequest calls the generic VmsCreateBackupById builder with application/json body
+func NewVmsCreateBackupByIdRequest(server string, vmId string, body VmsCreateBackupByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsCreateBackupByIdRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewVmsCreateBackupByIdRequestWithBody constructs an http.Request for the VmsCreateBackupById method, with any body, and a specified content type
+func NewVmsCreateBackupByIdRequestWithBody(server string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/backups", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewVmsDeleteBackupByIdRequest constructs an http.Request for the VmsDeleteBackupById method
+func NewVmsDeleteBackupByIdRequest(server string, vmId string, backupId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "backup_id", backupId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/backups/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsRestartVmByIdRequest constructs an http.Request for the VmsRestartVmById method
+func NewVmsRestartVmByIdRequest(server string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/restart", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsStartVmByIdRequest calls the generic VmsStartVmById builder with application/json body
+func NewVmsStartVmByIdRequest(server string, vmId string, body VmsStartVmByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsStartVmByIdRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewVmsStartVmByIdRequestWithBody constructs an http.Request for the VmsStartVmById method, with any body, and a specified content type
+func NewVmsStartVmByIdRequestWithBody(server string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/start", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewVmsStopVmByIdRequest constructs an http.Request for the VmsStopVmById method
+func NewVmsStopVmByIdRequest(server string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/stop", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVolumesListVolumesByAccountRequest constructs an http.Request for the VolumesListVolumesByAccount method
+func NewVolumesListVolumesByAccountRequest(server string, params *VolumesListVolumesByAccountParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/volumes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ProjectId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "project_id", *params.ProjectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVolumesDeleteVolumeByIdRequest constructs an http.Request for the VolumesDeleteVolumeById method
+func NewVolumesDeleteVolumeByIdRequest(server string, volumeId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "volume_id", volumeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/volumes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVolumesGetVolumeByIdRequest constructs an http.Request for the VolumesGetVolumeById method
+func NewVolumesGetVolumeByIdRequest(server string, volumeId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "volume_id", volumeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/volumes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVolumesResizeVolumeByIdRequest calls the generic VolumesResizeVolumeById builder with application/json body
+func NewVolumesResizeVolumeByIdRequest(server string, volumeId string, body VolumesResizeVolumeByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVolumesResizeVolumeByIdRequestWithBody(server, volumeId, "application/json", bodyReader)
+}
+
+// NewVolumesResizeVolumeByIdRequestWithBody constructs an http.Request for the VolumesResizeVolumeById method, with any body, and a specified content type
+func NewVolumesResizeVolumeByIdRequestWithBody(server string, volumeId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "volume_id", volumeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/volumes/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewVolumesAttachVolumeByIdRequest calls the generic VolumesAttachVolumeById builder with application/json body
+func NewVolumesAttachVolumeByIdRequest(server string, volumeId string, body VolumesAttachVolumeByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVolumesAttachVolumeByIdRequestWithBody(server, volumeId, "application/json", bodyReader)
+}
+
+// NewVolumesAttachVolumeByIdRequestWithBody constructs an http.Request for the VolumesAttachVolumeById method, with any body, and a specified content type
+func NewVolumesAttachVolumeByIdRequestWithBody(server string, volumeId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "volume_id", volumeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/volumes/%s/attach", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewVolumesDetachVolumeByIdRequest calls the generic VolumesDetachVolumeById builder with application/json body
+func NewVolumesDetachVolumeByIdRequest(server string, volumeId string, body VolumesDetachVolumeByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVolumesDetachVolumeByIdRequestWithBody(server, volumeId, "application/json", bodyReader)
+}
+
+// NewVolumesDetachVolumeByIdRequestWithBody constructs an http.Request for the VolumesDetachVolumeById method, with any body, and a specified content type
+func NewVolumesDetachVolumeByIdRequestWithBody(server string, volumeId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "volume_id", volumeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/volumes/%s/detach", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -19400,12 +26014,178 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /floating-ips/{fip_id}/detach (the `NetworkingDetachFloatingIp` operationId).
 	NetworkingDetachFloatingIpWithResponse(ctx context.Context, fipId string, reqEditors ...RequestEditorFn) (*NetworkingDetachFloatingIpResponse, error)
 
+	// FunctionsListFunctionsByAccountWithResponse List functions
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /functions (the `FunctionsListFunctionsByAccount` operationId).
+	FunctionsListFunctionsByAccountWithResponse(ctx context.Context, params *FunctionsListFunctionsByAccountParams, reqEditors ...RequestEditorFn) (*FunctionsListFunctionsByAccountResponse, error)
+
+	// FunctionsDeleteFunctionRouteByIdWithResponse Delete a function
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /functions/{function_id} (the `FunctionsDeleteFunctionRouteById` operationId).
+	FunctionsDeleteFunctionRouteByIdWithResponse(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*FunctionsDeleteFunctionRouteByIdResponse, error)
+
+	// FunctionsGetFunctionRouteByIdWithResponse Get a function
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /functions/{function_id} (the `FunctionsGetFunctionRouteById` operationId).
+	FunctionsGetFunctionRouteByIdWithResponse(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*FunctionsGetFunctionRouteByIdResponse, error)
+
+	// FunctionsUpdateFunctionRouteByIdWithBodyWithResponse Update a function (code and/or configuration)
+	//
+	// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+	// PATCH the file map / handler / runtime / name / vpc_id, then POST
+	// …/deploy to build and roll the new code (the "publish" analogue).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+	FunctionsUpdateFunctionRouteByIdWithBodyWithResponse(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FunctionsUpdateFunctionRouteByIdResponse, error)
+
+	// FunctionsUpdateFunctionRouteByIdWithResponse Update a function (code and/or configuration)
+	//
+	// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+	// PATCH the file map / handler / runtime / name / vpc_id, then POST
+	// …/deploy to build and roll the new code (the "publish" analogue).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+	FunctionsUpdateFunctionRouteByIdWithResponse(ctx context.Context, functionId string, body FunctionsUpdateFunctionRouteByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FunctionsUpdateFunctionRouteByIdResponse, error)
+
+	// FunctionsDeployFunctionRouteByIdWithResponse Build & deploy a function
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /functions/{function_id}/deploy (the `FunctionsDeployFunctionRouteById` operationId).
+	FunctionsDeployFunctionRouteByIdWithResponse(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*FunctionsDeployFunctionRouteByIdResponse, error)
+
+	// FunctionsListEnvVarsByIdWithResponse List environment variables
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /functions/{function_id}/env (the `FunctionsListEnvVarsById` operationId).
+	FunctionsListEnvVarsByIdWithResponse(ctx context.Context, functionId string, params *FunctionsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*FunctionsListEnvVarsByIdResponse, error)
+
+	// FunctionsAddEnvVarByIdWithBodyWithResponse Create or set an environment variable
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+	FunctionsAddEnvVarByIdWithBodyWithResponse(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FunctionsAddEnvVarByIdResponse, error)
+
+	// FunctionsAddEnvVarByIdWithResponse Create or set an environment variable
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+	FunctionsAddEnvVarByIdWithResponse(ctx context.Context, functionId string, body FunctionsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FunctionsAddEnvVarByIdResponse, error)
+
+	// FunctionsDeleteEnvVarRouteByIdWithResponse Delete an environment variable
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
+	FunctionsDeleteEnvVarRouteByIdWithResponse(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*FunctionsDeleteEnvVarRouteByIdResponse, error)
+
+	// KubernetesListClustersByAccountWithResponse List Kubernetes clusters in a project
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /kubernetes-clusters (the `KubernetesListClustersByAccount` operationId).
+	KubernetesListClustersByAccountWithResponse(ctx context.Context, params *KubernetesListClustersByAccountParams, reqEditors ...RequestEditorFn) (*KubernetesListClustersByAccountResponse, error)
+
+	// KubernetesDeleteClusterByIdWithResponse Delete a Kubernetes cluster
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /kubernetes-clusters/{cluster_id} (the `KubernetesDeleteClusterById` operationId).
+	KubernetesDeleteClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesDeleteClusterByIdResponse, error)
+
+	// KubernetesGetClusterByIdWithResponse Get a Kubernetes cluster
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /kubernetes-clusters/{cluster_id} (the `KubernetesGetClusterById` operationId).
+	KubernetesGetClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesGetClusterByIdResponse, error)
+
+	// KubernetesGetKubeconfigByIdWithResponse Download the cluster-admin kubeconfig
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /kubernetes-clusters/{cluster_id}/kubeconfig (the `KubernetesGetKubeconfigById` operationId).
+	KubernetesGetKubeconfigByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesGetKubeconfigByIdResponse, error)
+
+	// KubernetesScaleNodePoolByIdWithBodyWithResponse Scale a worker node pool
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+	KubernetesScaleNodePoolByIdWithBodyWithResponse(ctx context.Context, clusterId string, poolId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesScaleNodePoolByIdResponse, error)
+
+	// KubernetesScaleNodePoolByIdWithResponse Scale a worker node pool
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+	KubernetesScaleNodePoolByIdWithResponse(ctx context.Context, clusterId string, poolId string, body KubernetesScaleNodePoolByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesScaleNodePoolByIdResponse, error)
+
+	// KubernetesListClusterNodesByIdWithResponse List the cluster's nodes and their backing VMs
+	//
+	// Кто есть кто: нода Kubernetes ↔ машина TatNet.
+	//
+	// Нужен CSI-драйверу, у которого нет другого способа это узнать. Общего имени
+	// у ноды и машины нет (Kubernetes зовёт ноду `talos-b25-9uq`, мы — своим
+	// hostname), а положить идентичность в машинный конфиг нельзя: Talos не
+	// принимает `machine.files` в immediate-режиме, и попытка доставить их так
+	// роняет ЛЮБУЮ конвергенцию конфига живой ноды. Поэтому связка — ЗАПРОС по
+	// адресу, а не снимок, розданный заранее: ноды добавляются и уезжают, и ответ
+	// обязан пересчитываться.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
+	KubernetesListClusterNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesListClusterNodesByIdResponse, error)
+
+	// KubernetesUpgradeClusterByIdWithBodyWithResponse Upgrade the Kubernetes version
+	//
+	// Bump the desired Kubernetes version; nodes are rolled one at a time
+	// (control plane first) by the platform. Track progress via ``upgrading``
+	// on the cluster resource.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+	KubernetesUpgradeClusterByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesUpgradeClusterByIdResponse, error)
+
+	// KubernetesUpgradeClusterByIdWithResponse Upgrade the Kubernetes version
+	//
+	// Bump the desired Kubernetes version; nodes are rolled one at a time
+	// (control plane first) by the platform. Track progress via ``upgrading``
+	// on the cluster resource.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+	KubernetesUpgradeClusterByIdWithResponse(ctx context.Context, clusterId string, body KubernetesUpgradeClusterByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesUpgradeClusterByIdResponse, error)
+
 	// KubernetesListRegionsWithResponse Kubernetes regions and offered versions
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /kubernetes/regions (the `KubernetesListRegions` operationId).
 	KubernetesListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*KubernetesListRegionsResponse, error)
+
+	// LoadBalancersListLbsByAccountWithResponse List load balancers
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /load-balancers (the `LoadBalancersListLbsByAccount` operationId).
+	LoadBalancersListLbsByAccountWithResponse(ctx context.Context, params *LoadBalancersListLbsByAccountParams, reqEditors ...RequestEditorFn) (*LoadBalancersListLbsByAccountResponse, error)
 
 	// LoadBalancersListLbCertificatesWithResponse List LB certificates
 	//
@@ -19461,6 +26241,283 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /load-balancers/regions (the `LoadBalancersListRegions` operationId).
 	LoadBalancersListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*LoadBalancersListRegionsResponse, error)
+
+	// LoadBalancersDeleteLbByIdWithResponse Delete a load balancer
+	//
+	// Flips the INTENT (desired_state='deleting'); the api reconciler removes
+	// the node VMs and stamps nodes_released_at, the region tears down OVN.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id} (the `LoadBalancersDeleteLbById` operationId).
+	LoadBalancersDeleteLbByIdWithResponse(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteLbByIdResponse, error)
+
+	// LoadBalancersGetLbByIdWithResponse Get a load balancer
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /load-balancers/{lb_id} (the `LoadBalancersGetLbById` operationId).
+	LoadBalancersGetLbByIdWithResponse(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*LoadBalancersGetLbByIdResponse, error)
+
+	// LoadBalancersUpdateLbByIdWithBodyWithResponse Update a load balancer
+	//
+	// node_count only — listeners/rules/groups/targets live under /config and
+	// the granular sub-resources (the legacy flat body 422s in the schema).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+	LoadBalancersUpdateLbByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersUpdateLbByIdResponse, error)
+
+	// LoadBalancersUpdateLbByIdWithResponse Update a load balancer
+	//
+	// node_count only — listeners/rules/groups/targets live under /config and
+	// the granular sub-resources (the legacy flat body 422s in the schema).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+	LoadBalancersUpdateLbByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersUpdateLbByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersUpdateLbByIdResponse, error)
+
+	// LoadBalancersGetLbConfigByIdWithResponse Get the LB config document
+	//
+	// The whole document; CCM-owned objects are included and marked
+	// managed_by='ccm' (read-only for the user PUT).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /load-balancers/{lb_id}/config (the `LoadBalancersGetLbConfigById` operationId).
+	LoadBalancersGetLbConfigByIdWithResponse(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*LoadBalancersGetLbConfigByIdResponse, error)
+
+	// LoadBalancersPutLbConfigByIdWithBodyWithResponse Replace the user-owned LB config
+	//
+	// Declarative replacement of the USER-owned scope (§5.3 write order);
+	// CCM-owned objects are untouched.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+	LoadBalancersPutLbConfigByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbConfigByIdResponse, error)
+
+	// LoadBalancersPutLbConfigByIdWithResponse Replace the user-owned LB config
+	//
+	// Declarative replacement of the USER-owned scope (§5.3 write order);
+	// CCM-owned objects are untouched.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+	LoadBalancersPutLbConfigByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersPutLbConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbConfigByIdResponse, error)
+
+	// LoadBalancersCreateListenerByIdWithBodyWithResponse Add a listener
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+	LoadBalancersCreateListenerByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerByIdResponse, error)
+
+	// LoadBalancersCreateListenerByIdWithResponse Add a listener
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+	LoadBalancersCreateListenerByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersCreateListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerByIdResponse, error)
+
+	// LoadBalancersDeleteListenerByIdWithResponse Delete a listener
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersDeleteListenerById` operationId).
+	LoadBalancersDeleteListenerByIdWithResponse(ctx context.Context, lbId string, listenerId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteListenerByIdResponse, error)
+
+	// LoadBalancersPatchListenerByIdWithBodyWithResponse Update a listener
+	//
+	// protocol never changes here (extra='forbid' in the schema → 422): the
+	// generated `mode` column anchors the composite FKs — a protocol change is
+	// delete+recreate through PUT /config.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+	LoadBalancersPatchListenerByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerByIdResponse, error)
+
+	// LoadBalancersPatchListenerByIdWithResponse Update a listener
+	//
+	// protocol never changes here (extra='forbid' in the schema → 422): the
+	// generated `mode` column anchors the composite FKs — a protocol change is
+	// delete+recreate through PUT /config.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+	LoadBalancersPatchListenerByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersPatchListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerByIdResponse, error)
+
+	// LoadBalancersPutListenerCertificatesByIdWithBodyWithResponse Replace a listener's certificates
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+	LoadBalancersPutListenerCertificatesByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerCertificatesByIdResponse, error)
+
+	// LoadBalancersPutListenerCertificatesByIdWithResponse Replace a listener's certificates
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+	LoadBalancersPutListenerCertificatesByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerCertificatesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerCertificatesByIdResponse, error)
+
+	// LoadBalancersCreateListenerRuleByIdWithBodyWithResponse Add a rule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+	LoadBalancersCreateListenerRuleByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerRuleByIdResponse, error)
+
+	// LoadBalancersCreateListenerRuleByIdWithResponse Add a rule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+	LoadBalancersCreateListenerRuleByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersCreateListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerRuleByIdResponse, error)
+
+	// LoadBalancersPutListenerRulesByIdWithBodyWithResponse Replace the rule set
+	//
+	// Replace the prioritized rule set; the listener's default_action row is
+	// kept (it belongs to the listener, PATCH it there).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+	LoadBalancersPutListenerRulesByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerRulesByIdResponse, error)
+
+	// LoadBalancersPutListenerRulesByIdWithResponse Replace the rule set
+	//
+	// Replace the prioritized rule set; the listener's default_action row is
+	// kept (it belongs to the listener, PATCH it there).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+	LoadBalancersPutListenerRulesByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerRulesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerRulesByIdResponse, error)
+
+	// LoadBalancersDeleteListenerRuleByIdWithResponse Delete a rule
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersDeleteListenerRuleById` operationId).
+	LoadBalancersDeleteListenerRuleByIdWithResponse(ctx context.Context, lbId string, listenerId string, ruleId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteListenerRuleByIdResponse, error)
+
+	// LoadBalancersPatchListenerRuleByIdWithBodyWithResponse Update a rule
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+	LoadBalancersPatchListenerRuleByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, ruleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerRuleByIdResponse, error)
+
+	// LoadBalancersPatchListenerRuleByIdWithResponse Update a rule
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+	LoadBalancersPatchListenerRuleByIdWithResponse(ctx context.Context, lbId string, listenerId string, ruleId string, body LoadBalancersPatchListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerRuleByIdResponse, error)
+
+	// LoadBalancersPutLbManagedConfigByIdWithBodyWithResponse Replace the CCM-owned LB config (cloud-controller-manager)
+	//
+	// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+	// reconciles Services through it; user-owned objects are untouched (the
+	// CCM's blast radius stays its own scope).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+	LoadBalancersPutLbManagedConfigByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbManagedConfigByIdResponse, error)
+
+	// LoadBalancersPutLbManagedConfigByIdWithResponse Replace the CCM-owned LB config (cloud-controller-manager)
+	//
+	// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+	// reconciles Services through it; user-owned objects are untouched (the
+	// CCM's blast radius stays its own scope).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+	LoadBalancersPutLbManagedConfigByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbManagedConfigByIdResponse, error)
+
+	// LoadBalancersCreateTargetGroupByIdWithBodyWithResponse Add a target group
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+	LoadBalancersCreateTargetGroupByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersCreateTargetGroupByIdResponse, error)
+
+	// LoadBalancersCreateTargetGroupByIdWithResponse Add a target group
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+	LoadBalancersCreateTargetGroupByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersCreateTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersCreateTargetGroupByIdResponse, error)
+
+	// LoadBalancersDeleteTargetGroupByIdWithResponse Delete a target group
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersDeleteTargetGroupById` operationId).
+	LoadBalancersDeleteTargetGroupByIdWithResponse(ctx context.Context, lbId string, tgId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteTargetGroupByIdResponse, error)
+
+	// LoadBalancersPatchTargetGroupByIdWithBodyWithResponse Update a target group
+	//
+	// protocol / target_type never change here (extra='forbid' → 422): both
+	// define the row's identity (generated `mode` anchors the composite FKs).
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+	LoadBalancersPatchTargetGroupByIdWithBodyWithResponse(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPatchTargetGroupByIdResponse, error)
+
+	// LoadBalancersPatchTargetGroupByIdWithResponse Update a target group
+	//
+	// protocol / target_type never change here (extra='forbid' → 422): both
+	// define the row's identity (generated `mode` anchors the composite FKs).
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+	LoadBalancersPatchTargetGroupByIdWithResponse(ctx context.Context, lbId string, tgId string, body LoadBalancersPatchTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPatchTargetGroupByIdResponse, error)
+
+	// LoadBalancersAddTargetByIdWithBodyWithResponse Add a target
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+	LoadBalancersAddTargetByIdWithBodyWithResponse(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersAddTargetByIdResponse, error)
+
+	// LoadBalancersAddTargetByIdWithResponse Add a target
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+	LoadBalancersAddTargetByIdWithResponse(ctx context.Context, lbId string, tgId string, body LoadBalancersAddTargetByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersAddTargetByIdResponse, error)
+
+	// LoadBalancersPutTargetsByIdWithBodyWithResponse Replace the target set
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+	LoadBalancersPutTargetsByIdWithBodyWithResponse(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutTargetsByIdResponse, error)
+
+	// LoadBalancersPutTargetsByIdWithResponse Replace the target set
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+	LoadBalancersPutTargetsByIdWithResponse(ctx context.Context, lbId string, tgId string, body LoadBalancersPutTargetsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutTargetsByIdResponse, error)
+
+	// LoadBalancersDeleteTargetByIdWithResponse Remove a target
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id}/targets/{target_id} (the `LoadBalancersDeleteTargetById` operationId).
+	LoadBalancersDeleteTargetByIdWithResponse(ctx context.Context, lbId string, tgId string, targetId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteTargetByIdResponse, error)
 
 	// ObjectStorageListAccessKeysWithResponse List S3 access keys
 	//
@@ -19662,6 +26719,230 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /object-storage/usage (the `ObjectStorageGetUsage` operationId).
 	ObjectStorageGetUsageWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ObjectStorageGetUsageResponse, error)
+
+	// PostgresListClustersByAccountWithResponse List Postgres clusters in a project
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /pg-clusters (the `PostgresListClustersByAccount` operationId).
+	PostgresListClustersByAccountWithResponse(ctx context.Context, params *PostgresListClustersByAccountParams, reqEditors ...RequestEditorFn) (*PostgresListClustersByAccountResponse, error)
+
+	// PostgresDeleteClusterByIdWithResponse Delete a Postgres cluster
+	//
+	// 202: the row goes to ``deleting`` and the region tears the cluster down.
+	// The backup repository outlives it by 14 days, so a restore is still possible
+	// after this call.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /pg-clusters/{cluster_id} (the `PostgresDeleteClusterById` operationId).
+	PostgresDeleteClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresDeleteClusterByIdResponse, error)
+
+	// PostgresGetClusterByIdWithResponse Get a Postgres cluster
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id} (the `PostgresGetClusterById` operationId).
+	PostgresGetClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresGetClusterByIdResponse, error)
+
+	// PostgresUpdateAllowlistByIdWithBodyWithResponse Replace the allowed IP list
+	//
+	// Public clusters only — a cluster in a VPC has no public address (422).
+	// For a public cluster the allowlist is the whole network filter: an empty
+	// list means nobody can connect.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+	PostgresUpdateAllowlistByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresUpdateAllowlistByIdResponse, error)
+
+	// PostgresUpdateAllowlistByIdWithResponse Replace the allowed IP list
+	//
+	// Public clusters only — a cluster in a VPC has no public address (422).
+	// For a public cluster the allowlist is the whole network filter: an empty
+	// list means nobody can connect.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+	PostgresUpdateAllowlistByIdWithResponse(ctx context.Context, clusterId string, body PostgresUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresUpdateAllowlistByIdResponse, error)
+
+	// PostgresListBackupsByIdWithResponse List backups and the PITR window
+	//
+	// ``pitr_window`` spans the oldest completed backup to the last archived
+	// WAL. Either bound being null means there is no window — restore is not
+	// possible yet, which is not the same as "no backups".
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id}/backups (the `PostgresListBackupsById` operationId).
+	PostgresListBackupsByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresListBackupsByIdResponse, error)
+
+	// PostgresCreateBackupByIdWithBodyWithResponse Request a manual backup
+	//
+	// Manual backups never expire, so at most 5 live ones per cluster — they
+	// would otherwise eat the repository quota the nightly automatic backups need.
+	// The row starts ``requested``; the node takes it from there.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+	PostgresCreateBackupByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresCreateBackupByIdResponse, error)
+
+	// PostgresCreateBackupByIdWithResponse Request a manual backup
+	//
+	// Manual backups never expire, so at most 5 live ones per cluster — they
+	// would otherwise eat the repository quota the nightly automatic backups need.
+	// The row starts ``requested``; the node takes it from there.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+	PostgresCreateBackupByIdWithResponse(ctx context.Context, clusterId string, body PostgresCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresCreateBackupByIdResponse, error)
+
+	// PostgresDeleteBackupByIdWithResponse Delete a backup
+	//
+	// 202: the row goes to ``deleting`` and the region expires it. The newest
+	// completed backup cannot be deleted — the region never expires it, so the
+	// request would hang forever.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /pg-clusters/{cluster_id}/backups/{backup_id} (the `PostgresDeleteBackupById` operationId).
+	PostgresDeleteBackupByIdWithResponse(ctx context.Context, clusterId string, backupId string, reqEditors ...RequestEditorFn) (*PostgresDeleteBackupByIdResponse, error)
+
+	// PostgresGetClusterCaByIdWithResponse Download the cluster CA certificate
+	//
+	// Per-cluster CA, for connecting with ``sslmode=verify-full``.
+	// ``ready: false`` while the region has not issued it yet.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id}/ca (the `PostgresGetClusterCaById` operationId).
+	PostgresGetClusterCaByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresGetClusterCaByIdResponse, error)
+
+	// PostgresReplaceNodeByIdWithResponse Replace one node
+	//
+	// Re-create one node, current image or not — the ops escape hatch.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/nodes/{ordinal}/replace (the `PostgresReplaceNodeById` operationId).
+	PostgresReplaceNodeByIdWithResponse(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*PostgresReplaceNodeByIdResponse, error)
+
+	// PostgresGetParametersByIdWithResponse Server parameters and their catalog
+	//
+	// ``parameters`` is the intent, ``applied_parameters`` is what the region
+	// confirmed reached the cluster, and ``catalog`` carries the allowed range of
+	// each parameter already computed for this cluster's plan.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /pg-clusters/{cluster_id}/parameters (the `PostgresGetParametersById` operationId).
+	PostgresGetParametersByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresGetParametersByIdResponse, error)
+
+	// PostgresUpdateParametersByIdWithBodyWithResponse Replace server parameters
+	//
+	// A full replacement, not a merge: a parameter absent from the request is
+	// cleared. Parameters marked ``restart`` in the catalog only take effect after
+	// ``POST …/restart``.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+	PostgresUpdateParametersByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresUpdateParametersByIdResponse, error)
+
+	// PostgresUpdateParametersByIdWithResponse Replace server parameters
+	//
+	// A full replacement, not a merge: a parameter absent from the request is
+	// cleared. Parameters marked ``restart`` in the catalog only take effect after
+	// ``POST …/restart``.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+	PostgresUpdateParametersByIdWithResponse(ctx context.Context, clusterId string, body PostgresUpdateParametersByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresUpdateParametersByIdResponse, error)
+
+	// PostgresChangePlanByIdWithBodyWithResponse Change the node plan
+	//
+	// Upwards only: memory, vCPU and disk of the new plan must be at least the
+	// current ones. Nodes are resized one at a time, replicas first and the leader
+	// last — a single-node cluster is down for about a minute, an ha one fails
+	// over once. Watch ``plan_change_pending``.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+	PostgresChangePlanByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangePlanByIdResponse, error)
+
+	// PostgresChangePlanByIdWithResponse Change the node plan
+	//
+	// Upwards only: memory, vCPU and disk of the new plan must be at least the
+	// current ones. Nodes are resized one at a time, replicas first and the leader
+	// last — a single-node cluster is down for about a minute, an ha one fails
+	// over once. Watch ``plan_change_pending``.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+	PostgresChangePlanByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangePlanByIdResponse, error)
+
+	// PostgresReplaceOutdatedNodesByIdWithResponse Replace outdated nodes with the newest image
+	//
+	// Marks every live node whose VM is not on the newest ready image build in
+	// the region. Replacements run one at a time — replicas, leader, witness — and
+	// the database stays reachable throughout. ``requested: 0`` means every node
+	// is already current.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/replace-nodes (the `PostgresReplaceOutdatedNodesById` operationId).
+	PostgresReplaceOutdatedNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresReplaceOutdatedNodesByIdResponse, error)
+
+	// PostgresRestartClusterByIdWithResponse Request a restart
+	//
+	// Restarts nodes to apply postmaster-level parameters — replicas first,
+	// leader last. ``restart_pending_ack`` stays true until the region confirms.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/restart (the `PostgresRestartClusterById` operationId).
+	PostgresRestartClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresRestartClusterByIdResponse, error)
+
+	// PostgresResetRolePasswordByIdWithResponse Issue a new password for a role
+	//
+	// The new password is in this response and nowhere else.
+	//
+	// ``applied: false`` means the region has not run ``ALTER ROLE`` yet — **the
+	// database still accepts the old password until it does.** Do not treat the
+	// 200 as the moment the old one stopped working.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /pg-clusters/{cluster_id}/roles/{role}/password (the `PostgresResetRolePasswordById` operationId).
+	PostgresResetRolePasswordByIdWithResponse(ctx context.Context, clusterId string, role string, reqEditors ...RequestEditorFn) (*PostgresResetRolePasswordByIdResponse, error)
+
+	// PostgresChangeTopologyByIdWithBodyWithResponse Change the topology (single ↔ ha)
+	//
+	// Growing to ha adds nodes without downtime; shrinking switches the leader
+	// off any node being removed first. Price follows immediately (plan × nodes).
+	// Watch ``topology_change_pending``.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+	PostgresChangeTopologyByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangeTopologyByIdResponse, error)
+
+	// PostgresChangeTopologyByIdWithResponse Change the topology (single ↔ ha)
+	//
+	// Growing to ha adds nodes without downtime; shrinking switches the leader
+	// off any node being removed first. Price follows immediately (plan × nodes).
+	// Watch ``topology_change_pending``.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+	PostgresChangeTopologyByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangeTopologyByIdResponse, error)
 
 	// PostgresListRegionsWithResponse Postgres regions, versions, plans and topologies
 	//
@@ -21060,6 +28341,163 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with DELETE /ssh-keys/{key_id} (the `SshKeysDeleteSshKey` operationId).
 	SshKeysDeleteSshKeyWithResponse(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*SshKeysDeleteSshKeyResponse, error)
 
+	// ValkeyListClustersByAccountWithResponse List Valkey clusters in a project
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /valkey-clusters (the `ValkeyListClustersByAccount` operationId).
+	ValkeyListClustersByAccountWithResponse(ctx context.Context, params *ValkeyListClustersByAccountParams, reqEditors ...RequestEditorFn) (*ValkeyListClustersByAccountResponse, error)
+
+	// ValkeyDeleteClusterByIdWithResponse Delete a Valkey cluster
+	//
+	// 202: the row goes to ``deleting`` and the region tears it down. A cache
+	// has no backups — the data is gone.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /valkey-clusters/{cluster_id} (the `ValkeyDeleteClusterById` operationId).
+	ValkeyDeleteClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyDeleteClusterByIdResponse, error)
+
+	// ValkeyGetClusterByIdWithResponse Get a Valkey cluster
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /valkey-clusters/{cluster_id} (the `ValkeyGetClusterById` operationId).
+	ValkeyGetClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyGetClusterByIdResponse, error)
+
+	// ValkeyUpdateAllowlistByIdWithBodyWithResponse Replace the allowed IP list
+	//
+	// For a public cluster this list **is** the network filter — there is no
+	// second layer behind it. An empty list means no client can connect.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+	ValkeyUpdateAllowlistByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyUpdateAllowlistByIdResponse, error)
+
+	// ValkeyUpdateAllowlistByIdWithResponse Replace the allowed IP list
+	//
+	// For a public cluster this list **is** the network filter — there is no
+	// second layer behind it. An empty list means no client can connect.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+	ValkeyUpdateAllowlistByIdWithResponse(ctx context.Context, clusterId string, body ValkeyUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyUpdateAllowlistByIdResponse, error)
+
+	// ValkeyGetClusterCaByIdWithResponse Download the cluster CA certificate
+	//
+	// The cluster is TLS-only; this CA is what a ``rediss://`` client verifies
+	// against. ``ready: false`` while the region has not issued it — the same
+	// shape as the Postgres CA and the Kubernetes kubeconfig.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /valkey-clusters/{cluster_id}/ca (the `ValkeyGetClusterCaById` operationId).
+	ValkeyGetClusterCaByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyGetClusterCaByIdResponse, error)
+
+	// ValkeyReplaceNodeByIdWithResponse Replace one node
+	//
+	// Re-create one node, current image or not — the ops escape hatch.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /valkey-clusters/{cluster_id}/nodes/{ordinal}/replace (the `ValkeyReplaceNodeById` operationId).
+	ValkeyReplaceNodeByIdWithResponse(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*ValkeyReplaceNodeByIdResponse, error)
+
+	// ValkeyUpdateParamsByIdWithBodyWithResponse Update cache parameters
+	//
+	// maxmemory, eviction policy, max clients and persistence. The region
+	// applies them to the running server, so no restart is needed.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+	ValkeyUpdateParamsByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyUpdateParamsByIdResponse, error)
+
+	// ValkeyUpdateParamsByIdWithResponse Update cache parameters
+	//
+	// maxmemory, eviction policy, max clients and persistence. The region
+	// applies them to the running server, so no restart is needed.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+	ValkeyUpdateParamsByIdWithResponse(ctx context.Context, clusterId string, body ValkeyUpdateParamsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyUpdateParamsByIdResponse, error)
+
+	// ValkeyResetPasswordByIdWithResponse Issue a new password
+	//
+	// The new password is in this response and nowhere else. ``applied:
+	// false`` means the region has not pushed it to the server yet — **the old
+	// password still works until it does.**
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /valkey-clusters/{cluster_id}/password (the `ValkeyResetPasswordById` operationId).
+	ValkeyResetPasswordByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyResetPasswordByIdResponse, error)
+
+	// ValkeyChangePlanByIdWithBodyWithResponse Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+	ValkeyChangePlanByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangePlanByIdResponse, error)
+
+	// ValkeyChangePlanByIdWithResponse Change the node plan
+	//
+	// Upgrade only: memory, vCPU and disk of the new plan must not be below
+	// the current ones. Nodes are resized one at a time (each reboots); the
+	// memory and connection limits rise once every node is on the new plan.
+	// `plan_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+	ValkeyChangePlanByIdWithResponse(ctx context.Context, clusterId string, body ValkeyChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangePlanByIdResponse, error)
+
+	// ValkeyReplaceOutdatedNodesByIdWithResponse Replace outdated nodes with the newest image
+	//
+	// One node at a time, replicas before the leader. ``requested: 0`` means
+	// every node is already on the newest image build in the region.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodesById` operationId).
+	ValkeyReplaceOutdatedNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyReplaceOutdatedNodesByIdResponse, error)
+
+	// ValkeyChangeTopologyByIdWithBodyWithResponse Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+	ValkeyChangeTopologyByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyByIdResponse, error)
+
+	// ValkeyChangeTopologyByIdWithResponse Change the topology
+	//
+	// single ↔ ha. Growing adds a replica and a read endpoint without
+	// downtime; shrinking removes the replica and the read endpoint at once
+	// (a switchover happens if the primary is on the replica).
+	// `topology_change_pending` on the cluster shows the change is still in
+	// progress.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+	ValkeyChangeTopologyByIdWithResponse(ctx context.Context, clusterId string, body ValkeyChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyByIdResponse, error)
+
 	// ValkeyListRegionsWithResponse Valkey regions, versions, plans and cache modes
 	//
 	// Versions are per-region: one is offered only where a ready node image is
@@ -21069,6 +28507,157 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /valkey/regions (the `ValkeyListRegions` operationId).
 	ValkeyListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ValkeyListRegionsResponse, error)
+
+	// VmsListVmsByAccountWithResponse List VMs in a project
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
+	VmsListVmsByAccountWithResponse(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*VmsListVmsByAccountResponse, error)
+
+	// VmsDeleteVmByIdWithResponse Delete a VM
+	//
+	// 202, and the body says which of the two things happened.
+	//
+	// A VM that was never provisioned is gone when this returns (``deleted``).
+	// A provisioned one is moved to ``deleting`` and a region tears it down over
+	// the following minutes — it stays visible in ``GET …/vms`` until then, so a
+	// script that deletes and immediately re-creates by name has to wait.
+	//
+	// This used to answer 204, which could not express the difference; the
+	// service's own return value cannot either (it reports ``success`` for both
+	// and puts the distinction in a human-readable message).
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /vms/{vm_id} (the `VmsDeleteVmById` operationId).
+	VmsDeleteVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsDeleteVmByIdResponse, error)
+
+	// VmsGetVmByIdWithResponse Get a VM
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /vms/{vm_id} (the `VmsGetVmById` operationId).
+	VmsGetVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmByIdResponse, error)
+
+	// VmsListBackupsByIdWithResponse List VM backups
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /vms/{vm_id}/backups (the `VmsListBackupsById` operationId).
+	VmsListBackupsByIdWithResponse(ctx context.Context, vmId string, params *VmsListBackupsByIdParams, reqEditors ...RequestEditorFn) (*VmsListBackupsByIdResponse, error)
+
+	// VmsCreateBackupByIdWithBodyWithResponse Create a VM backup
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+	VmsCreateBackupByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsCreateBackupByIdResponse, error)
+
+	// VmsCreateBackupByIdWithResponse Create a VM backup
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+	VmsCreateBackupByIdWithResponse(ctx context.Context, vmId string, body VmsCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsCreateBackupByIdResponse, error)
+
+	// VmsDeleteBackupByIdWithResponse Delete a VM backup
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
+	VmsDeleteBackupByIdWithResponse(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*VmsDeleteBackupByIdResponse, error)
+
+	// VmsRestartVmByIdWithResponse Restart a VM
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/restart (the `VmsRestartVmById` operationId).
+	VmsRestartVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsRestartVmByIdResponse, error)
+
+	// VmsStartVmByIdWithBodyWithResponse Start a VM
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+	VmsStartVmByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsStartVmByIdResponse, error)
+
+	// VmsStartVmByIdWithResponse Start a VM
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+	VmsStartVmByIdWithResponse(ctx context.Context, vmId string, body VmsStartVmByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsStartVmByIdResponse, error)
+
+	// VmsStopVmByIdWithResponse Stop a VM
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
+	VmsStopVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsStopVmByIdResponse, error)
+
+	// VolumesListVolumesByAccountWithResponse List block volumes in a project
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /volumes (the `VolumesListVolumesByAccount` operationId).
+	VolumesListVolumesByAccountWithResponse(ctx context.Context, params *VolumesListVolumesByAccountParams, reqEditors ...RequestEditorFn) (*VolumesListVolumesByAccountResponse, error)
+
+	// VolumesDeleteVolumeByIdWithResponse Delete a block volume
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /volumes/{volume_id} (the `VolumesDeleteVolumeById` operationId).
+	VolumesDeleteVolumeByIdWithResponse(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*VolumesDeleteVolumeByIdResponse, error)
+
+	// VolumesGetVolumeByIdWithResponse Get a block volume
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /volumes/{volume_id} (the `VolumesGetVolumeById` operationId).
+	VolumesGetVolumeByIdWithResponse(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*VolumesGetVolumeByIdResponse, error)
+
+	// VolumesResizeVolumeByIdWithBodyWithResponse Grow a block volume
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+	VolumesResizeVolumeByIdWithBodyWithResponse(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VolumesResizeVolumeByIdResponse, error)
+
+	// VolumesResizeVolumeByIdWithResponse Grow a block volume
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+	VolumesResizeVolumeByIdWithResponse(ctx context.Context, volumeId string, body VolumesResizeVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VolumesResizeVolumeByIdResponse, error)
+
+	// VolumesAttachVolumeByIdWithBodyWithResponse Attach a volume to a VM
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+	VolumesAttachVolumeByIdWithBodyWithResponse(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VolumesAttachVolumeByIdResponse, error)
+
+	// VolumesAttachVolumeByIdWithResponse Attach a volume to a VM
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+	VolumesAttachVolumeByIdWithResponse(ctx context.Context, volumeId string, body VolumesAttachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VolumesAttachVolumeByIdResponse, error)
+
+	// VolumesDetachVolumeByIdWithBodyWithResponse Detach a volume from its VM
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+	VolumesDetachVolumeByIdWithBodyWithResponse(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VolumesDetachVolumeByIdResponse, error)
+
+	// VolumesDetachVolumeByIdWithResponse Detach a volume from its VM
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+	VolumesDetachVolumeByIdWithResponse(ctx context.Context, volumeId string, body VolumesDetachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VolumesDetachVolumeByIdResponse, error)
 
 	// NetworkingListVpcsWithResponse List VPCs
 	//
@@ -23170,6 +30759,712 @@ func (r NetworkingDetachFloatingIpResponse) ContentType() string {
 	return ""
 }
 
+type FunctionsListFunctionsByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1Function
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FunctionsListFunctionsByAccountResponse) GetJSON200() *PageV1Function {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsListFunctionsByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsListFunctionsByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsListFunctionsByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsListFunctionsByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsListFunctionsByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsDeleteFunctionRouteByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsDeleteFunctionRouteByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsDeleteFunctionRouteByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsDeleteFunctionRouteByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsDeleteFunctionRouteByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsDeleteFunctionRouteByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsGetFunctionRouteByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Function
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FunctionsGetFunctionRouteByIdResponse) GetJSON200() *V1Function {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsGetFunctionRouteByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsGetFunctionRouteByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsGetFunctionRouteByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsGetFunctionRouteByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsGetFunctionRouteByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsUpdateFunctionRouteByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Function
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FunctionsUpdateFunctionRouteByIdResponse) GetJSON200() *V1Function {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsUpdateFunctionRouteByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsUpdateFunctionRouteByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsUpdateFunctionRouteByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsUpdateFunctionRouteByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsUpdateFunctionRouteByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsDeployFunctionRouteByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1FunctionDeployResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FunctionsDeployFunctionRouteByIdResponse) GetJSON200() *V1FunctionDeployResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsDeployFunctionRouteByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsDeployFunctionRouteByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsDeployFunctionRouteByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsDeployFunctionRouteByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsDeployFunctionRouteByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsListEnvVarsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1EnvVar
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r FunctionsListEnvVarsByIdResponse) GetJSON200() *PageV1EnvVar {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsListEnvVarsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsListEnvVarsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsListEnvVarsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsListEnvVarsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsListEnvVarsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsAddEnvVarByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *V1EnvVar
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r FunctionsAddEnvVarByIdResponse) GetJSON201() *V1EnvVar {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsAddEnvVarByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsAddEnvVarByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsAddEnvVarByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsAddEnvVarByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsAddEnvVarByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type FunctionsDeleteEnvVarRouteByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r FunctionsDeleteEnvVarRouteByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r FunctionsDeleteEnvVarRouteByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r FunctionsDeleteEnvVarRouteByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r FunctionsDeleteEnvVarRouteByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r FunctionsDeleteEnvVarRouteByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesListClustersByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1K8sCluster
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KubernetesListClustersByAccountResponse) GetJSON200() *PageV1K8sCluster {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesListClustersByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesListClustersByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesListClustersByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesListClustersByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesListClustersByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesDeleteClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r KubernetesDeleteClusterByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesDeleteClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesDeleteClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesDeleteClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesDeleteClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesDeleteClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesGetClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1K8sCluster
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KubernetesGetClusterByIdResponse) GetJSON200() *V1K8sCluster {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesGetClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesGetClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesGetClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesGetClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesGetClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesGetKubeconfigByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Kubeconfig
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KubernetesGetKubeconfigByIdResponse) GetJSON200() *V1Kubeconfig {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesGetKubeconfigByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesGetKubeconfigByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesGetKubeconfigByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesGetKubeconfigByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesGetKubeconfigByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesScaleNodePoolByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1K8sNodePool
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KubernetesScaleNodePoolByIdResponse) GetJSON200() *V1K8sNodePool {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesScaleNodePoolByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesScaleNodePoolByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesScaleNodePoolByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesScaleNodePoolByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesScaleNodePoolByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesListClusterNodesByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *[]V1K8sNode
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KubernetesListClusterNodesByIdResponse) GetJSON200() *[]V1K8sNode {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesListClusterNodesByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesListClusterNodesByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesListClusterNodesByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesListClusterNodesByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesListClusterNodesByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KubernetesUpgradeClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1K8sCluster
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KubernetesUpgradeClusterByIdResponse) GetJSON200() *V1K8sCluster {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KubernetesUpgradeClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KubernetesUpgradeClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KubernetesUpgradeClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KubernetesUpgradeClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KubernetesUpgradeClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type KubernetesListRegionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -23205,6 +31500,54 @@ func (r KubernetesListRegionsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r KubernetesListRegionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersListLbsByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageLoadBalancerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersListLbsByAccountResponse) GetJSON200() *PageLoadBalancerResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersListLbsByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersListLbsByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersListLbsByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersListLbsByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersListLbsByAccountResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -23431,6 +31774,938 @@ func (r LoadBalancersListRegionsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r LoadBalancersListRegionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersDeleteLbByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r LoadBalancersDeleteLbByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersDeleteLbByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersDeleteLbByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersDeleteLbByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersDeleteLbByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersDeleteLbByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersGetLbByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LoadBalancerDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersGetLbByIdResponse) GetJSON200() *LoadBalancerDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersGetLbByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersGetLbByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersGetLbByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersGetLbByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersGetLbByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersUpdateLbByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LoadBalancerDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersUpdateLbByIdResponse) GetJSON200() *LoadBalancerDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersUpdateLbByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersUpdateLbByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersUpdateLbByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersUpdateLbByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersUpdateLbByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersGetLbConfigByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBConfigResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersGetLbConfigByIdResponse) GetJSON200() *LBConfigResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersGetLbConfigByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersGetLbConfigByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersGetLbConfigByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersGetLbConfigByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersGetLbConfigByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPutLbConfigByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBConfigResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPutLbConfigByIdResponse) GetJSON200() *LBConfigResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPutLbConfigByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPutLbConfigByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPutLbConfigByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPutLbConfigByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPutLbConfigByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersCreateListenerByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *LBListenerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r LoadBalancersCreateListenerByIdResponse) GetJSON201() *LBListenerResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersCreateListenerByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersCreateListenerByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersCreateListenerByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersCreateListenerByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersCreateListenerByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersDeleteListenerByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersDeleteListenerByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersDeleteListenerByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersDeleteListenerByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersDeleteListenerByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersDeleteListenerByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPatchListenerByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBListenerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPatchListenerByIdResponse) GetJSON200() *LBListenerResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPatchListenerByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPatchListenerByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPatchListenerByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPatchListenerByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPatchListenerByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPutListenerCertificatesByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBListenerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPutListenerCertificatesByIdResponse) GetJSON200() *LBListenerResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPutListenerCertificatesByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPutListenerCertificatesByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPutListenerCertificatesByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPutListenerCertificatesByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPutListenerCertificatesByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersCreateListenerRuleByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *LBListenerRuleResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r LoadBalancersCreateListenerRuleByIdResponse) GetJSON201() *LBListenerRuleResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersCreateListenerRuleByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersCreateListenerRuleByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersCreateListenerRuleByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersCreateListenerRuleByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersCreateListenerRuleByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPutListenerRulesByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBListenerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPutListenerRulesByIdResponse) GetJSON200() *LBListenerResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPutListenerRulesByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPutListenerRulesByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPutListenerRulesByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPutListenerRulesByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPutListenerRulesByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersDeleteListenerRuleByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersDeleteListenerRuleByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersDeleteListenerRuleByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersDeleteListenerRuleByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersDeleteListenerRuleByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersDeleteListenerRuleByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPatchListenerRuleByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBListenerRuleResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPatchListenerRuleByIdResponse) GetJSON200() *LBListenerRuleResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPatchListenerRuleByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPatchListenerRuleByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPatchListenerRuleByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPatchListenerRuleByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPatchListenerRuleByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPutLbManagedConfigByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBConfigResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPutLbManagedConfigByIdResponse) GetJSON200() *LBConfigResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPutLbManagedConfigByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPutLbManagedConfigByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPutLbManagedConfigByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPutLbManagedConfigByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPutLbManagedConfigByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersCreateTargetGroupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *LBTargetGroupResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r LoadBalancersCreateTargetGroupByIdResponse) GetJSON201() *LBTargetGroupResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersCreateTargetGroupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersCreateTargetGroupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersCreateTargetGroupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersCreateTargetGroupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersCreateTargetGroupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersDeleteTargetGroupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersDeleteTargetGroupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersDeleteTargetGroupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersDeleteTargetGroupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersDeleteTargetGroupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersDeleteTargetGroupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPatchTargetGroupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBTargetGroupResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPatchTargetGroupByIdResponse) GetJSON200() *LBTargetGroupResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPatchTargetGroupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPatchTargetGroupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPatchTargetGroupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPatchTargetGroupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPatchTargetGroupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersAddTargetByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *LBTargetGroupResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r LoadBalancersAddTargetByIdResponse) GetJSON201() *LBTargetGroupResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersAddTargetByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersAddTargetByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersAddTargetByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersAddTargetByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersAddTargetByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersPutTargetsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LBTargetGroupResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersPutTargetsByIdResponse) GetJSON200() *LBTargetGroupResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersPutTargetsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersPutTargetsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersPutTargetsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersPutTargetsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersPutTargetsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersDeleteTargetByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersDeleteTargetByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersDeleteTargetByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersDeleteTargetByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersDeleteTargetByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersDeleteTargetByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -24116,6 +33391,774 @@ func (r ObjectStorageGetUsageResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ObjectStorageGetUsageResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresListClustersByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PagePgClusterResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresListClustersByAccountResponse) GetJSON200() *PagePgClusterResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresListClustersByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresListClustersByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresListClustersByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresListClustersByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresListClustersByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresDeleteClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r PostgresDeleteClusterByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresDeleteClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresDeleteClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresDeleteClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresDeleteClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresDeleteClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresGetClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresGetClusterByIdResponse) GetJSON200() *PgClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresGetClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresGetClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresGetClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresGetClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresGetClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresUpdateAllowlistByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresUpdateAllowlistByIdResponse) GetJSON200() *PgClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresUpdateAllowlistByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresUpdateAllowlistByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresUpdateAllowlistByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresUpdateAllowlistByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresUpdateAllowlistByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresListBackupsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgBackupsListResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresListBackupsByIdResponse) GetJSON200() *PgBackupsListResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresListBackupsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresListBackupsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresListBackupsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresListBackupsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresListBackupsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresCreateBackupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *PgBackupsListResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r PostgresCreateBackupByIdResponse) GetJSON201() *PgBackupsListResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresCreateBackupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresCreateBackupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresCreateBackupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresCreateBackupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresCreateBackupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresDeleteBackupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r PostgresDeleteBackupByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresDeleteBackupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresDeleteBackupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresDeleteBackupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresDeleteBackupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresDeleteBackupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresGetClusterCaByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgCaResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresGetClusterCaByIdResponse) GetJSON200() *PgCaResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresGetClusterCaByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresGetClusterCaByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresGetClusterCaByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresGetClusterCaByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresGetClusterCaByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresReplaceNodeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgReplaceNodesResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresReplaceNodeByIdResponse) GetJSON200() *PgReplaceNodesResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresReplaceNodeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresReplaceNodeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresReplaceNodeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresReplaceNodeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresReplaceNodeByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresGetParametersByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgParametersResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresGetParametersByIdResponse) GetJSON200() *PgParametersResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresGetParametersByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresGetParametersByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresGetParametersByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresGetParametersByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresGetParametersByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresUpdateParametersByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgParametersResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresUpdateParametersByIdResponse) GetJSON200() *PgParametersResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresUpdateParametersByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresUpdateParametersByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresUpdateParametersByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresUpdateParametersByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresUpdateParametersByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresChangePlanByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresChangePlanByIdResponse) GetJSON200() *PgClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresChangePlanByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresChangePlanByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresChangePlanByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresChangePlanByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresChangePlanByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresReplaceOutdatedNodesByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgReplaceNodesResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresReplaceOutdatedNodesByIdResponse) GetJSON200() *PgReplaceNodesResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresReplaceOutdatedNodesByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresReplaceOutdatedNodesByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresReplaceOutdatedNodesByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresReplaceOutdatedNodesByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresReplaceOutdatedNodesByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresRestartClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgParametersResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresRestartClusterByIdResponse) GetJSON200() *PgParametersResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresRestartClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresRestartClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresRestartClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresRestartClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresRestartClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresResetRolePasswordByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgRolePasswordResetResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresResetRolePasswordByIdResponse) GetJSON200() *PgRolePasswordResetResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresResetRolePasswordByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresResetRolePasswordByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresResetRolePasswordByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresResetRolePasswordByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresResetRolePasswordByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresChangeTopologyByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresChangeTopologyByIdResponse) GetJSON200() *PgClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresChangeTopologyByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresChangeTopologyByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresChangeTopologyByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresChangeTopologyByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresChangeTopologyByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -29455,6 +39498,534 @@ func (r SshKeysDeleteSshKeyResponse) ContentType() string {
 	return ""
 }
 
+type ValkeyListClustersByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageValkeyClusterResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyListClustersByAccountResponse) GetJSON200() *PageValkeyClusterResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyListClustersByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyListClustersByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyListClustersByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyListClustersByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyListClustersByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyDeleteClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r ValkeyDeleteClusterByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyDeleteClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyDeleteClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyDeleteClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyDeleteClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyDeleteClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyGetClusterByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyGetClusterByIdResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyGetClusterByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyGetClusterByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyGetClusterByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyGetClusterByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyGetClusterByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyUpdateAllowlistByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyUpdateAllowlistByIdResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyUpdateAllowlistByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyUpdateAllowlistByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyUpdateAllowlistByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyUpdateAllowlistByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyUpdateAllowlistByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyGetClusterCaByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyCaResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyGetClusterCaByIdResponse) GetJSON200() *ValkeyCaResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyGetClusterCaByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyGetClusterCaByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyGetClusterCaByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyGetClusterCaByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyGetClusterCaByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyReplaceNodeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyReplaceNodesResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyReplaceNodeByIdResponse) GetJSON200() *ValkeyReplaceNodesResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyReplaceNodeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyReplaceNodeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyReplaceNodeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyReplaceNodeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyReplaceNodeByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyUpdateParamsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyUpdateParamsByIdResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyUpdateParamsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyUpdateParamsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyUpdateParamsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyUpdateParamsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyUpdateParamsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyResetPasswordByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyPasswordResetResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyResetPasswordByIdResponse) GetJSON200() *ValkeyPasswordResetResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyResetPasswordByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyResetPasswordByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyResetPasswordByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyResetPasswordByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyResetPasswordByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyChangePlanByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyChangePlanByIdResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyChangePlanByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyChangePlanByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyChangePlanByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyChangePlanByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyChangePlanByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyReplaceOutdatedNodesByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyReplaceNodesResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyReplaceOutdatedNodesByIdResponse) GetJSON200() *ValkeyReplaceNodesResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyReplaceOutdatedNodesByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyReplaceOutdatedNodesByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyReplaceOutdatedNodesByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyReplaceOutdatedNodesByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyReplaceOutdatedNodesByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ValkeyChangeTopologyByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ValkeyClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ValkeyChangeTopologyByIdResponse) GetJSON200() *ValkeyClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ValkeyChangeTopologyByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r ValkeyChangeTopologyByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ValkeyChangeTopologyByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ValkeyChangeTopologyByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ValkeyChangeTopologyByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ValkeyListRegionsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -29490,6 +40061,726 @@ func (r ValkeyListRegionsResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ValkeyListRegionsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsListVmsByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1VM
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsListVmsByAccountResponse) GetJSON200() *PageV1VM {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsListVmsByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsListVmsByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsListVmsByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsListVmsByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsListVmsByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsDeleteVmByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r VmsDeleteVmByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsDeleteVmByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsDeleteVmByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsDeleteVmByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsDeleteVmByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsDeleteVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsGetVmByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1VM
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsGetVmByIdResponse) GetJSON200() *V1VM {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsGetVmByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsGetVmByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsGetVmByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsGetVmByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsGetVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsListBackupsByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1Backup
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsListBackupsByIdResponse) GetJSON200() *PageV1Backup {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsListBackupsByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsListBackupsByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsListBackupsByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsListBackupsByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsListBackupsByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsCreateBackupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *V1Backup
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r VmsCreateBackupByIdResponse) GetJSON201() *V1Backup {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsCreateBackupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsCreateBackupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsCreateBackupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsCreateBackupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsCreateBackupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsDeleteBackupByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r VmsDeleteBackupByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsDeleteBackupByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsDeleteBackupByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsDeleteBackupByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsDeleteBackupByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsDeleteBackupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsRestartVmByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1PowerActionResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsRestartVmByIdResponse) GetJSON200() *V1PowerActionResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsRestartVmByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsRestartVmByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsRestartVmByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsRestartVmByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsRestartVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsStartVmByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1PowerActionResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsStartVmByIdResponse) GetJSON200() *V1PowerActionResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsStartVmByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsStartVmByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsStartVmByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsStartVmByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsStartVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsStopVmByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1PowerActionResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsStopVmByIdResponse) GetJSON200() *V1PowerActionResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsStopVmByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsStopVmByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsStopVmByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsStopVmByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsStopVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VolumesListVolumesByAccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageV1Volume
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VolumesListVolumesByAccountResponse) GetJSON200() *PageV1Volume {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VolumesListVolumesByAccountResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VolumesListVolumesByAccountResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VolumesListVolumesByAccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VolumesListVolumesByAccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VolumesListVolumesByAccountResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VolumesDeleteVolumeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r VolumesDeleteVolumeByIdResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VolumesDeleteVolumeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VolumesDeleteVolumeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VolumesDeleteVolumeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VolumesDeleteVolumeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VolumesDeleteVolumeByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VolumesGetVolumeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Volume
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VolumesGetVolumeByIdResponse) GetJSON200() *V1Volume {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VolumesGetVolumeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VolumesGetVolumeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VolumesGetVolumeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VolumesGetVolumeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VolumesGetVolumeByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VolumesResizeVolumeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Volume
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VolumesResizeVolumeByIdResponse) GetJSON200() *V1Volume {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VolumesResizeVolumeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VolumesResizeVolumeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VolumesResizeVolumeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VolumesResizeVolumeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VolumesResizeVolumeByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VolumesAttachVolumeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Volume
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VolumesAttachVolumeByIdResponse) GetJSON200() *V1Volume {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VolumesAttachVolumeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VolumesAttachVolumeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VolumesAttachVolumeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VolumesAttachVolumeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VolumesAttachVolumeByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VolumesDetachVolumeByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Volume
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VolumesDetachVolumeByIdResponse) GetJSON200() *V1Volume {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VolumesDetachVolumeByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VolumesDetachVolumeByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VolumesDetachVolumeByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VolumesDetachVolumeByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VolumesDetachVolumeByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -30607,6 +41898,279 @@ func (c *ClientWithResponses) NetworkingDetachFloatingIpWithResponse(ctx context
 	return ParseNetworkingDetachFloatingIpResponse(rsp)
 }
 
+// FunctionsListFunctionsByAccountWithResponse List functions
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /functions (the `FunctionsListFunctionsByAccount` operationId).
+func (c *ClientWithResponses) FunctionsListFunctionsByAccountWithResponse(ctx context.Context, params *FunctionsListFunctionsByAccountParams, reqEditors ...RequestEditorFn) (*FunctionsListFunctionsByAccountResponse, error) {
+	rsp, err := c.FunctionsListFunctionsByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsListFunctionsByAccountResponse(rsp)
+}
+
+// FunctionsDeleteFunctionRouteByIdWithResponse Delete a function
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /functions/{function_id} (the `FunctionsDeleteFunctionRouteById` operationId).
+func (c *ClientWithResponses) FunctionsDeleteFunctionRouteByIdWithResponse(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*FunctionsDeleteFunctionRouteByIdResponse, error) {
+	rsp, err := c.FunctionsDeleteFunctionRouteById(ctx, functionId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsDeleteFunctionRouteByIdResponse(rsp)
+}
+
+// FunctionsGetFunctionRouteByIdWithResponse Get a function
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /functions/{function_id} (the `FunctionsGetFunctionRouteById` operationId).
+func (c *ClientWithResponses) FunctionsGetFunctionRouteByIdWithResponse(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*FunctionsGetFunctionRouteByIdResponse, error) {
+	rsp, err := c.FunctionsGetFunctionRouteById(ctx, functionId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsGetFunctionRouteByIdResponse(rsp)
+}
+
+// FunctionsUpdateFunctionRouteByIdWithBodyWithResponse Update a function (code and/or configuration)
+//
+// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+// PATCH the file map / handler / runtime / name / vpc_id, then POST
+// …/deploy to build and roll the new code (the "publish" analogue).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+func (c *ClientWithResponses) FunctionsUpdateFunctionRouteByIdWithBodyWithResponse(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FunctionsUpdateFunctionRouteByIdResponse, error) {
+	rsp, err := c.FunctionsUpdateFunctionRouteByIdWithBody(ctx, functionId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsUpdateFunctionRouteByIdResponse(rsp)
+}
+
+// FunctionsUpdateFunctionRouteByIdWithResponse Update a function (code and/or configuration)
+//
+// AWS-parity update (UpdateFunctionCode + UpdateFunctionConfiguration):
+// PATCH the file map / handler / runtime / name / vpc_id, then POST
+// …/deploy to build and roll the new code (the "publish" analogue).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /functions/{function_id} (the `FunctionsUpdateFunctionRouteById` operationId).
+func (c *ClientWithResponses) FunctionsUpdateFunctionRouteByIdWithResponse(ctx context.Context, functionId string, body FunctionsUpdateFunctionRouteByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FunctionsUpdateFunctionRouteByIdResponse, error) {
+	rsp, err := c.FunctionsUpdateFunctionRouteById(ctx, functionId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsUpdateFunctionRouteByIdResponse(rsp)
+}
+
+// FunctionsDeployFunctionRouteByIdWithResponse Build & deploy a function
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /functions/{function_id}/deploy (the `FunctionsDeployFunctionRouteById` operationId).
+func (c *ClientWithResponses) FunctionsDeployFunctionRouteByIdWithResponse(ctx context.Context, functionId string, reqEditors ...RequestEditorFn) (*FunctionsDeployFunctionRouteByIdResponse, error) {
+	rsp, err := c.FunctionsDeployFunctionRouteById(ctx, functionId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsDeployFunctionRouteByIdResponse(rsp)
+}
+
+// FunctionsListEnvVarsByIdWithResponse List environment variables
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /functions/{function_id}/env (the `FunctionsListEnvVarsById` operationId).
+func (c *ClientWithResponses) FunctionsListEnvVarsByIdWithResponse(ctx context.Context, functionId string, params *FunctionsListEnvVarsByIdParams, reqEditors ...RequestEditorFn) (*FunctionsListEnvVarsByIdResponse, error) {
+	rsp, err := c.FunctionsListEnvVarsById(ctx, functionId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsListEnvVarsByIdResponse(rsp)
+}
+
+// FunctionsAddEnvVarByIdWithBodyWithResponse Create or set an environment variable
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+func (c *ClientWithResponses) FunctionsAddEnvVarByIdWithBodyWithResponse(ctx context.Context, functionId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*FunctionsAddEnvVarByIdResponse, error) {
+	rsp, err := c.FunctionsAddEnvVarByIdWithBody(ctx, functionId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsAddEnvVarByIdResponse(rsp)
+}
+
+// FunctionsAddEnvVarByIdWithResponse Create or set an environment variable
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /functions/{function_id}/env (the `FunctionsAddEnvVarById` operationId).
+func (c *ClientWithResponses) FunctionsAddEnvVarByIdWithResponse(ctx context.Context, functionId string, body FunctionsAddEnvVarByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*FunctionsAddEnvVarByIdResponse, error) {
+	rsp, err := c.FunctionsAddEnvVarById(ctx, functionId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsAddEnvVarByIdResponse(rsp)
+}
+
+// FunctionsDeleteEnvVarRouteByIdWithResponse Delete an environment variable
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
+func (c *ClientWithResponses) FunctionsDeleteEnvVarRouteByIdWithResponse(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*FunctionsDeleteEnvVarRouteByIdResponse, error) {
+	rsp, err := c.FunctionsDeleteEnvVarRouteById(ctx, functionId, envVarId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseFunctionsDeleteEnvVarRouteByIdResponse(rsp)
+}
+
+// KubernetesListClustersByAccountWithResponse List Kubernetes clusters in a project
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /kubernetes-clusters (the `KubernetesListClustersByAccount` operationId).
+func (c *ClientWithResponses) KubernetesListClustersByAccountWithResponse(ctx context.Context, params *KubernetesListClustersByAccountParams, reqEditors ...RequestEditorFn) (*KubernetesListClustersByAccountResponse, error) {
+	rsp, err := c.KubernetesListClustersByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesListClustersByAccountResponse(rsp)
+}
+
+// KubernetesDeleteClusterByIdWithResponse Delete a Kubernetes cluster
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /kubernetes-clusters/{cluster_id} (the `KubernetesDeleteClusterById` operationId).
+func (c *ClientWithResponses) KubernetesDeleteClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesDeleteClusterByIdResponse, error) {
+	rsp, err := c.KubernetesDeleteClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesDeleteClusterByIdResponse(rsp)
+}
+
+// KubernetesGetClusterByIdWithResponse Get a Kubernetes cluster
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /kubernetes-clusters/{cluster_id} (the `KubernetesGetClusterById` operationId).
+func (c *ClientWithResponses) KubernetesGetClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesGetClusterByIdResponse, error) {
+	rsp, err := c.KubernetesGetClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesGetClusterByIdResponse(rsp)
+}
+
+// KubernetesGetKubeconfigByIdWithResponse Download the cluster-admin kubeconfig
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /kubernetes-clusters/{cluster_id}/kubeconfig (the `KubernetesGetKubeconfigById` operationId).
+func (c *ClientWithResponses) KubernetesGetKubeconfigByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesGetKubeconfigByIdResponse, error) {
+	rsp, err := c.KubernetesGetKubeconfigById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesGetKubeconfigByIdResponse(rsp)
+}
+
+// KubernetesScaleNodePoolByIdWithBodyWithResponse Scale a worker node pool
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+func (c *ClientWithResponses) KubernetesScaleNodePoolByIdWithBodyWithResponse(ctx context.Context, clusterId string, poolId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesScaleNodePoolByIdResponse, error) {
+	rsp, err := c.KubernetesScaleNodePoolByIdWithBody(ctx, clusterId, poolId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesScaleNodePoolByIdResponse(rsp)
+}
+
+// KubernetesScaleNodePoolByIdWithResponse Scale a worker node pool
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/node-pools/{pool_id}/scale (the `KubernetesScaleNodePoolById` operationId).
+func (c *ClientWithResponses) KubernetesScaleNodePoolByIdWithResponse(ctx context.Context, clusterId string, poolId string, body KubernetesScaleNodePoolByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesScaleNodePoolByIdResponse, error) {
+	rsp, err := c.KubernetesScaleNodePoolById(ctx, clusterId, poolId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesScaleNodePoolByIdResponse(rsp)
+}
+
+// KubernetesListClusterNodesByIdWithResponse List the cluster's nodes and their backing VMs
+//
+// Кто есть кто: нода Kubernetes ↔ машина TatNet.
+//
+// Нужен CSI-драйверу, у которого нет другого способа это узнать. Общего имени
+// у ноды и машины нет (Kubernetes зовёт ноду `talos-b25-9uq`, мы — своим
+// hostname), а положить идентичность в машинный конфиг нельзя: Talos не
+// принимает `machine.files` в immediate-режиме, и попытка доставить их так
+// роняет ЛЮБУЮ конвергенцию конфига живой ноды. Поэтому связка — ЗАПРОС по
+// адресу, а не снимок, розданный заранее: ноды добавляются и уезжают, и ответ
+// обязан пересчитываться.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
+func (c *ClientWithResponses) KubernetesListClusterNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesListClusterNodesByIdResponse, error) {
+	rsp, err := c.KubernetesListClusterNodesById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesListClusterNodesByIdResponse(rsp)
+}
+
+// KubernetesUpgradeClusterByIdWithBodyWithResponse Upgrade the Kubernetes version
+//
+// Bump the desired Kubernetes version; nodes are rolled one at a time
+// (control plane first) by the platform. Track progress via “upgrading“
+// on the cluster resource.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+func (c *ClientWithResponses) KubernetesUpgradeClusterByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesUpgradeClusterByIdResponse, error) {
+	rsp, err := c.KubernetesUpgradeClusterByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesUpgradeClusterByIdResponse(rsp)
+}
+
+// KubernetesUpgradeClusterByIdWithResponse Upgrade the Kubernetes version
+//
+// Bump the desired Kubernetes version; nodes are rolled one at a time
+// (control plane first) by the platform. Track progress via “upgrading“
+// on the cluster resource.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /kubernetes-clusters/{cluster_id}/upgrade (the `KubernetesUpgradeClusterById` operationId).
+func (c *ClientWithResponses) KubernetesUpgradeClusterByIdWithResponse(ctx context.Context, clusterId string, body KubernetesUpgradeClusterByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesUpgradeClusterByIdResponse, error) {
+	rsp, err := c.KubernetesUpgradeClusterById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKubernetesUpgradeClusterByIdResponse(rsp)
+}
+
 // KubernetesListRegionsWithResponse Kubernetes regions and offered versions
 //
 // Returns a wrapper object for the known response body format(s).
@@ -30618,6 +42182,19 @@ func (c *ClientWithResponses) KubernetesListRegionsWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseKubernetesListRegionsResponse(rsp)
+}
+
+// LoadBalancersListLbsByAccountWithResponse List load balancers
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /load-balancers (the `LoadBalancersListLbsByAccount` operationId).
+func (c *ClientWithResponses) LoadBalancersListLbsByAccountWithResponse(ctx context.Context, params *LoadBalancersListLbsByAccountParams, reqEditors ...RequestEditorFn) (*LoadBalancersListLbsByAccountResponse, error) {
+	rsp, err := c.LoadBalancersListLbsByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersListLbsByAccountResponse(rsp)
 }
 
 // LoadBalancersListLbCertificatesWithResponse List LB certificates
@@ -30715,6 +42292,481 @@ func (c *ClientWithResponses) LoadBalancersListRegionsWithResponse(ctx context.C
 		return nil, err
 	}
 	return ParseLoadBalancersListRegionsResponse(rsp)
+}
+
+// LoadBalancersDeleteLbByIdWithResponse Delete a load balancer
+//
+// Flips the INTENT (desired_state='deleting'); the api reconciler removes
+// the node VMs and stamps nodes_released_at, the region tears down OVN.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /load-balancers/{lb_id} (the `LoadBalancersDeleteLbById` operationId).
+func (c *ClientWithResponses) LoadBalancersDeleteLbByIdWithResponse(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteLbByIdResponse, error) {
+	rsp, err := c.LoadBalancersDeleteLbById(ctx, lbId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersDeleteLbByIdResponse(rsp)
+}
+
+// LoadBalancersGetLbByIdWithResponse Get a load balancer
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /load-balancers/{lb_id} (the `LoadBalancersGetLbById` operationId).
+func (c *ClientWithResponses) LoadBalancersGetLbByIdWithResponse(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*LoadBalancersGetLbByIdResponse, error) {
+	rsp, err := c.LoadBalancersGetLbById(ctx, lbId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersGetLbByIdResponse(rsp)
+}
+
+// LoadBalancersUpdateLbByIdWithBodyWithResponse Update a load balancer
+//
+// node_count only — listeners/rules/groups/targets live under /config and
+// the granular sub-resources (the legacy flat body 422s in the schema).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+func (c *ClientWithResponses) LoadBalancersUpdateLbByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersUpdateLbByIdResponse, error) {
+	rsp, err := c.LoadBalancersUpdateLbByIdWithBody(ctx, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersUpdateLbByIdResponse(rsp)
+}
+
+// LoadBalancersUpdateLbByIdWithResponse Update a load balancer
+//
+// node_count only — listeners/rules/groups/targets live under /config and
+// the granular sub-resources (the legacy flat body 422s in the schema).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id} (the `LoadBalancersUpdateLbById` operationId).
+func (c *ClientWithResponses) LoadBalancersUpdateLbByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersUpdateLbByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersUpdateLbByIdResponse, error) {
+	rsp, err := c.LoadBalancersUpdateLbById(ctx, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersUpdateLbByIdResponse(rsp)
+}
+
+// LoadBalancersGetLbConfigByIdWithResponse Get the LB config document
+//
+// The whole document; CCM-owned objects are included and marked
+// managed_by='ccm' (read-only for the user PUT).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /load-balancers/{lb_id}/config (the `LoadBalancersGetLbConfigById` operationId).
+func (c *ClientWithResponses) LoadBalancersGetLbConfigByIdWithResponse(ctx context.Context, lbId string, reqEditors ...RequestEditorFn) (*LoadBalancersGetLbConfigByIdResponse, error) {
+	rsp, err := c.LoadBalancersGetLbConfigById(ctx, lbId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersGetLbConfigByIdResponse(rsp)
+}
+
+// LoadBalancersPutLbConfigByIdWithBodyWithResponse Replace the user-owned LB config
+//
+// Declarative replacement of the USER-owned scope (§5.3 write order);
+// CCM-owned objects are untouched.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutLbConfigByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbConfigByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutLbConfigByIdWithBody(ctx, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutLbConfigByIdResponse(rsp)
+}
+
+// LoadBalancersPutLbConfigByIdWithResponse Replace the user-owned LB config
+//
+// Declarative replacement of the USER-owned scope (§5.3 write order);
+// CCM-owned objects are untouched.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/config (the `LoadBalancersPutLbConfigById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutLbConfigByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersPutLbConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbConfigByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutLbConfigById(ctx, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutLbConfigByIdResponse(rsp)
+}
+
+// LoadBalancersCreateListenerByIdWithBodyWithResponse Add a listener
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+func (c *ClientWithResponses) LoadBalancersCreateListenerByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerByIdResponse, error) {
+	rsp, err := c.LoadBalancersCreateListenerByIdWithBody(ctx, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersCreateListenerByIdResponse(rsp)
+}
+
+// LoadBalancersCreateListenerByIdWithResponse Add a listener
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners (the `LoadBalancersCreateListenerById` operationId).
+func (c *ClientWithResponses) LoadBalancersCreateListenerByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersCreateListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerByIdResponse, error) {
+	rsp, err := c.LoadBalancersCreateListenerById(ctx, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersCreateListenerByIdResponse(rsp)
+}
+
+// LoadBalancersDeleteListenerByIdWithResponse Delete a listener
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersDeleteListenerById` operationId).
+func (c *ClientWithResponses) LoadBalancersDeleteListenerByIdWithResponse(ctx context.Context, lbId string, listenerId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteListenerByIdResponse, error) {
+	rsp, err := c.LoadBalancersDeleteListenerById(ctx, lbId, listenerId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersDeleteListenerByIdResponse(rsp)
+}
+
+// LoadBalancersPatchListenerByIdWithBodyWithResponse Update a listener
+//
+// protocol never changes here (extra='forbid' in the schema → 422): the
+// generated `mode` column anchors the composite FKs — a protocol change is
+// delete+recreate through PUT /config.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+func (c *ClientWithResponses) LoadBalancersPatchListenerByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerByIdResponse, error) {
+	rsp, err := c.LoadBalancersPatchListenerByIdWithBody(ctx, lbId, listenerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPatchListenerByIdResponse(rsp)
+}
+
+// LoadBalancersPatchListenerByIdWithResponse Update a listener
+//
+// protocol never changes here (extra='forbid' in the schema → 422): the
+// generated `mode` column anchors the composite FKs — a protocol change is
+// delete+recreate through PUT /config.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id} (the `LoadBalancersPatchListenerById` operationId).
+func (c *ClientWithResponses) LoadBalancersPatchListenerByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersPatchListenerByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerByIdResponse, error) {
+	rsp, err := c.LoadBalancersPatchListenerById(ctx, lbId, listenerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPatchListenerByIdResponse(rsp)
+}
+
+// LoadBalancersPutListenerCertificatesByIdWithBodyWithResponse Replace a listener's certificates
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutListenerCertificatesByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerCertificatesByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutListenerCertificatesByIdWithBody(ctx, lbId, listenerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutListenerCertificatesByIdResponse(rsp)
+}
+
+// LoadBalancersPutListenerCertificatesByIdWithResponse Replace a listener's certificates
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/certificates (the `LoadBalancersPutListenerCertificatesById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutListenerCertificatesByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerCertificatesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerCertificatesByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutListenerCertificatesById(ctx, lbId, listenerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutListenerCertificatesByIdResponse(rsp)
+}
+
+// LoadBalancersCreateListenerRuleByIdWithBodyWithResponse Add a rule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+func (c *ClientWithResponses) LoadBalancersCreateListenerRuleByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerRuleByIdResponse, error) {
+	rsp, err := c.LoadBalancersCreateListenerRuleByIdWithBody(ctx, lbId, listenerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersCreateListenerRuleByIdResponse(rsp)
+}
+
+// LoadBalancersCreateListenerRuleByIdWithResponse Add a rule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersCreateListenerRuleById` operationId).
+func (c *ClientWithResponses) LoadBalancersCreateListenerRuleByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersCreateListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersCreateListenerRuleByIdResponse, error) {
+	rsp, err := c.LoadBalancersCreateListenerRuleById(ctx, lbId, listenerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersCreateListenerRuleByIdResponse(rsp)
+}
+
+// LoadBalancersPutListenerRulesByIdWithBodyWithResponse Replace the rule set
+//
+// Replace the prioritized rule set; the listener's default_action row is
+// kept (it belongs to the listener, PATCH it there).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutListenerRulesByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerRulesByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutListenerRulesByIdWithBody(ctx, lbId, listenerId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutListenerRulesByIdResponse(rsp)
+}
+
+// LoadBalancersPutListenerRulesByIdWithResponse Replace the rule set
+//
+// Replace the prioritized rule set; the listener's default_action row is
+// kept (it belongs to the listener, PATCH it there).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/listeners/{listener_id}/rules (the `LoadBalancersPutListenerRulesById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutListenerRulesByIdWithResponse(ctx context.Context, lbId string, listenerId string, body LoadBalancersPutListenerRulesByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutListenerRulesByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutListenerRulesById(ctx, lbId, listenerId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutListenerRulesByIdResponse(rsp)
+}
+
+// LoadBalancersDeleteListenerRuleByIdWithResponse Delete a rule
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersDeleteListenerRuleById` operationId).
+func (c *ClientWithResponses) LoadBalancersDeleteListenerRuleByIdWithResponse(ctx context.Context, lbId string, listenerId string, ruleId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteListenerRuleByIdResponse, error) {
+	rsp, err := c.LoadBalancersDeleteListenerRuleById(ctx, lbId, listenerId, ruleId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersDeleteListenerRuleByIdResponse(rsp)
+}
+
+// LoadBalancersPatchListenerRuleByIdWithBodyWithResponse Update a rule
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+func (c *ClientWithResponses) LoadBalancersPatchListenerRuleByIdWithBodyWithResponse(ctx context.Context, lbId string, listenerId string, ruleId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerRuleByIdResponse, error) {
+	rsp, err := c.LoadBalancersPatchListenerRuleByIdWithBody(ctx, lbId, listenerId, ruleId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPatchListenerRuleByIdResponse(rsp)
+}
+
+// LoadBalancersPatchListenerRuleByIdWithResponse Update a rule
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/listeners/{listener_id}/rules/{rule_id} (the `LoadBalancersPatchListenerRuleById` operationId).
+func (c *ClientWithResponses) LoadBalancersPatchListenerRuleByIdWithResponse(ctx context.Context, lbId string, listenerId string, ruleId string, body LoadBalancersPatchListenerRuleByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPatchListenerRuleByIdResponse, error) {
+	rsp, err := c.LoadBalancersPatchListenerRuleById(ctx, lbId, listenerId, ruleId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPatchListenerRuleByIdResponse(rsp)
+}
+
+// LoadBalancersPutLbManagedConfigByIdWithBodyWithResponse Replace the CCM-owned LB config (cloud-controller-manager)
+//
+// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+// reconciles Services through it; user-owned objects are untouched (the
+// CCM's blast radius stays its own scope).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutLbManagedConfigByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbManagedConfigByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutLbManagedConfigByIdWithBody(ctx, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutLbManagedConfigByIdResponse(rsp)
+}
+
+// LoadBalancersPutLbManagedConfigByIdWithResponse Replace the CCM-owned LB config (cloud-controller-manager)
+//
+// The ONLY write path of the managed_by='ccm' scope: the in-cluster CCM
+// reconciles Services through it; user-owned objects are untouched (the
+// CCM's blast radius stays its own scope).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutLbManagedConfigByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbManagedConfigByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutLbManagedConfigById(ctx, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutLbManagedConfigByIdResponse(rsp)
+}
+
+// LoadBalancersCreateTargetGroupByIdWithBodyWithResponse Add a target group
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+func (c *ClientWithResponses) LoadBalancersCreateTargetGroupByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersCreateTargetGroupByIdResponse, error) {
+	rsp, err := c.LoadBalancersCreateTargetGroupByIdWithBody(ctx, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersCreateTargetGroupByIdResponse(rsp)
+}
+
+// LoadBalancersCreateTargetGroupByIdWithResponse Add a target group
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups (the `LoadBalancersCreateTargetGroupById` operationId).
+func (c *ClientWithResponses) LoadBalancersCreateTargetGroupByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersCreateTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersCreateTargetGroupByIdResponse, error) {
+	rsp, err := c.LoadBalancersCreateTargetGroupById(ctx, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersCreateTargetGroupByIdResponse(rsp)
+}
+
+// LoadBalancersDeleteTargetGroupByIdWithResponse Delete a target group
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersDeleteTargetGroupById` operationId).
+func (c *ClientWithResponses) LoadBalancersDeleteTargetGroupByIdWithResponse(ctx context.Context, lbId string, tgId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteTargetGroupByIdResponse, error) {
+	rsp, err := c.LoadBalancersDeleteTargetGroupById(ctx, lbId, tgId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersDeleteTargetGroupByIdResponse(rsp)
+}
+
+// LoadBalancersPatchTargetGroupByIdWithBodyWithResponse Update a target group
+//
+// protocol / target_type never change here (extra='forbid' → 422): both
+// define the row's identity (generated `mode` anchors the composite FKs).
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+func (c *ClientWithResponses) LoadBalancersPatchTargetGroupByIdWithBodyWithResponse(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPatchTargetGroupByIdResponse, error) {
+	rsp, err := c.LoadBalancersPatchTargetGroupByIdWithBody(ctx, lbId, tgId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPatchTargetGroupByIdResponse(rsp)
+}
+
+// LoadBalancersPatchTargetGroupByIdWithResponse Update a target group
+//
+// protocol / target_type never change here (extra='forbid' → 422): both
+// define the row's identity (generated `mode` anchors the composite FKs).
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /load-balancers/{lb_id}/target-groups/{tg_id} (the `LoadBalancersPatchTargetGroupById` operationId).
+func (c *ClientWithResponses) LoadBalancersPatchTargetGroupByIdWithResponse(ctx context.Context, lbId string, tgId string, body LoadBalancersPatchTargetGroupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPatchTargetGroupByIdResponse, error) {
+	rsp, err := c.LoadBalancersPatchTargetGroupById(ctx, lbId, tgId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPatchTargetGroupByIdResponse(rsp)
+}
+
+// LoadBalancersAddTargetByIdWithBodyWithResponse Add a target
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+func (c *ClientWithResponses) LoadBalancersAddTargetByIdWithBodyWithResponse(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersAddTargetByIdResponse, error) {
+	rsp, err := c.LoadBalancersAddTargetByIdWithBody(ctx, lbId, tgId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersAddTargetByIdResponse(rsp)
+}
+
+// LoadBalancersAddTargetByIdWithResponse Add a target
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersAddTargetById` operationId).
+func (c *ClientWithResponses) LoadBalancersAddTargetByIdWithResponse(ctx context.Context, lbId string, tgId string, body LoadBalancersAddTargetByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersAddTargetByIdResponse, error) {
+	rsp, err := c.LoadBalancersAddTargetById(ctx, lbId, tgId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersAddTargetByIdResponse(rsp)
+}
+
+// LoadBalancersPutTargetsByIdWithBodyWithResponse Replace the target set
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutTargetsByIdWithBodyWithResponse(ctx context.Context, lbId string, tgId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersPutTargetsByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutTargetsByIdWithBody(ctx, lbId, tgId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutTargetsByIdResponse(rsp)
+}
+
+// LoadBalancersPutTargetsByIdWithResponse Replace the target set
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /load-balancers/{lb_id}/target-groups/{tg_id}/targets (the `LoadBalancersPutTargetsById` operationId).
+func (c *ClientWithResponses) LoadBalancersPutTargetsByIdWithResponse(ctx context.Context, lbId string, tgId string, body LoadBalancersPutTargetsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutTargetsByIdResponse, error) {
+	rsp, err := c.LoadBalancersPutTargetsById(ctx, lbId, tgId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersPutTargetsByIdResponse(rsp)
+}
+
+// LoadBalancersDeleteTargetByIdWithResponse Remove a target
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /load-balancers/{lb_id}/target-groups/{tg_id}/targets/{target_id} (the `LoadBalancersDeleteTargetById` operationId).
+func (c *ClientWithResponses) LoadBalancersDeleteTargetByIdWithResponse(ctx context.Context, lbId string, tgId string, targetId string, reqEditors ...RequestEditorFn) (*LoadBalancersDeleteTargetByIdResponse, error) {
+	rsp, err := c.LoadBalancersDeleteTargetById(ctx, lbId, tgId, targetId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersDeleteTargetByIdResponse(rsp)
 }
 
 // ObjectStorageListAccessKeysWithResponse List S3 access keys
@@ -31048,6 +43100,356 @@ func (c *ClientWithResponses) ObjectStorageGetUsageWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseObjectStorageGetUsageResponse(rsp)
+}
+
+// PostgresListClustersByAccountWithResponse List Postgres clusters in a project
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /pg-clusters (the `PostgresListClustersByAccount` operationId).
+func (c *ClientWithResponses) PostgresListClustersByAccountWithResponse(ctx context.Context, params *PostgresListClustersByAccountParams, reqEditors ...RequestEditorFn) (*PostgresListClustersByAccountResponse, error) {
+	rsp, err := c.PostgresListClustersByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresListClustersByAccountResponse(rsp)
+}
+
+// PostgresDeleteClusterByIdWithResponse Delete a Postgres cluster
+//
+// 202: the row goes to “deleting“ and the region tears the cluster down.
+// The backup repository outlives it by 14 days, so a restore is still possible
+// after this call.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /pg-clusters/{cluster_id} (the `PostgresDeleteClusterById` operationId).
+func (c *ClientWithResponses) PostgresDeleteClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresDeleteClusterByIdResponse, error) {
+	rsp, err := c.PostgresDeleteClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresDeleteClusterByIdResponse(rsp)
+}
+
+// PostgresGetClusterByIdWithResponse Get a Postgres cluster
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /pg-clusters/{cluster_id} (the `PostgresGetClusterById` operationId).
+func (c *ClientWithResponses) PostgresGetClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresGetClusterByIdResponse, error) {
+	rsp, err := c.PostgresGetClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresGetClusterByIdResponse(rsp)
+}
+
+// PostgresUpdateAllowlistByIdWithBodyWithResponse Replace the allowed IP list
+//
+// Public clusters only — a cluster in a VPC has no public address (422).
+// For a public cluster the allowlist is the whole network filter: an empty
+// list means nobody can connect.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+func (c *ClientWithResponses) PostgresUpdateAllowlistByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresUpdateAllowlistByIdResponse, error) {
+	rsp, err := c.PostgresUpdateAllowlistByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresUpdateAllowlistByIdResponse(rsp)
+}
+
+// PostgresUpdateAllowlistByIdWithResponse Replace the allowed IP list
+//
+// Public clusters only — a cluster in a VPC has no public address (422).
+// For a public cluster the allowlist is the whole network filter: an empty
+// list means nobody can connect.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/allowlist (the `PostgresUpdateAllowlistById` operationId).
+func (c *ClientWithResponses) PostgresUpdateAllowlistByIdWithResponse(ctx context.Context, clusterId string, body PostgresUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresUpdateAllowlistByIdResponse, error) {
+	rsp, err := c.PostgresUpdateAllowlistById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresUpdateAllowlistByIdResponse(rsp)
+}
+
+// PostgresListBackupsByIdWithResponse List backups and the PITR window
+//
+// “pitr_window“ spans the oldest completed backup to the last archived
+// WAL. Either bound being null means there is no window — restore is not
+// possible yet, which is not the same as "no backups".
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /pg-clusters/{cluster_id}/backups (the `PostgresListBackupsById` operationId).
+func (c *ClientWithResponses) PostgresListBackupsByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresListBackupsByIdResponse, error) {
+	rsp, err := c.PostgresListBackupsById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresListBackupsByIdResponse(rsp)
+}
+
+// PostgresCreateBackupByIdWithBodyWithResponse Request a manual backup
+//
+// Manual backups never expire, so at most 5 live ones per cluster — they
+// would otherwise eat the repository quota the nightly automatic backups need.
+// The row starts “requested“; the node takes it from there.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+func (c *ClientWithResponses) PostgresCreateBackupByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresCreateBackupByIdResponse, error) {
+	rsp, err := c.PostgresCreateBackupByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresCreateBackupByIdResponse(rsp)
+}
+
+// PostgresCreateBackupByIdWithResponse Request a manual backup
+//
+// Manual backups never expire, so at most 5 live ones per cluster — they
+// would otherwise eat the repository quota the nightly automatic backups need.
+// The row starts “requested“; the node takes it from there.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/backups (the `PostgresCreateBackupById` operationId).
+func (c *ClientWithResponses) PostgresCreateBackupByIdWithResponse(ctx context.Context, clusterId string, body PostgresCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresCreateBackupByIdResponse, error) {
+	rsp, err := c.PostgresCreateBackupById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresCreateBackupByIdResponse(rsp)
+}
+
+// PostgresDeleteBackupByIdWithResponse Delete a backup
+//
+// 202: the row goes to “deleting“ and the region expires it. The newest
+// completed backup cannot be deleted — the region never expires it, so the
+// request would hang forever.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /pg-clusters/{cluster_id}/backups/{backup_id} (the `PostgresDeleteBackupById` operationId).
+func (c *ClientWithResponses) PostgresDeleteBackupByIdWithResponse(ctx context.Context, clusterId string, backupId string, reqEditors ...RequestEditorFn) (*PostgresDeleteBackupByIdResponse, error) {
+	rsp, err := c.PostgresDeleteBackupById(ctx, clusterId, backupId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresDeleteBackupByIdResponse(rsp)
+}
+
+// PostgresGetClusterCaByIdWithResponse Download the cluster CA certificate
+//
+// Per-cluster CA, for connecting with “sslmode=verify-full“.
+// “ready: false“ while the region has not issued it yet.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /pg-clusters/{cluster_id}/ca (the `PostgresGetClusterCaById` operationId).
+func (c *ClientWithResponses) PostgresGetClusterCaByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresGetClusterCaByIdResponse, error) {
+	rsp, err := c.PostgresGetClusterCaById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresGetClusterCaByIdResponse(rsp)
+}
+
+// PostgresReplaceNodeByIdWithResponse Replace one node
+//
+// Re-create one node, current image or not — the ops escape hatch.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/nodes/{ordinal}/replace (the `PostgresReplaceNodeById` operationId).
+func (c *ClientWithResponses) PostgresReplaceNodeByIdWithResponse(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*PostgresReplaceNodeByIdResponse, error) {
+	rsp, err := c.PostgresReplaceNodeById(ctx, clusterId, ordinal, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresReplaceNodeByIdResponse(rsp)
+}
+
+// PostgresGetParametersByIdWithResponse Server parameters and their catalog
+//
+// “parameters“ is the intent, “applied_parameters“ is what the region
+// confirmed reached the cluster, and “catalog“ carries the allowed range of
+// each parameter already computed for this cluster's plan.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /pg-clusters/{cluster_id}/parameters (the `PostgresGetParametersById` operationId).
+func (c *ClientWithResponses) PostgresGetParametersByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresGetParametersByIdResponse, error) {
+	rsp, err := c.PostgresGetParametersById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresGetParametersByIdResponse(rsp)
+}
+
+// PostgresUpdateParametersByIdWithBodyWithResponse Replace server parameters
+//
+// A full replacement, not a merge: a parameter absent from the request is
+// cleared. Parameters marked “restart“ in the catalog only take effect after
+// “POST …/restart“.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+func (c *ClientWithResponses) PostgresUpdateParametersByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresUpdateParametersByIdResponse, error) {
+	rsp, err := c.PostgresUpdateParametersByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresUpdateParametersByIdResponse(rsp)
+}
+
+// PostgresUpdateParametersByIdWithResponse Replace server parameters
+//
+// A full replacement, not a merge: a parameter absent from the request is
+// cleared. Parameters marked “restart“ in the catalog only take effect after
+// “POST …/restart“.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/parameters (the `PostgresUpdateParametersById` operationId).
+func (c *ClientWithResponses) PostgresUpdateParametersByIdWithResponse(ctx context.Context, clusterId string, body PostgresUpdateParametersByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresUpdateParametersByIdResponse, error) {
+	rsp, err := c.PostgresUpdateParametersById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresUpdateParametersByIdResponse(rsp)
+}
+
+// PostgresChangePlanByIdWithBodyWithResponse Change the node plan
+//
+// Upwards only: memory, vCPU and disk of the new plan must be at least the
+// current ones. Nodes are resized one at a time, replicas first and the leader
+// last — a single-node cluster is down for about a minute, an ha one fails
+// over once. Watch “plan_change_pending“.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+func (c *ClientWithResponses) PostgresChangePlanByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangePlanByIdResponse, error) {
+	rsp, err := c.PostgresChangePlanByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangePlanByIdResponse(rsp)
+}
+
+// PostgresChangePlanByIdWithResponse Change the node plan
+//
+// Upwards only: memory, vCPU and disk of the new plan must be at least the
+// current ones. Nodes are resized one at a time, replicas first and the leader
+// last — a single-node cluster is down for about a minute, an ha one fails
+// over once. Watch “plan_change_pending“.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
+func (c *ClientWithResponses) PostgresChangePlanByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangePlanByIdResponse, error) {
+	rsp, err := c.PostgresChangePlanById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangePlanByIdResponse(rsp)
+}
+
+// PostgresReplaceOutdatedNodesByIdWithResponse Replace outdated nodes with the newest image
+//
+// Marks every live node whose VM is not on the newest ready image build in
+// the region. Replacements run one at a time — replicas, leader, witness — and
+// the database stays reachable throughout. “requested: 0“ means every node
+// is already current.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/replace-nodes (the `PostgresReplaceOutdatedNodesById` operationId).
+func (c *ClientWithResponses) PostgresReplaceOutdatedNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresReplaceOutdatedNodesByIdResponse, error) {
+	rsp, err := c.PostgresReplaceOutdatedNodesById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresReplaceOutdatedNodesByIdResponse(rsp)
+}
+
+// PostgresRestartClusterByIdWithResponse Request a restart
+//
+// Restarts nodes to apply postmaster-level parameters — replicas first,
+// leader last. “restart_pending_ack“ stays true until the region confirms.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/restart (the `PostgresRestartClusterById` operationId).
+func (c *ClientWithResponses) PostgresRestartClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*PostgresRestartClusterByIdResponse, error) {
+	rsp, err := c.PostgresRestartClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresRestartClusterByIdResponse(rsp)
+}
+
+// PostgresResetRolePasswordByIdWithResponse Issue a new password for a role
+//
+// The new password is in this response and nowhere else.
+//
+// “applied: false“ means the region has not run “ALTER ROLE“ yet — **the
+// database still accepts the old password until it does.** Do not treat the
+// 200 as the moment the old one stopped working.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /pg-clusters/{cluster_id}/roles/{role}/password (the `PostgresResetRolePasswordById` operationId).
+func (c *ClientWithResponses) PostgresResetRolePasswordByIdWithResponse(ctx context.Context, clusterId string, role string, reqEditors ...RequestEditorFn) (*PostgresResetRolePasswordByIdResponse, error) {
+	rsp, err := c.PostgresResetRolePasswordById(ctx, clusterId, role, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresResetRolePasswordByIdResponse(rsp)
+}
+
+// PostgresChangeTopologyByIdWithBodyWithResponse Change the topology (single ↔ ha)
+//
+// Growing to ha adds nodes without downtime; shrinking switches the leader
+// off any node being removed first. Price follows immediately (plan × nodes).
+// Watch “topology_change_pending“.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+func (c *ClientWithResponses) PostgresChangeTopologyByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangeTopologyByIdResponse, error) {
+	rsp, err := c.PostgresChangeTopologyByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangeTopologyByIdResponse(rsp)
+}
+
+// PostgresChangeTopologyByIdWithResponse Change the topology (single ↔ ha)
+//
+// Growing to ha adds nodes without downtime; shrinking switches the leader
+// off any node being removed first. Price follows immediately (plan × nodes).
+// Watch “topology_change_pending“.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/topology (the `PostgresChangeTopologyById` operationId).
+func (c *ClientWithResponses) PostgresChangeTopologyByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangeTopologyByIdResponse, error) {
+	rsp, err := c.PostgresChangeTopologyById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangeTopologyByIdResponse(rsp)
 }
 
 // PostgresListRegionsWithResponse Postgres regions, versions, plans and topologies
@@ -33401,6 +45803,253 @@ func (c *ClientWithResponses) SshKeysDeleteSshKeyWithResponse(ctx context.Contex
 	return ParseSshKeysDeleteSshKeyResponse(rsp)
 }
 
+// ValkeyListClustersByAccountWithResponse List Valkey clusters in a project
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /valkey-clusters (the `ValkeyListClustersByAccount` operationId).
+func (c *ClientWithResponses) ValkeyListClustersByAccountWithResponse(ctx context.Context, params *ValkeyListClustersByAccountParams, reqEditors ...RequestEditorFn) (*ValkeyListClustersByAccountResponse, error) {
+	rsp, err := c.ValkeyListClustersByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyListClustersByAccountResponse(rsp)
+}
+
+// ValkeyDeleteClusterByIdWithResponse Delete a Valkey cluster
+//
+// 202: the row goes to “deleting“ and the region tears it down. A cache
+// has no backups — the data is gone.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /valkey-clusters/{cluster_id} (the `ValkeyDeleteClusterById` operationId).
+func (c *ClientWithResponses) ValkeyDeleteClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyDeleteClusterByIdResponse, error) {
+	rsp, err := c.ValkeyDeleteClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyDeleteClusterByIdResponse(rsp)
+}
+
+// ValkeyGetClusterByIdWithResponse Get a Valkey cluster
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /valkey-clusters/{cluster_id} (the `ValkeyGetClusterById` operationId).
+func (c *ClientWithResponses) ValkeyGetClusterByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyGetClusterByIdResponse, error) {
+	rsp, err := c.ValkeyGetClusterById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyGetClusterByIdResponse(rsp)
+}
+
+// ValkeyUpdateAllowlistByIdWithBodyWithResponse Replace the allowed IP list
+//
+// For a public cluster this list **is** the network filter — there is no
+// second layer behind it. An empty list means no client can connect.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+func (c *ClientWithResponses) ValkeyUpdateAllowlistByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyUpdateAllowlistByIdResponse, error) {
+	rsp, err := c.ValkeyUpdateAllowlistByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyUpdateAllowlistByIdResponse(rsp)
+}
+
+// ValkeyUpdateAllowlistByIdWithResponse Replace the allowed IP list
+//
+// For a public cluster this list **is** the network filter — there is no
+// second layer behind it. An empty list means no client can connect.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/allowlist (the `ValkeyUpdateAllowlistById` operationId).
+func (c *ClientWithResponses) ValkeyUpdateAllowlistByIdWithResponse(ctx context.Context, clusterId string, body ValkeyUpdateAllowlistByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyUpdateAllowlistByIdResponse, error) {
+	rsp, err := c.ValkeyUpdateAllowlistById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyUpdateAllowlistByIdResponse(rsp)
+}
+
+// ValkeyGetClusterCaByIdWithResponse Download the cluster CA certificate
+//
+// The cluster is TLS-only; this CA is what a “rediss://“ client verifies
+// against. “ready: false“ while the region has not issued it — the same
+// shape as the Postgres CA and the Kubernetes kubeconfig.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /valkey-clusters/{cluster_id}/ca (the `ValkeyGetClusterCaById` operationId).
+func (c *ClientWithResponses) ValkeyGetClusterCaByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyGetClusterCaByIdResponse, error) {
+	rsp, err := c.ValkeyGetClusterCaById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyGetClusterCaByIdResponse(rsp)
+}
+
+// ValkeyReplaceNodeByIdWithResponse Replace one node
+//
+// Re-create one node, current image or not — the ops escape hatch.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /valkey-clusters/{cluster_id}/nodes/{ordinal}/replace (the `ValkeyReplaceNodeById` operationId).
+func (c *ClientWithResponses) ValkeyReplaceNodeByIdWithResponse(ctx context.Context, clusterId string, ordinal int, reqEditors ...RequestEditorFn) (*ValkeyReplaceNodeByIdResponse, error) {
+	rsp, err := c.ValkeyReplaceNodeById(ctx, clusterId, ordinal, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyReplaceNodeByIdResponse(rsp)
+}
+
+// ValkeyUpdateParamsByIdWithBodyWithResponse Update cache parameters
+//
+// maxmemory, eviction policy, max clients and persistence. The region
+// applies them to the running server, so no restart is needed.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+func (c *ClientWithResponses) ValkeyUpdateParamsByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyUpdateParamsByIdResponse, error) {
+	rsp, err := c.ValkeyUpdateParamsByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyUpdateParamsByIdResponse(rsp)
+}
+
+// ValkeyUpdateParamsByIdWithResponse Update cache parameters
+//
+// maxmemory, eviction policy, max clients and persistence. The region
+// applies them to the running server, so no restart is needed.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/params (the `ValkeyUpdateParamsById` operationId).
+func (c *ClientWithResponses) ValkeyUpdateParamsByIdWithResponse(ctx context.Context, clusterId string, body ValkeyUpdateParamsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyUpdateParamsByIdResponse, error) {
+	rsp, err := c.ValkeyUpdateParamsById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyUpdateParamsByIdResponse(rsp)
+}
+
+// ValkeyResetPasswordByIdWithResponse Issue a new password
+//
+// The new password is in this response and nowhere else. “applied:
+// false“ means the region has not pushed it to the server yet — **the old
+// password still works until it does.**
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /valkey-clusters/{cluster_id}/password (the `ValkeyResetPasswordById` operationId).
+func (c *ClientWithResponses) ValkeyResetPasswordByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyResetPasswordByIdResponse, error) {
+	rsp, err := c.ValkeyResetPasswordById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyResetPasswordByIdResponse(rsp)
+}
+
+// ValkeyChangePlanByIdWithBodyWithResponse Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+func (c *ClientWithResponses) ValkeyChangePlanByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangePlanByIdResponse, error) {
+	rsp, err := c.ValkeyChangePlanByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangePlanByIdResponse(rsp)
+}
+
+// ValkeyChangePlanByIdWithResponse Change the node plan
+//
+// Upgrade only: memory, vCPU and disk of the new plan must not be below
+// the current ones. Nodes are resized one at a time (each reboots); the
+// memory and connection limits rise once every node is on the new plan.
+// `plan_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/plan (the `ValkeyChangePlanById` operationId).
+func (c *ClientWithResponses) ValkeyChangePlanByIdWithResponse(ctx context.Context, clusterId string, body ValkeyChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangePlanByIdResponse, error) {
+	rsp, err := c.ValkeyChangePlanById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangePlanByIdResponse(rsp)
+}
+
+// ValkeyReplaceOutdatedNodesByIdWithResponse Replace outdated nodes with the newest image
+//
+// One node at a time, replicas before the leader. “requested: 0“ means
+// every node is already on the newest image build in the region.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /valkey-clusters/{cluster_id}/replace-nodes (the `ValkeyReplaceOutdatedNodesById` operationId).
+func (c *ClientWithResponses) ValkeyReplaceOutdatedNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*ValkeyReplaceOutdatedNodesByIdResponse, error) {
+	rsp, err := c.ValkeyReplaceOutdatedNodesById(ctx, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyReplaceOutdatedNodesByIdResponse(rsp)
+}
+
+// ValkeyChangeTopologyByIdWithBodyWithResponse Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+func (c *ClientWithResponses) ValkeyChangeTopologyByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyByIdResponse, error) {
+	rsp, err := c.ValkeyChangeTopologyByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangeTopologyByIdResponse(rsp)
+}
+
+// ValkeyChangeTopologyByIdWithResponse Change the topology
+//
+// single ↔ ha. Growing adds a replica and a read endpoint without
+// downtime; shrinking removes the replica and the read endpoint at once
+// (a switchover happens if the primary is on the replica).
+// `topology_change_pending` on the cluster shows the change is still in
+// progress.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /valkey-clusters/{cluster_id}/topology (the `ValkeyChangeTopologyById` operationId).
+func (c *ClientWithResponses) ValkeyChangeTopologyByIdWithResponse(ctx context.Context, clusterId string, body ValkeyChangeTopologyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*ValkeyChangeTopologyByIdResponse, error) {
+	rsp, err := c.ValkeyChangeTopologyById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseValkeyChangeTopologyByIdResponse(rsp)
+}
+
 // ValkeyListRegionsWithResponse Valkey regions, versions, plans and cache modes
 //
 // Versions are per-region: one is offered only where a ready node image is
@@ -33415,6 +46064,277 @@ func (c *ClientWithResponses) ValkeyListRegionsWithResponse(ctx context.Context,
 		return nil, err
 	}
 	return ParseValkeyListRegionsResponse(rsp)
+}
+
+// VmsListVmsByAccountWithResponse List VMs in a project
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
+func (c *ClientWithResponses) VmsListVmsByAccountWithResponse(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*VmsListVmsByAccountResponse, error) {
+	rsp, err := c.VmsListVmsByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsListVmsByAccountResponse(rsp)
+}
+
+// VmsDeleteVmByIdWithResponse Delete a VM
+//
+// 202, and the body says which of the two things happened.
+//
+// A VM that was never provisioned is gone when this returns (“deleted“).
+// A provisioned one is moved to “deleting“ and a region tears it down over
+// the following minutes — it stays visible in “GET …/vms“ until then, so a
+// script that deletes and immediately re-creates by name has to wait.
+//
+// This used to answer 204, which could not express the difference; the
+// service's own return value cannot either (it reports “success“ for both
+// and puts the distinction in a human-readable message).
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /vms/{vm_id} (the `VmsDeleteVmById` operationId).
+func (c *ClientWithResponses) VmsDeleteVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsDeleteVmByIdResponse, error) {
+	rsp, err := c.VmsDeleteVmById(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsDeleteVmByIdResponse(rsp)
+}
+
+// VmsGetVmByIdWithResponse Get a VM
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /vms/{vm_id} (the `VmsGetVmById` operationId).
+func (c *ClientWithResponses) VmsGetVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmByIdResponse, error) {
+	rsp, err := c.VmsGetVmById(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsGetVmByIdResponse(rsp)
+}
+
+// VmsListBackupsByIdWithResponse List VM backups
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /vms/{vm_id}/backups (the `VmsListBackupsById` operationId).
+func (c *ClientWithResponses) VmsListBackupsByIdWithResponse(ctx context.Context, vmId string, params *VmsListBackupsByIdParams, reqEditors ...RequestEditorFn) (*VmsListBackupsByIdResponse, error) {
+	rsp, err := c.VmsListBackupsById(ctx, vmId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsListBackupsByIdResponse(rsp)
+}
+
+// VmsCreateBackupByIdWithBodyWithResponse Create a VM backup
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+func (c *ClientWithResponses) VmsCreateBackupByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsCreateBackupByIdResponse, error) {
+	rsp, err := c.VmsCreateBackupByIdWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsCreateBackupByIdResponse(rsp)
+}
+
+// VmsCreateBackupByIdWithResponse Create a VM backup
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/backups (the `VmsCreateBackupById` operationId).
+func (c *ClientWithResponses) VmsCreateBackupByIdWithResponse(ctx context.Context, vmId string, body VmsCreateBackupByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsCreateBackupByIdResponse, error) {
+	rsp, err := c.VmsCreateBackupById(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsCreateBackupByIdResponse(rsp)
+}
+
+// VmsDeleteBackupByIdWithResponse Delete a VM backup
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
+func (c *ClientWithResponses) VmsDeleteBackupByIdWithResponse(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*VmsDeleteBackupByIdResponse, error) {
+	rsp, err := c.VmsDeleteBackupById(ctx, vmId, backupId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsDeleteBackupByIdResponse(rsp)
+}
+
+// VmsRestartVmByIdWithResponse Restart a VM
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/restart (the `VmsRestartVmById` operationId).
+func (c *ClientWithResponses) VmsRestartVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsRestartVmByIdResponse, error) {
+	rsp, err := c.VmsRestartVmById(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsRestartVmByIdResponse(rsp)
+}
+
+// VmsStartVmByIdWithBodyWithResponse Start a VM
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+func (c *ClientWithResponses) VmsStartVmByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsStartVmByIdResponse, error) {
+	rsp, err := c.VmsStartVmByIdWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsStartVmByIdResponse(rsp)
+}
+
+// VmsStartVmByIdWithResponse Start a VM
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/start (the `VmsStartVmById` operationId).
+func (c *ClientWithResponses) VmsStartVmByIdWithResponse(ctx context.Context, vmId string, body VmsStartVmByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsStartVmByIdResponse, error) {
+	rsp, err := c.VmsStartVmById(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsStartVmByIdResponse(rsp)
+}
+
+// VmsStopVmByIdWithResponse Stop a VM
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
+func (c *ClientWithResponses) VmsStopVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsStopVmByIdResponse, error) {
+	rsp, err := c.VmsStopVmById(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsStopVmByIdResponse(rsp)
+}
+
+// VolumesListVolumesByAccountWithResponse List block volumes in a project
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /volumes (the `VolumesListVolumesByAccount` operationId).
+func (c *ClientWithResponses) VolumesListVolumesByAccountWithResponse(ctx context.Context, params *VolumesListVolumesByAccountParams, reqEditors ...RequestEditorFn) (*VolumesListVolumesByAccountResponse, error) {
+	rsp, err := c.VolumesListVolumesByAccount(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesListVolumesByAccountResponse(rsp)
+}
+
+// VolumesDeleteVolumeByIdWithResponse Delete a block volume
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /volumes/{volume_id} (the `VolumesDeleteVolumeById` operationId).
+func (c *ClientWithResponses) VolumesDeleteVolumeByIdWithResponse(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*VolumesDeleteVolumeByIdResponse, error) {
+	rsp, err := c.VolumesDeleteVolumeById(ctx, volumeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesDeleteVolumeByIdResponse(rsp)
+}
+
+// VolumesGetVolumeByIdWithResponse Get a block volume
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /volumes/{volume_id} (the `VolumesGetVolumeById` operationId).
+func (c *ClientWithResponses) VolumesGetVolumeByIdWithResponse(ctx context.Context, volumeId string, reqEditors ...RequestEditorFn) (*VolumesGetVolumeByIdResponse, error) {
+	rsp, err := c.VolumesGetVolumeById(ctx, volumeId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesGetVolumeByIdResponse(rsp)
+}
+
+// VolumesResizeVolumeByIdWithBodyWithResponse Grow a block volume
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+func (c *ClientWithResponses) VolumesResizeVolumeByIdWithBodyWithResponse(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VolumesResizeVolumeByIdResponse, error) {
+	rsp, err := c.VolumesResizeVolumeByIdWithBody(ctx, volumeId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesResizeVolumeByIdResponse(rsp)
+}
+
+// VolumesResizeVolumeByIdWithResponse Grow a block volume
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /volumes/{volume_id} (the `VolumesResizeVolumeById` operationId).
+func (c *ClientWithResponses) VolumesResizeVolumeByIdWithResponse(ctx context.Context, volumeId string, body VolumesResizeVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VolumesResizeVolumeByIdResponse, error) {
+	rsp, err := c.VolumesResizeVolumeById(ctx, volumeId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesResizeVolumeByIdResponse(rsp)
+}
+
+// VolumesAttachVolumeByIdWithBodyWithResponse Attach a volume to a VM
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+func (c *ClientWithResponses) VolumesAttachVolumeByIdWithBodyWithResponse(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VolumesAttachVolumeByIdResponse, error) {
+	rsp, err := c.VolumesAttachVolumeByIdWithBody(ctx, volumeId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesAttachVolumeByIdResponse(rsp)
+}
+
+// VolumesAttachVolumeByIdWithResponse Attach a volume to a VM
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /volumes/{volume_id}/attach (the `VolumesAttachVolumeById` operationId).
+func (c *ClientWithResponses) VolumesAttachVolumeByIdWithResponse(ctx context.Context, volumeId string, body VolumesAttachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VolumesAttachVolumeByIdResponse, error) {
+	rsp, err := c.VolumesAttachVolumeById(ctx, volumeId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesAttachVolumeByIdResponse(rsp)
+}
+
+// VolumesDetachVolumeByIdWithBodyWithResponse Detach a volume from its VM
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+func (c *ClientWithResponses) VolumesDetachVolumeByIdWithBodyWithResponse(ctx context.Context, volumeId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VolumesDetachVolumeByIdResponse, error) {
+	rsp, err := c.VolumesDetachVolumeByIdWithBody(ctx, volumeId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesDetachVolumeByIdResponse(rsp)
+}
+
+// VolumesDetachVolumeByIdWithResponse Detach a volume from its VM
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /volumes/{volume_id}/detach (the `VolumesDetachVolumeById` operationId).
+func (c *ClientWithResponses) VolumesDetachVolumeByIdWithResponse(ctx context.Context, volumeId string, body VolumesDetachVolumeByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VolumesDetachVolumeByIdResponse, error) {
+	rsp, err := c.VolumesDetachVolumeById(ctx, volumeId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVolumesDetachVolumeByIdResponse(rsp)
 }
 
 // NetworkingListVpcsWithResponse List VPCs
@@ -34958,6 +47878,493 @@ func ParseNetworkingDetachFloatingIpResponse(rsp *http.Response) (*NetworkingDet
 	return response, nil
 }
 
+// ParseFunctionsListFunctionsByAccountResponse parses an HTTP response from a FunctionsListFunctionsByAccountWithResponse call
+func ParseFunctionsListFunctionsByAccountResponse(rsp *http.Response) (*FunctionsListFunctionsByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsListFunctionsByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1Function
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsDeleteFunctionRouteByIdResponse parses an HTTP response from a FunctionsDeleteFunctionRouteByIdWithResponse call
+func ParseFunctionsDeleteFunctionRouteByIdResponse(rsp *http.Response) (*FunctionsDeleteFunctionRouteByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsDeleteFunctionRouteByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsGetFunctionRouteByIdResponse parses an HTTP response from a FunctionsGetFunctionRouteByIdWithResponse call
+func ParseFunctionsGetFunctionRouteByIdResponse(rsp *http.Response) (*FunctionsGetFunctionRouteByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsGetFunctionRouteByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Function
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsUpdateFunctionRouteByIdResponse parses an HTTP response from a FunctionsUpdateFunctionRouteByIdWithResponse call
+func ParseFunctionsUpdateFunctionRouteByIdResponse(rsp *http.Response) (*FunctionsUpdateFunctionRouteByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsUpdateFunctionRouteByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Function
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsDeployFunctionRouteByIdResponse parses an HTTP response from a FunctionsDeployFunctionRouteByIdWithResponse call
+func ParseFunctionsDeployFunctionRouteByIdResponse(rsp *http.Response) (*FunctionsDeployFunctionRouteByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsDeployFunctionRouteByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1FunctionDeployResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsListEnvVarsByIdResponse parses an HTTP response from a FunctionsListEnvVarsByIdWithResponse call
+func ParseFunctionsListEnvVarsByIdResponse(rsp *http.Response) (*FunctionsListEnvVarsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsListEnvVarsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1EnvVar
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsAddEnvVarByIdResponse parses an HTTP response from a FunctionsAddEnvVarByIdWithResponse call
+func ParseFunctionsAddEnvVarByIdResponse(rsp *http.Response) (*FunctionsAddEnvVarByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsAddEnvVarByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest V1EnvVar
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseFunctionsDeleteEnvVarRouteByIdResponse parses an HTTP response from a FunctionsDeleteEnvVarRouteByIdWithResponse call
+func ParseFunctionsDeleteEnvVarRouteByIdResponse(rsp *http.Response) (*FunctionsDeleteEnvVarRouteByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &FunctionsDeleteEnvVarRouteByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesListClustersByAccountResponse parses an HTTP response from a KubernetesListClustersByAccountWithResponse call
+func ParseKubernetesListClustersByAccountResponse(rsp *http.Response) (*KubernetesListClustersByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesListClustersByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1K8sCluster
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesDeleteClusterByIdResponse parses an HTTP response from a KubernetesDeleteClusterByIdWithResponse call
+func ParseKubernetesDeleteClusterByIdResponse(rsp *http.Response) (*KubernetesDeleteClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesDeleteClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesGetClusterByIdResponse parses an HTTP response from a KubernetesGetClusterByIdWithResponse call
+func ParseKubernetesGetClusterByIdResponse(rsp *http.Response) (*KubernetesGetClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesGetClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1K8sCluster
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesGetKubeconfigByIdResponse parses an HTTP response from a KubernetesGetKubeconfigByIdWithResponse call
+func ParseKubernetesGetKubeconfigByIdResponse(rsp *http.Response) (*KubernetesGetKubeconfigByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesGetKubeconfigByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Kubeconfig
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesScaleNodePoolByIdResponse parses an HTTP response from a KubernetesScaleNodePoolByIdWithResponse call
+func ParseKubernetesScaleNodePoolByIdResponse(rsp *http.Response) (*KubernetesScaleNodePoolByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesScaleNodePoolByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1K8sNodePool
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesListClusterNodesByIdResponse parses an HTTP response from a KubernetesListClusterNodesByIdWithResponse call
+func ParseKubernetesListClusterNodesByIdResponse(rsp *http.Response) (*KubernetesListClusterNodesByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesListClusterNodesByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []V1K8sNode
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKubernetesUpgradeClusterByIdResponse parses an HTTP response from a KubernetesUpgradeClusterByIdWithResponse call
+func ParseKubernetesUpgradeClusterByIdResponse(rsp *http.Response) (*KubernetesUpgradeClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KubernetesUpgradeClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1K8sCluster
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseKubernetesListRegionsResponse parses an HTTP response from a KubernetesListRegionsWithResponse call
 func ParseKubernetesListRegionsResponse(rsp *http.Response) (*KubernetesListRegionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -34978,6 +48385,39 @@ func ParseKubernetesListRegionsResponse(rsp *http.Response) (*KubernetesListRegi
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersListLbsByAccountResponse parses an HTTP response from a LoadBalancersListLbsByAccountWithResponse call
+func ParseLoadBalancersListLbsByAccountResponse(rsp *http.Response) (*LoadBalancersListLbsByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersListLbsByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageLoadBalancerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
@@ -35129,6 +48569,650 @@ func ParseLoadBalancersListRegionsResponse(rsp *http.Response) (*LoadBalancersLi
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersDeleteLbByIdResponse parses an HTTP response from a LoadBalancersDeleteLbByIdWithResponse call
+func ParseLoadBalancersDeleteLbByIdResponse(rsp *http.Response) (*LoadBalancersDeleteLbByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersDeleteLbByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersGetLbByIdResponse parses an HTTP response from a LoadBalancersGetLbByIdWithResponse call
+func ParseLoadBalancersGetLbByIdResponse(rsp *http.Response) (*LoadBalancersGetLbByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersGetLbByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LoadBalancerDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersUpdateLbByIdResponse parses an HTTP response from a LoadBalancersUpdateLbByIdWithResponse call
+func ParseLoadBalancersUpdateLbByIdResponse(rsp *http.Response) (*LoadBalancersUpdateLbByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersUpdateLbByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LoadBalancerDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersGetLbConfigByIdResponse parses an HTTP response from a LoadBalancersGetLbConfigByIdWithResponse call
+func ParseLoadBalancersGetLbConfigByIdResponse(rsp *http.Response) (*LoadBalancersGetLbConfigByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersGetLbConfigByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBConfigResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPutLbConfigByIdResponse parses an HTTP response from a LoadBalancersPutLbConfigByIdWithResponse call
+func ParseLoadBalancersPutLbConfigByIdResponse(rsp *http.Response) (*LoadBalancersPutLbConfigByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPutLbConfigByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBConfigResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersCreateListenerByIdResponse parses an HTTP response from a LoadBalancersCreateListenerByIdWithResponse call
+func ParseLoadBalancersCreateListenerByIdResponse(rsp *http.Response) (*LoadBalancersCreateListenerByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersCreateListenerByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest LBListenerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersDeleteListenerByIdResponse parses an HTTP response from a LoadBalancersDeleteListenerByIdWithResponse call
+func ParseLoadBalancersDeleteListenerByIdResponse(rsp *http.Response) (*LoadBalancersDeleteListenerByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersDeleteListenerByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPatchListenerByIdResponse parses an HTTP response from a LoadBalancersPatchListenerByIdWithResponse call
+func ParseLoadBalancersPatchListenerByIdResponse(rsp *http.Response) (*LoadBalancersPatchListenerByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPatchListenerByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBListenerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPutListenerCertificatesByIdResponse parses an HTTP response from a LoadBalancersPutListenerCertificatesByIdWithResponse call
+func ParseLoadBalancersPutListenerCertificatesByIdResponse(rsp *http.Response) (*LoadBalancersPutListenerCertificatesByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPutListenerCertificatesByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBListenerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersCreateListenerRuleByIdResponse parses an HTTP response from a LoadBalancersCreateListenerRuleByIdWithResponse call
+func ParseLoadBalancersCreateListenerRuleByIdResponse(rsp *http.Response) (*LoadBalancersCreateListenerRuleByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersCreateListenerRuleByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest LBListenerRuleResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPutListenerRulesByIdResponse parses an HTTP response from a LoadBalancersPutListenerRulesByIdWithResponse call
+func ParseLoadBalancersPutListenerRulesByIdResponse(rsp *http.Response) (*LoadBalancersPutListenerRulesByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPutListenerRulesByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBListenerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersDeleteListenerRuleByIdResponse parses an HTTP response from a LoadBalancersDeleteListenerRuleByIdWithResponse call
+func ParseLoadBalancersDeleteListenerRuleByIdResponse(rsp *http.Response) (*LoadBalancersDeleteListenerRuleByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersDeleteListenerRuleByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPatchListenerRuleByIdResponse parses an HTTP response from a LoadBalancersPatchListenerRuleByIdWithResponse call
+func ParseLoadBalancersPatchListenerRuleByIdResponse(rsp *http.Response) (*LoadBalancersPatchListenerRuleByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPatchListenerRuleByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBListenerRuleResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPutLbManagedConfigByIdResponse parses an HTTP response from a LoadBalancersPutLbManagedConfigByIdWithResponse call
+func ParseLoadBalancersPutLbManagedConfigByIdResponse(rsp *http.Response) (*LoadBalancersPutLbManagedConfigByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPutLbManagedConfigByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBConfigResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersCreateTargetGroupByIdResponse parses an HTTP response from a LoadBalancersCreateTargetGroupByIdWithResponse call
+func ParseLoadBalancersCreateTargetGroupByIdResponse(rsp *http.Response) (*LoadBalancersCreateTargetGroupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersCreateTargetGroupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest LBTargetGroupResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersDeleteTargetGroupByIdResponse parses an HTTP response from a LoadBalancersDeleteTargetGroupByIdWithResponse call
+func ParseLoadBalancersDeleteTargetGroupByIdResponse(rsp *http.Response) (*LoadBalancersDeleteTargetGroupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersDeleteTargetGroupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPatchTargetGroupByIdResponse parses an HTTP response from a LoadBalancersPatchTargetGroupByIdWithResponse call
+func ParseLoadBalancersPatchTargetGroupByIdResponse(rsp *http.Response) (*LoadBalancersPatchTargetGroupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPatchTargetGroupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBTargetGroupResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersAddTargetByIdResponse parses an HTTP response from a LoadBalancersAddTargetByIdWithResponse call
+func ParseLoadBalancersAddTargetByIdResponse(rsp *http.Response) (*LoadBalancersAddTargetByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersAddTargetByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest LBTargetGroupResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersPutTargetsByIdResponse parses an HTTP response from a LoadBalancersPutTargetsByIdWithResponse call
+func ParseLoadBalancersPutTargetsByIdResponse(rsp *http.Response) (*LoadBalancersPutTargetsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersPutTargetsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LBTargetGroupResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersDeleteTargetByIdResponse parses an HTTP response from a LoadBalancersDeleteTargetByIdWithResponse call
+func ParseLoadBalancersDeleteTargetByIdResponse(rsp *http.Response) (*LoadBalancersDeleteTargetByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersDeleteTargetByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
@@ -35598,6 +49682,534 @@ func ParseObjectStorageGetUsageResponse(rsp *http.Response) (*ObjectStorageGetUs
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresListClustersByAccountResponse parses an HTTP response from a PostgresListClustersByAccountWithResponse call
+func ParsePostgresListClustersByAccountResponse(rsp *http.Response) (*PostgresListClustersByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresListClustersByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PagePgClusterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresDeleteClusterByIdResponse parses an HTTP response from a PostgresDeleteClusterByIdWithResponse call
+func ParsePostgresDeleteClusterByIdResponse(rsp *http.Response) (*PostgresDeleteClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresDeleteClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresGetClusterByIdResponse parses an HTTP response from a PostgresGetClusterByIdWithResponse call
+func ParsePostgresGetClusterByIdResponse(rsp *http.Response) (*PostgresGetClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresGetClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresUpdateAllowlistByIdResponse parses an HTTP response from a PostgresUpdateAllowlistByIdWithResponse call
+func ParsePostgresUpdateAllowlistByIdResponse(rsp *http.Response) (*PostgresUpdateAllowlistByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresUpdateAllowlistByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresListBackupsByIdResponse parses an HTTP response from a PostgresListBackupsByIdWithResponse call
+func ParsePostgresListBackupsByIdResponse(rsp *http.Response) (*PostgresListBackupsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresListBackupsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgBackupsListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresCreateBackupByIdResponse parses an HTTP response from a PostgresCreateBackupByIdWithResponse call
+func ParsePostgresCreateBackupByIdResponse(rsp *http.Response) (*PostgresCreateBackupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresCreateBackupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest PgBackupsListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresDeleteBackupByIdResponse parses an HTTP response from a PostgresDeleteBackupByIdWithResponse call
+func ParsePostgresDeleteBackupByIdResponse(rsp *http.Response) (*PostgresDeleteBackupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresDeleteBackupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresGetClusterCaByIdResponse parses an HTTP response from a PostgresGetClusterCaByIdWithResponse call
+func ParsePostgresGetClusterCaByIdResponse(rsp *http.Response) (*PostgresGetClusterCaByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresGetClusterCaByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgCaResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresReplaceNodeByIdResponse parses an HTTP response from a PostgresReplaceNodeByIdWithResponse call
+func ParsePostgresReplaceNodeByIdResponse(rsp *http.Response) (*PostgresReplaceNodeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresReplaceNodeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgReplaceNodesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresGetParametersByIdResponse parses an HTTP response from a PostgresGetParametersByIdWithResponse call
+func ParsePostgresGetParametersByIdResponse(rsp *http.Response) (*PostgresGetParametersByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresGetParametersByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgParametersResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresUpdateParametersByIdResponse parses an HTTP response from a PostgresUpdateParametersByIdWithResponse call
+func ParsePostgresUpdateParametersByIdResponse(rsp *http.Response) (*PostgresUpdateParametersByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresUpdateParametersByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgParametersResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresChangePlanByIdResponse parses an HTTP response from a PostgresChangePlanByIdWithResponse call
+func ParsePostgresChangePlanByIdResponse(rsp *http.Response) (*PostgresChangePlanByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresChangePlanByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresReplaceOutdatedNodesByIdResponse parses an HTTP response from a PostgresReplaceOutdatedNodesByIdWithResponse call
+func ParsePostgresReplaceOutdatedNodesByIdResponse(rsp *http.Response) (*PostgresReplaceOutdatedNodesByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresReplaceOutdatedNodesByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgReplaceNodesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresRestartClusterByIdResponse parses an HTTP response from a PostgresRestartClusterByIdWithResponse call
+func ParsePostgresRestartClusterByIdResponse(rsp *http.Response) (*PostgresRestartClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresRestartClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgParametersResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresResetRolePasswordByIdResponse parses an HTTP response from a PostgresResetRolePasswordByIdWithResponse call
+func ParsePostgresResetRolePasswordByIdResponse(rsp *http.Response) (*PostgresResetRolePasswordByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresResetRolePasswordByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgRolePasswordResetResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresChangeTopologyByIdResponse parses an HTTP response from a PostgresChangeTopologyByIdWithResponse call
+func ParsePostgresChangeTopologyByIdResponse(rsp *http.Response) (*PostgresChangeTopologyByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresChangeTopologyByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
@@ -39275,6 +53887,369 @@ func ParseSshKeysDeleteSshKeyResponse(rsp *http.Response) (*SshKeysDeleteSshKeyR
 	return response, nil
 }
 
+// ParseValkeyListClustersByAccountResponse parses an HTTP response from a ValkeyListClustersByAccountWithResponse call
+func ParseValkeyListClustersByAccountResponse(rsp *http.Response) (*ValkeyListClustersByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyListClustersByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageValkeyClusterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyDeleteClusterByIdResponse parses an HTTP response from a ValkeyDeleteClusterByIdWithResponse call
+func ParseValkeyDeleteClusterByIdResponse(rsp *http.Response) (*ValkeyDeleteClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyDeleteClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyGetClusterByIdResponse parses an HTTP response from a ValkeyGetClusterByIdWithResponse call
+func ParseValkeyGetClusterByIdResponse(rsp *http.Response) (*ValkeyGetClusterByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyGetClusterByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyUpdateAllowlistByIdResponse parses an HTTP response from a ValkeyUpdateAllowlistByIdWithResponse call
+func ParseValkeyUpdateAllowlistByIdResponse(rsp *http.Response) (*ValkeyUpdateAllowlistByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyUpdateAllowlistByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyGetClusterCaByIdResponse parses an HTTP response from a ValkeyGetClusterCaByIdWithResponse call
+func ParseValkeyGetClusterCaByIdResponse(rsp *http.Response) (*ValkeyGetClusterCaByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyGetClusterCaByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyCaResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyReplaceNodeByIdResponse parses an HTTP response from a ValkeyReplaceNodeByIdWithResponse call
+func ParseValkeyReplaceNodeByIdResponse(rsp *http.Response) (*ValkeyReplaceNodeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyReplaceNodeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyReplaceNodesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyUpdateParamsByIdResponse parses an HTTP response from a ValkeyUpdateParamsByIdWithResponse call
+func ParseValkeyUpdateParamsByIdResponse(rsp *http.Response) (*ValkeyUpdateParamsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyUpdateParamsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyResetPasswordByIdResponse parses an HTTP response from a ValkeyResetPasswordByIdWithResponse call
+func ParseValkeyResetPasswordByIdResponse(rsp *http.Response) (*ValkeyResetPasswordByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyResetPasswordByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyPasswordResetResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyChangePlanByIdResponse parses an HTTP response from a ValkeyChangePlanByIdWithResponse call
+func ParseValkeyChangePlanByIdResponse(rsp *http.Response) (*ValkeyChangePlanByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyChangePlanByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyReplaceOutdatedNodesByIdResponse parses an HTTP response from a ValkeyReplaceOutdatedNodesByIdWithResponse call
+func ParseValkeyReplaceOutdatedNodesByIdResponse(rsp *http.Response) (*ValkeyReplaceOutdatedNodesByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyReplaceOutdatedNodesByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyReplaceNodesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseValkeyChangeTopologyByIdResponse parses an HTTP response from a ValkeyChangeTopologyByIdWithResponse call
+func ParseValkeyChangeTopologyByIdResponse(rsp *http.Response) (*ValkeyChangeTopologyByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ValkeyChangeTopologyByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ValkeyClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseValkeyListRegionsResponse parses an HTTP response from a ValkeyListRegionsWithResponse call
 func ParseValkeyListRegionsResponse(rsp *http.Response) (*ValkeyListRegionsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -39295,6 +54270,501 @@ func ParseValkeyListRegionsResponse(rsp *http.Response) (*ValkeyListRegionsRespo
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsListVmsByAccountResponse parses an HTTP response from a VmsListVmsByAccountWithResponse call
+func ParseVmsListVmsByAccountResponse(rsp *http.Response) (*VmsListVmsByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsListVmsByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1VM
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsDeleteVmByIdResponse parses an HTTP response from a VmsDeleteVmByIdWithResponse call
+func ParseVmsDeleteVmByIdResponse(rsp *http.Response) (*VmsDeleteVmByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsDeleteVmByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsGetVmByIdResponse parses an HTTP response from a VmsGetVmByIdWithResponse call
+func ParseVmsGetVmByIdResponse(rsp *http.Response) (*VmsGetVmByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsGetVmByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1VM
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsListBackupsByIdResponse parses an HTTP response from a VmsListBackupsByIdWithResponse call
+func ParseVmsListBackupsByIdResponse(rsp *http.Response) (*VmsListBackupsByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsListBackupsByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1Backup
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsCreateBackupByIdResponse parses an HTTP response from a VmsCreateBackupByIdWithResponse call
+func ParseVmsCreateBackupByIdResponse(rsp *http.Response) (*VmsCreateBackupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsCreateBackupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest V1Backup
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsDeleteBackupByIdResponse parses an HTTP response from a VmsDeleteBackupByIdWithResponse call
+func ParseVmsDeleteBackupByIdResponse(rsp *http.Response) (*VmsDeleteBackupByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsDeleteBackupByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsRestartVmByIdResponse parses an HTTP response from a VmsRestartVmByIdWithResponse call
+func ParseVmsRestartVmByIdResponse(rsp *http.Response) (*VmsRestartVmByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsRestartVmByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1PowerActionResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsStartVmByIdResponse parses an HTTP response from a VmsStartVmByIdWithResponse call
+func ParseVmsStartVmByIdResponse(rsp *http.Response) (*VmsStartVmByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsStartVmByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1PowerActionResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsStopVmByIdResponse parses an HTTP response from a VmsStopVmByIdWithResponse call
+func ParseVmsStopVmByIdResponse(rsp *http.Response) (*VmsStopVmByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsStopVmByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1PowerActionResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVolumesListVolumesByAccountResponse parses an HTTP response from a VolumesListVolumesByAccountWithResponse call
+func ParseVolumesListVolumesByAccountResponse(rsp *http.Response) (*VolumesListVolumesByAccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VolumesListVolumesByAccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageV1Volume
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVolumesDeleteVolumeByIdResponse parses an HTTP response from a VolumesDeleteVolumeByIdWithResponse call
+func ParseVolumesDeleteVolumeByIdResponse(rsp *http.Response) (*VolumesDeleteVolumeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VolumesDeleteVolumeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVolumesGetVolumeByIdResponse parses an HTTP response from a VolumesGetVolumeByIdWithResponse call
+func ParseVolumesGetVolumeByIdResponse(rsp *http.Response) (*VolumesGetVolumeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VolumesGetVolumeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Volume
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVolumesResizeVolumeByIdResponse parses an HTTP response from a VolumesResizeVolumeByIdWithResponse call
+func ParseVolumesResizeVolumeByIdResponse(rsp *http.Response) (*VolumesResizeVolumeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VolumesResizeVolumeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Volume
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVolumesAttachVolumeByIdResponse parses an HTTP response from a VolumesAttachVolumeByIdWithResponse call
+func ParseVolumesAttachVolumeByIdResponse(rsp *http.Response) (*VolumesAttachVolumeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VolumesAttachVolumeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Volume
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVolumesDetachVolumeByIdResponse parses an HTTP response from a VolumesDetachVolumeByIdWithResponse call
+func ParseVolumesDetachVolumeByIdResponse(rsp *http.Response) (*VolumesDetachVolumeByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VolumesDetachVolumeByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Volume
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
 
 	}
 
