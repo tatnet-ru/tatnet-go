@@ -1488,6 +1488,27 @@ type V1BackupCreate struct {
 	Name string `json:"name"`
 }
 
+// V1Balance defines model for V1Balance.
+type V1Balance struct {
+	// Available What paid resources can be bought with right now: `balance`, plus `credits` when they are unlocked
+	Available string `json:"available"`
+
+	// Balance Money paid in and not yet spent. A decimal string, not a float; negative means debt
+	Balance string `json:"balance"`
+
+	// Credits Bonus balance (promo codes, referral grants)
+	Credits string `json:"credits"`
+
+	// CreditsUnlocked Bonuses count towards payment only after the account's first real top-up; false means `credits` cannot be spent yet
+	CreditsUnlocked bool `json:"credits_unlocked"`
+
+	// Currency ISO 4217 code; the account is billed in RUB
+	Currency string `json:"currency"`
+
+	// RealTopupMin Smallest real top-up that unlocks the bonus balance; "0" once it is unlocked
+	RealTopupMin string `json:"real_topup_min"`
+}
+
 // V1Bucket defines model for V1Bucket.
 type V1Bucket struct {
 	CreatedAt *string `json:"created_at,omitempty"`
@@ -3278,6 +3299,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /account (the `AccountWhoami` operationId).
 	AccountWhoami(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AccountGetBalance Read the account balance
+	//
+	// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+	//
+	// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
+	AccountGetBalance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AppsListAppsByAccount List apps across the account
 	//
@@ -6108,6 +6136,23 @@ type ClientInterface interface {
 // Corresponds with GET /account (the `AccountWhoami` operationId).
 func (c *Client) AccountWhoami(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAccountWhoamiRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AccountGetBalance Read the account balance
+//
+// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+//
+// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
+func (c *Client) AccountGetBalance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAccountGetBalanceRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -12599,6 +12644,33 @@ func NewAccountWhoamiRequest(server string) (*http.Request, error) {
 	}
 
 	operationPath := fmt.Sprintf("/account")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAccountGetBalanceRequest constructs an http.Request for the AccountGetBalance method
+func NewAccountGetBalanceRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/account/balance")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -25618,6 +25690,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /account (the `AccountWhoami` operationId).
 	AccountWhoamiWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AccountWhoamiResponse, error)
 
+	// AccountGetBalanceWithResponse Read the account balance
+	//
+	// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
+	AccountGetBalanceWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AccountGetBalanceResponse, error)
+
 	// AppsListAppsByAccountWithResponse List apps across the account
 	//
 	// Все приложения аккаунта ключа, отфильтрованные его политикой — как
@@ -28793,6 +28874,47 @@ func (r AccountWhoamiResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AccountWhoamiResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AccountGetBalanceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Balance
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AccountGetBalanceResponse) GetJSON200() *V1Balance {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r AccountGetBalanceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AccountGetBalanceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AccountGetBalanceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AccountGetBalanceResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -41172,6 +41294,21 @@ func (c *ClientWithResponses) AccountWhoamiWithResponse(ctx context.Context, req
 	return ParseAccountWhoamiResponse(rsp)
 }
 
+// AccountGetBalanceWithResponse Read the account balance
+//
+// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
+func (c *ClientWithResponses) AccountGetBalanceWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AccountGetBalanceResponse, error) {
+	rsp, err := c.AccountGetBalance(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAccountGetBalanceResponse(rsp)
+}
+
 // AppsListAppsByAccountWithResponse List apps across the account
 //
 // Все приложения аккаунта ключа, отфильтрованные его политикой — как
@@ -46517,6 +46654,32 @@ func ParseAccountWhoamiResponse(rsp *http.Response) (*AccountWhoamiResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest WhoAmIResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAccountGetBalanceResponse parses an HTTP response from a AccountGetBalanceWithResponse call
+func ParseAccountGetBalanceResponse(rsp *http.Response) (*AccountGetBalanceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AccountGetBalanceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Balance
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
