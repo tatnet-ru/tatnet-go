@@ -3327,14 +3327,14 @@ type ClientInterface interface {
 	// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
 	AppsGetAppById(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AppsUpdateAppByIdWithBody Update an app (scale / resources)
+	// AppsUpdateAppByIdWithBody Update an app (scale / resources / image)
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
 	AppsUpdateAppByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AppsUpdateAppById Update an app (scale / resources)
+	// AppsUpdateAppById Update an app (scale / resources / image)
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -6215,7 +6215,7 @@ func (c *Client) AppsGetAppById(ctx context.Context, appId string, reqEditors ..
 	return c.Client.Do(req)
 }
 
-// AppsUpdateAppByIdWithBody Update an app (scale / resources)
+// AppsUpdateAppByIdWithBody Update an app (scale / resources / image)
 //
 // Takes any type of body and a specified content type.
 //
@@ -6232,7 +6232,7 @@ func (c *Client) AppsUpdateAppByIdWithBody(ctx context.Context, appId string, co
 	return c.Client.Do(req)
 }
 
-// AppsUpdateAppById Update an app (scale / resources)
+// AppsUpdateAppById Update an app (scale / resources / image)
 //
 // Takes a body of the `application/json` content type.
 //
@@ -25729,14 +25729,14 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
 	AppsGetAppByIdWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppByIdResponse, error)
 
-	// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources)
+	// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources / image)
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
 	AppsUpdateAppByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateAppByIdResponse, error)
 
-	// AppsUpdateAppByIdWithResponse Update an app (scale / resources)
+	// AppsUpdateAppByIdWithResponse Update an app (scale / resources / image)
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -41359,7 +41359,7 @@ func (c *ClientWithResponses) AppsGetAppByIdWithResponse(ctx context.Context, ap
 	return ParseAppsGetAppByIdResponse(rsp)
 }
 
-// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources)
+// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources / image)
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -41372,7 +41372,7 @@ func (c *ClientWithResponses) AppsUpdateAppByIdWithBodyWithResponse(ctx context.
 	return ParseAppsUpdateAppByIdResponse(rsp)
 }
 
-// AppsUpdateAppByIdWithResponse Update an app (scale / resources)
+// AppsUpdateAppByIdWithResponse Update an app (scale / resources / image)
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //

@@ -10135,7 +10135,7 @@
             "TatNetAPIKey": []
           }
         ],
-        "summary": "Update an app (scale / resources)",
+        "summary": "Update an app (scale / resources / image)",
         "tags": [
           "apps"
         ]
