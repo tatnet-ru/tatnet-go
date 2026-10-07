@@ -484,6 +484,42 @@ type HTTPValidationError struct {
 	Detail *[]ValidationError `json:"detail,omitempty"`
 }
 
+// ImageCatalogFamily defines model for ImageCatalogFamily.
+type ImageCatalogFamily struct {
+	DefaultVersion *string                `json:"default_version,omitempty"`
+	Description    *string                `json:"description,omitempty"`
+	Kind           string                 `json:"kind"`
+	LogoUrl        *string                `json:"logo_url,omitempty"`
+	Name           string                 `json:"name"`
+	OsFamily       string                 `json:"os_family"`
+	Ports          *[]interface{}         `json:"ports,omitempty"`
+	Readme         *string                `json:"readme,omitempty"`
+	Slug           string                 `json:"slug"`
+	Versions       *[]ImageCatalogVersion `json:"versions,omitempty"`
+}
+
+// ImageCatalogVersion Версия семьи в пикере: “image_id“ — пин (новейшая ready-сборка),
+// “by_cluster“ — сборка, разложенная на все активные ноды региона.
+type ImageCatalogVersion struct {
+	ByCluster    *map[string]string `json:"by_cluster,omitempty"`
+	ExactVersion *string            `json:"exact_version,omitempty"`
+	ImageId      string             `json:"image_id"`
+	Version      string             `json:"version"`
+}
+
+// ImageResponse defines model for ImageResponse.
+type ImageResponse struct {
+	Filename string `json:"filename"`
+	Id       string `json:"id"`
+	Name     string `json:"name"`
+}
+
+// ImagesListResponse defines model for ImagesListResponse.
+type ImagesListResponse struct {
+	Families *[]ImageCatalogFamily `json:"families,omitempty"`
+	Images   []ImageResponse       `json:"images"`
+}
+
 // LBCertificateResponse defines model for LBCertificateResponse.
 type LBCertificateResponse struct {
 	CreatedAt *time.Time            `json:"created_at,omitempty"`
@@ -1374,29 +1410,31 @@ type V1AccessKeyScope struct {
 
 // V1App defines model for V1App.
 type V1App struct {
-	AppType          *string `json:"app_type,omitempty"`
-	AutoDeploy       *bool   `json:"auto_deploy,omitempty"`
-	Branch           *string `json:"branch,omitempty"`
-	CreatedAt        *string `json:"created_at,omitempty"`
-	CurrentBuildId   *string `json:"current_build_id,omitempty"`
-	DeployState      *string `json:"deploy_state,omitempty"`
-	DockerImage      *string `json:"docker_image,omitempty"`
-	GitProvider      *string `json:"git_provider,omitempty"`
-	Id               string  `json:"id"`
-	Name             string  `json:"name"`
-	PredeployCommand *string `json:"predeploy_command,omitempty"`
-	ProjectId        string  `json:"project_id"`
-	ReadinessPath    *string `json:"readiness_path,omitempty"`
-	ReplicaCount     *int    `json:"replica_count,omitempty"`
-	ReplicaMemoryMb  *int    `json:"replica_memory_mb,omitempty"`
-	ReplicaVcpu      *int    `json:"replica_vcpu,omitempty"`
-	RepoFullName     *string `json:"repo_full_name,omitempty"`
-	RuntimeType      *string `json:"runtime_type,omitempty"`
-	SourceError      *string `json:"source_error,omitempty"`
-	SourceType       *string `json:"source_type,omitempty"`
-	Status           string  `json:"status"`
-	UpdatedAt        *string `json:"updated_at,omitempty"`
-	VpcId            *string `json:"vpc_id,omitempty"`
+	AppType                  *string `json:"app_type,omitempty"`
+	AutoDeploy               *bool   `json:"auto_deploy,omitempty"`
+	Branch                   *string `json:"branch,omitempty"`
+	CreatedAt                *string `json:"created_at,omitempty"`
+	CurrentBuildId           *string `json:"current_build_id,omitempty"`
+	DeployState              *string `json:"deploy_state,omitempty"`
+	DockerImage              *string `json:"docker_image,omitempty"`
+	GitProvider              *string `json:"git_provider,omitempty"`
+	Id                       string  `json:"id"`
+	Name                     string  `json:"name"`
+	PredeployCommand         *string `json:"predeploy_command,omitempty"`
+	ProjectId                string  `json:"project_id"`
+	ReadinessPath            *string `json:"readiness_path,omitempty"`
+	ReplicaCount             *int    `json:"replica_count,omitempty"`
+	ReplicaMemoryMb          *int    `json:"replica_memory_mb,omitempty"`
+	ReplicaVcpu              *int    `json:"replica_vcpu,omitempty"`
+	RepoFullName             *string `json:"repo_full_name,omitempty"`
+	RunningDockerImage       *string `json:"running_docker_image,omitempty"`
+	RunningDockerImageDigest *string `json:"running_docker_image_digest,omitempty"`
+	RuntimeType              *string `json:"runtime_type,omitempty"`
+	SourceError              *string `json:"source_error,omitempty"`
+	SourceType               *string `json:"source_type,omitempty"`
+	Status                   string  `json:"status"`
+	UpdatedAt                *string `json:"updated_at,omitempty"`
+	VpcId                    *string `json:"vpc_id,omitempty"`
 }
 
 // V1AppCreate Create an app. Exposes the commonly-needed fields; the rest take the
@@ -1584,6 +1622,8 @@ type V1Build struct {
 	CommitSha           *string `json:"commit_sha,omitempty"`
 	CreatedAt           *string `json:"created_at,omitempty"`
 	DeployState         *string `json:"deploy_state,omitempty"`
+	DockerImage         *string `json:"docker_image,omitempty"`
+	DockerImageDigest   *string `json:"docker_image_digest,omitempty"`
 	DurationMs          *int    `json:"duration_ms,omitempty"`
 	Error               *string `json:"error,omitempty"`
 	FinishedAt          *string `json:"finished_at,omitempty"`
@@ -2168,6 +2208,7 @@ type V1VMCreate struct {
 
 	// Interfaces Network interfaces to attach
 	Interfaces *[]V1VMInterface `json:"interfaces,omitempty"`
+	Mem        *int             `json:"mem,omitempty"`
 
 	// Name VM display name
 	Name string `json:"name"`
@@ -2180,6 +2221,7 @@ type V1VMCreate struct {
 
 	// SshKeyIds SSH key UUIDs to inject (0 or more)
 	SshKeyIds *[]string `json:"ssh_key_ids,omitempty"`
+	Vcpu      *int      `json:"vcpu,omitempty"`
 
 	// VmPlanId VM plan UUID
 	VmPlanId string `json:"vm_plan_id"`
@@ -2751,6 +2793,11 @@ type FunctionsListFunctionsParams struct {
 type FunctionsListEnvVarsParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
+// VmsListImagesParams defines parameters for VmsListImages.
+type VmsListImagesParams struct {
+	ClusterId *string `form:"cluster_id,omitempty" json:"cluster_id,omitempty"`
 }
 
 // KubernetesListClustersParams defines parameters for KubernetesListClusters.
@@ -4798,6 +4845,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /projects/{project_id}/functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRoute` operationId).
 	FunctionsDeleteEnvVarRoute(ctx context.Context, projectId string, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsListImages List images available to the project's account
+	//
+	// Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
+	VmsListImages(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesListClusters List Kubernetes clusters in a project
 	//
@@ -9677,6 +9729,21 @@ func (c *Client) FunctionsAddEnvVar(ctx context.Context, projectId string, funct
 // Corresponds with DELETE /projects/{project_id}/functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRoute` operationId).
 func (c *Client) FunctionsDeleteEnvVarRoute(ctx context.Context, projectId string, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFunctionsDeleteEnvVarRouteRequest(c.Server, projectId, functionId, envVarId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsListImages List images available to the project's account
+//
+// Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
+func (c *Client) VmsListImages(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsListImagesRequest(c.Server, projectId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -20028,6 +20095,67 @@ func NewFunctionsDeleteEnvVarRouteRequest(server string, projectId string, funct
 	return req, nil
 }
 
+// NewVmsListImagesRequest constructs an http.Request for the VmsListImages method
+func NewVmsListImagesRequest(server string, projectId string, params *VmsListImagesParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/images", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ClusterId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cluster_id", *params.ClusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewKubernetesListClustersRequest constructs an http.Request for the KubernetesListClusters method
 func NewKubernetesListClustersRequest(server string, projectId string, params *KubernetesListClustersParams) (*http.Request, error) {
 	var err error
@@ -27380,6 +27508,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with DELETE /projects/{project_id}/functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRoute` operationId).
 	FunctionsDeleteEnvVarRouteWithResponse(ctx context.Context, projectId string, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*FunctionsDeleteEnvVarRouteResponse, error)
+
+	// VmsListImagesWithResponse List images available to the project's account
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
+	VmsListImagesWithResponse(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*VmsListImagesResponse, error)
 
 	// KubernetesListClustersWithResponse List Kubernetes clusters in a project
 	//
@@ -35871,6 +36006,54 @@ func (r FunctionsDeleteEnvVarRouteResponse) ContentType() string {
 	return ""
 }
 
+type VmsListImagesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *ImagesListResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsListImagesResponse) GetJSON200() *ImagesListResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsListImagesResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsListImagesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsListImagesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsListImagesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsListImagesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type KubernetesListClustersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -44211,6 +44394,19 @@ func (c *ClientWithResponses) FunctionsDeleteEnvVarRouteWithResponse(ctx context
 	return ParseFunctionsDeleteEnvVarRouteResponse(rsp)
 }
 
+// VmsListImagesWithResponse List images available to the project's account
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
+func (c *ClientWithResponses) VmsListImagesWithResponse(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*VmsListImagesResponse, error) {
+	rsp, err := c.VmsListImages(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsListImagesResponse(rsp)
+}
+
 // KubernetesListClustersWithResponse List Kubernetes clusters in a project
 //
 // Returns a wrapper object for the known response body format(s).
@@ -51460,6 +51656,39 @@ func ParseFunctionsDeleteEnvVarRouteResponse(rsp *http.Response) (*FunctionsDele
 	switch {
 	case rsp.StatusCode == 204:
 		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsListImagesResponse parses an HTTP response from a VmsListImagesWithResponse call
+func ParseVmsListImagesResponse(rsp *http.Response) (*VmsListImagesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsListImagesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest ImagesListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
