@@ -618,6 +618,173 @@
         "title": "HTTPValidationError",
         "type": "object"
       },
+      "ImageCatalogFamily": {
+        "properties": {
+          "default_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Default Version"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "logo_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Logo Url"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "os_family": {
+            "title": "Os Family",
+            "type": "string"
+          },
+          "ports": {
+            "items": {},
+            "title": "Ports",
+            "type": "array"
+          },
+          "readme": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Readme"
+          },
+          "slug": {
+            "title": "Slug",
+            "type": "string"
+          },
+          "versions": {
+            "items": {
+              "$ref": "#/components/schemas/ImageCatalogVersion"
+            },
+            "title": "Versions",
+            "type": "array"
+          }
+        },
+        "required": [
+          "slug",
+          "name",
+          "kind",
+          "os_family"
+        ],
+        "title": "ImageCatalogFamily",
+        "type": "object"
+      },
+      "ImageCatalogVersion": {
+        "description": "Версия семьи в пикере: ``image_id`` — пин (новейшая ready-сборка),\n``by_cluster`` — сборка, разложенная на все активные ноды региона.",
+        "properties": {
+          "by_cluster": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "title": "By Cluster",
+            "type": "object"
+          },
+          "exact_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exact Version"
+          },
+          "image_id": {
+            "title": "Image Id",
+            "type": "string"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "image_id"
+        ],
+        "title": "ImageCatalogVersion",
+        "type": "object"
+      },
+      "ImageResponse": {
+        "properties": {
+          "filename": {
+            "title": "Filename",
+            "type": "string"
+          },
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "filename"
+        ],
+        "title": "ImageResponse",
+        "type": "object"
+      },
+      "ImagesListResponse": {
+        "properties": {
+          "families": {
+            "items": {
+              "$ref": "#/components/schemas/ImageCatalogFamily"
+            },
+            "title": "Families",
+            "type": "array"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/ImageResponse"
+            },
+            "title": "Images",
+            "type": "array"
+          }
+        },
+        "required": [
+          "images"
+        ],
+        "title": "ImagesListResponse",
+        "type": "object"
+      },
       "LBCertificateResponse": {
         "properties": {
           "created_at": {
@@ -4814,6 +4981,28 @@
             "title": "Repo Full Name",
             "type": "string"
           },
+          "running_docker_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Running Docker Image"
+          },
+          "running_docker_image_digest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Running Docker Image Digest"
+          },
           "runtime_type": {
             "default": "firecracker",
             "title": "Runtime Type",
@@ -5781,6 +5970,28 @@
               }
             ],
             "title": "Deploy State"
+          },
+          "docker_image": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Docker Image"
+          },
+          "docker_image_digest": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Docker Image Digest"
           },
           "duration_ms": {
             "anyOf": [
@@ -8126,6 +8337,18 @@
             "title": "Interfaces",
             "type": "array"
           },
+          "mem": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mem"
+          },
           "name": {
             "description": "VM display name",
             "maxLength": 255,
@@ -8164,6 +8387,18 @@
             },
             "title": "Ssh Key Ids",
             "type": "array"
+          },
+          "vcpu": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vcpu"
           },
           "vm_plan_id": {
             "description": "VM plan UUID",
@@ -18444,6 +18679,69 @@
         "summary": "Delete an environment variable",
         "tags": [
           "functions"
+        ]
+      }
+    },
+    "/projects/{project_id}/images": {
+      "get": {
+        "operationId": "vms_list_images",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cluster_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cluster Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImagesListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "List images available to the project's account",
+        "tags": [
+          "vms"
         ]
       }
     },
