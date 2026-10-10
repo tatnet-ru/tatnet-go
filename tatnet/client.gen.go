@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/oapi-codegen/runtime"
+	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
 // Defines values for LBHealthCheckSpecMode.
@@ -1654,6 +1655,33 @@ type V1ConnectionInfo struct {
 	VirtualHostedExample string `json:"virtual_hosted_example"`
 }
 
+// V1DNSRRset defines model for V1DNSRRset.
+type V1DNSRRset struct {
+	Id       string   `json:"id"`
+	Managed  bool     `json:"managed"`
+	Name     string   `json:"name"`
+	Records  []string `json:"records"`
+	Revision string   `json:"revision"`
+	Ttl      *int     `json:"ttl"`
+	Type     string   `json:"type"`
+	ZoneId   string   `json:"zone_id"`
+}
+
+// V1DNSRRsetCreate defines model for V1DNSRRsetCreate.
+type V1DNSRRsetCreate struct {
+	Name    string   `json:"name"`
+	Records []string `json:"records"`
+	Ttl     *int     `json:"ttl"`
+	Type    string   `json:"type"`
+}
+
+// V1DNSRRsetReplace defines model for V1DNSRRsetReplace.
+type V1DNSRRsetReplace struct {
+	ExpectedRevision string   `json:"expected_revision"`
+	Records          []string `json:"records"`
+	Ttl              *int     `json:"ttl"`
+}
+
 // V1DNSRecord defines model for V1DNSRecord.
 type V1DNSRecord struct {
 	Content string `json:"content"`
@@ -2662,6 +2690,11 @@ type DnsListDnsRecordsParams struct {
 	Offset *int    `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
+// DnsDeleteDnsRrsetParams defines parameters for DnsDeleteDnsRrset.
+type DnsDeleteDnsRrsetParams struct {
+	ExpectedRevision string `form:"expected_revision" json:"expected_revision"`
+}
+
 // DomainsListDomainsParams defines parameters for DomainsListDomains.
 type DomainsListDomainsParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
@@ -2897,6 +2930,12 @@ type NetworkingListVpcsParams struct {
 	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
+// NetworkingDisableNatGatewayParams defines parameters for NetworkingDisableNatGateway.
+type NetworkingDisableNatGatewayParams struct {
+	// ExpectedFipId Disable only this floating IP allocation; a replaced gateway returns 409 nat_gateway_changed.
+	ExpectedFipId *openapi_types.UUID `form:"expected_fip_id,omitempty" json:"expected_fip_id,omitempty"`
+}
+
 // NetworkingEnableNatGatewayJSONBody defines parameters for NetworkingEnableNatGateway.
 type NetworkingEnableNatGatewayJSONBody = V1NatGatewayEnable
 
@@ -2929,6 +2968,12 @@ type DnsCreateDnsRecordJSONRequestBody = V1DNSRecordCreate
 
 // DnsUpdateDnsRecordJSONRequestBody defines body for DnsUpdateDnsRecord for application/json ContentType.
 type DnsUpdateDnsRecordJSONRequestBody = V1DNSRecordUpdate
+
+// DnsCreateDnsRrsetJSONRequestBody defines body for DnsCreateDnsRrset for application/json ContentType.
+type DnsCreateDnsRrsetJSONRequestBody = V1DNSRRsetCreate
+
+// DnsReplaceDnsRrsetJSONRequestBody defines body for DnsReplaceDnsRrset for application/json ContentType.
+type DnsReplaceDnsRrsetJSONRequestBody = V1DNSRRsetReplace
 
 // NetworkingCreateFloatingIpJSONRequestBody defines body for NetworkingCreateFloatingIp for application/json ContentType.
 type NetworkingCreateFloatingIpJSONRequestBody = V1FloatingIPCreate
@@ -3351,7 +3396,7 @@ type ClientInterface interface {
 
 	// AccountGetBalance Read the account balance
 	//
-	// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+	// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by account owners and admins. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
 	//
 	// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
 	AccountGetBalance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3610,6 +3655,44 @@ type ClientInterface interface {
 	//
 	// Corresponds with PATCH /dns/zones/{zone_id}/dns_records/{record_id} (the `DnsUpdateDnsRecord` operationId).
 	DnsUpdateDnsRecord(ctx context.Context, zoneId string, recordId string, body DnsUpdateDnsRecordJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DnsCreateDnsRrsetWithBody Create a complete DNS RRset without replacing existing data
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+	DnsCreateDnsRrsetWithBody(ctx context.Context, zoneId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DnsCreateDnsRrset Create a complete DNS RRset without replacing existing data
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+	DnsCreateDnsRrset(ctx context.Context, zoneId string, body DnsCreateDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DnsDeleteDnsRrset Delete a complete RRset only if the revision matches
+	//
+	// Corresponds with DELETE /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsDeleteDnsRrset` operationId).
+	DnsDeleteDnsRrset(ctx context.Context, zoneId string, rrsetId string, params *DnsDeleteDnsRrsetParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DnsGetDnsRrset Read a complete DNS RRset and its revision
+	//
+	// Corresponds with GET /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsGetDnsRrset` operationId).
+	DnsGetDnsRrset(ctx context.Context, zoneId string, rrsetId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DnsReplaceDnsRrsetWithBody Atomically replace RRset values and TTL if the revision matches
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+	DnsReplaceDnsRrsetWithBody(ctx context.Context, zoneId string, rrsetId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DnsReplaceDnsRrset Atomically replace RRset values and TTL if the revision matches
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+	DnsReplaceDnsRrset(ctx context.Context, zoneId string, rrsetId string, body DnsReplaceDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// DnsVerifyZone Verify NS delegation
 	//
@@ -6131,7 +6214,7 @@ type ClientInterface interface {
 	// the region confirms (`202`, `status: detaching`).
 	//
 	// Corresponds with DELETE /vpcs/{vpc_id}/nat-gateway (the `NetworkingDisableNatGateway` operationId).
-	NetworkingDisableNatGateway(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+	NetworkingDisableNatGateway(ctx context.Context, vpcId string, params *NetworkingDisableNatGatewayParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// NetworkingEnableNatGatewayWithBody Enable the VPC's NAT gateway
 	//
@@ -6204,7 +6287,7 @@ func (c *Client) AccountWhoami(ctx context.Context, reqEditors ...RequestEditorF
 
 // AccountGetBalance Read the account balance
 //
-// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by account owners and admins. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
 //
 // Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
 func (c *Client) AccountGetBalance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -6884,6 +6967,104 @@ func (c *Client) DnsUpdateDnsRecordWithBody(ctx context.Context, zoneId string, 
 // Corresponds with PATCH /dns/zones/{zone_id}/dns_records/{record_id} (the `DnsUpdateDnsRecord` operationId).
 func (c *Client) DnsUpdateDnsRecord(ctx context.Context, zoneId string, recordId string, body DnsUpdateDnsRecordJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewDnsUpdateDnsRecordRequest(c.Server, zoneId, recordId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DnsCreateDnsRrsetWithBody Create a complete DNS RRset without replacing existing data
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+func (c *Client) DnsCreateDnsRrsetWithBody(ctx context.Context, zoneId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDnsCreateDnsRrsetRequestWithBody(c.Server, zoneId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DnsCreateDnsRrset Create a complete DNS RRset without replacing existing data
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+func (c *Client) DnsCreateDnsRrset(ctx context.Context, zoneId string, body DnsCreateDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDnsCreateDnsRrsetRequest(c.Server, zoneId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DnsDeleteDnsRrset Delete a complete RRset only if the revision matches
+//
+// Corresponds with DELETE /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsDeleteDnsRrset` operationId).
+func (c *Client) DnsDeleteDnsRrset(ctx context.Context, zoneId string, rrsetId string, params *DnsDeleteDnsRrsetParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDnsDeleteDnsRrsetRequest(c.Server, zoneId, rrsetId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DnsGetDnsRrset Read a complete DNS RRset and its revision
+//
+// Corresponds with GET /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsGetDnsRrset` operationId).
+func (c *Client) DnsGetDnsRrset(ctx context.Context, zoneId string, rrsetId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDnsGetDnsRrsetRequest(c.Server, zoneId, rrsetId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DnsReplaceDnsRrsetWithBody Atomically replace RRset values and TTL if the revision matches
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+func (c *Client) DnsReplaceDnsRrsetWithBody(ctx context.Context, zoneId string, rrsetId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDnsReplaceDnsRrsetRequestWithBody(c.Server, zoneId, rrsetId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// DnsReplaceDnsRrset Atomically replace RRset values and TTL if the revision matches
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+func (c *Client) DnsReplaceDnsRrset(ctx context.Context, zoneId string, rrsetId string, body DnsReplaceDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDnsReplaceDnsRrsetRequest(c.Server, zoneId, rrsetId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -12594,8 +12775,8 @@ func (c *Client) NetworkingGetVpc(ctx context.Context, vpcId string, reqEditors 
 // the region confirms (`202`, `status: detaching`).
 //
 // Corresponds with DELETE /vpcs/{vpc_id}/nat-gateway (the `NetworkingDisableNatGateway` operationId).
-func (c *Client) NetworkingDisableNatGateway(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewNetworkingDisableNatGatewayRequest(c.Server, vpcId)
+func (c *Client) NetworkingDisableNatGateway(ctx context.Context, vpcId string, params *NetworkingDisableNatGatewayParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewNetworkingDisableNatGatewayRequest(c.Server, vpcId, params)
 	if err != nil {
 		return nil, err
 	}
@@ -14449,6 +14630,212 @@ func NewDnsUpdateDnsRecordRequestWithBody(server string, zoneId string, recordId
 	}
 
 	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDnsCreateDnsRrsetRequest calls the generic DnsCreateDnsRrset builder with application/json body
+func NewDnsCreateDnsRrsetRequest(server string, zoneId string, body DnsCreateDnsRrsetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDnsCreateDnsRrsetRequestWithBody(server, zoneId, "application/json", bodyReader)
+}
+
+// NewDnsCreateDnsRrsetRequestWithBody constructs an http.Request for the DnsCreateDnsRrset method, with any body, and a specified content type
+func NewDnsCreateDnsRrsetRequestWithBody(server string, zoneId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "zone_id", zoneId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/dns/zones/%s/rrsets", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDnsDeleteDnsRrsetRequest constructs an http.Request for the DnsDeleteDnsRrset method
+func NewDnsDeleteDnsRrsetRequest(server string, zoneId string, rrsetId string, params *DnsDeleteDnsRrsetParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "zone_id", zoneId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "rrset_id", rrsetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/dns/zones/%s/rrsets/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "expected_revision", params.ExpectedRevision, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDnsGetDnsRrsetRequest constructs an http.Request for the DnsGetDnsRrset method
+func NewDnsGetDnsRrsetRequest(server string, zoneId string, rrsetId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "zone_id", zoneId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "rrset_id", rrsetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/dns/zones/%s/rrsets/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDnsReplaceDnsRrsetRequest calls the generic DnsReplaceDnsRrset builder with application/json body
+func NewDnsReplaceDnsRrsetRequest(server string, zoneId string, rrsetId string, body DnsReplaceDnsRrsetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDnsReplaceDnsRrsetRequestWithBody(server, zoneId, rrsetId, "application/json", bodyReader)
+}
+
+// NewDnsReplaceDnsRrsetRequestWithBody constructs an http.Request for the DnsReplaceDnsRrset method, with any body, and a specified content type
+func NewDnsReplaceDnsRrsetRequestWithBody(server string, zoneId string, rrsetId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "zone_id", zoneId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "rrset_id", rrsetId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/dns/zones/%s/rrsets/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -25603,7 +25990,7 @@ func NewNetworkingGetVpcRequest(server string, vpcId string) (*http.Request, err
 }
 
 // NewNetworkingDisableNatGatewayRequest constructs an http.Request for the NetworkingDisableNatGateway method
-func NewNetworkingDisableNatGatewayRequest(server string, vpcId string) (*http.Request, error) {
+func NewNetworkingDisableNatGatewayRequest(server string, vpcId string, params *NetworkingDisableNatGatewayParams) (*http.Request, error) {
 	var err error
 
 	var pathParam0 string
@@ -25626,6 +26013,33 @@ func NewNetworkingDisableNatGatewayRequest(server string, vpcId string) (*http.R
 	queryURL, err := serverURL.Parse(operationPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ExpectedFipId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "expected_fip_id", *params.ExpectedFipId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
 	}
 
 	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
@@ -25826,7 +26240,7 @@ type ClientWithResponsesInterface interface {
 
 	// AccountGetBalanceWithResponse Read the account balance
 	//
-	// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+	// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by account owners and admins. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -26129,6 +26543,48 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PATCH /dns/zones/{zone_id}/dns_records/{record_id} (the `DnsUpdateDnsRecord` operationId).
 	DnsUpdateDnsRecordWithResponse(ctx context.Context, zoneId string, recordId string, body DnsUpdateDnsRecordJSONRequestBody, reqEditors ...RequestEditorFn) (*DnsUpdateDnsRecordResponse, error)
+
+	// DnsCreateDnsRrsetWithBodyWithResponse Create a complete DNS RRset without replacing existing data
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+	DnsCreateDnsRrsetWithBodyWithResponse(ctx context.Context, zoneId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DnsCreateDnsRrsetResponse, error)
+
+	// DnsCreateDnsRrsetWithResponse Create a complete DNS RRset without replacing existing data
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+	DnsCreateDnsRrsetWithResponse(ctx context.Context, zoneId string, body DnsCreateDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*DnsCreateDnsRrsetResponse, error)
+
+	// DnsDeleteDnsRrsetWithResponse Delete a complete RRset only if the revision matches
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsDeleteDnsRrset` operationId).
+	DnsDeleteDnsRrsetWithResponse(ctx context.Context, zoneId string, rrsetId string, params *DnsDeleteDnsRrsetParams, reqEditors ...RequestEditorFn) (*DnsDeleteDnsRrsetResponse, error)
+
+	// DnsGetDnsRrsetWithResponse Read a complete DNS RRset and its revision
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsGetDnsRrset` operationId).
+	DnsGetDnsRrsetWithResponse(ctx context.Context, zoneId string, rrsetId string, reqEditors ...RequestEditorFn) (*DnsGetDnsRrsetResponse, error)
+
+	// DnsReplaceDnsRrsetWithBodyWithResponse Atomically replace RRset values and TTL if the revision matches
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+	DnsReplaceDnsRrsetWithBodyWithResponse(ctx context.Context, zoneId string, rrsetId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DnsReplaceDnsRrsetResponse, error)
+
+	// DnsReplaceDnsRrsetWithResponse Atomically replace RRset values and TTL if the revision matches
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+	DnsReplaceDnsRrsetWithResponse(ctx context.Context, zoneId string, rrsetId string, body DnsReplaceDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*DnsReplaceDnsRrsetResponse, error)
 
 	// DnsVerifyZoneWithResponse Verify NS delegation
 	//
@@ -28926,7 +29382,7 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with DELETE /vpcs/{vpc_id}/nat-gateway (the `NetworkingDisableNatGateway` operationId).
-	NetworkingDisableNatGatewayWithResponse(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*NetworkingDisableNatGatewayResponse, error)
+	NetworkingDisableNatGatewayWithResponse(ctx context.Context, vpcId string, params *NetworkingDisableNatGatewayParams, reqEditors ...RequestEditorFn) (*NetworkingDisableNatGatewayResponse, error)
 
 	// NetworkingEnableNatGatewayWithBodyWithResponse Enable the VPC's NAT gateway
 	//
@@ -30545,6 +31001,191 @@ func (r DnsUpdateDnsRecordResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r DnsUpdateDnsRecordResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DnsCreateDnsRrsetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *V1DNSRRset
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r DnsCreateDnsRrsetResponse) GetJSON201() *V1DNSRRset {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r DnsCreateDnsRrsetResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r DnsCreateDnsRrsetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DnsCreateDnsRrsetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DnsCreateDnsRrsetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DnsCreateDnsRrsetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DnsDeleteDnsRrsetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r DnsDeleteDnsRrsetResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r DnsDeleteDnsRrsetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DnsDeleteDnsRrsetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DnsDeleteDnsRrsetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DnsDeleteDnsRrsetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DnsGetDnsRrsetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1DNSRRset
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DnsGetDnsRrsetResponse) GetJSON200() *V1DNSRRset {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r DnsGetDnsRrsetResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r DnsGetDnsRrsetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DnsGetDnsRrsetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DnsGetDnsRrsetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DnsGetDnsRrsetResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type DnsReplaceDnsRrsetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1DNSRRset
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r DnsReplaceDnsRrsetResponse) GetJSON200() *V1DNSRRset {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r DnsReplaceDnsRrsetResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r DnsReplaceDnsRrsetResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r DnsReplaceDnsRrsetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DnsReplaceDnsRrsetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r DnsReplaceDnsRrsetResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -41487,7 +42128,7 @@ func (c *ClientWithResponses) AccountWhoamiWithResponse(ctx context.Context, req
 
 // AccountGetBalanceWithResponse Read the account balance
 //
-// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
+// The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by account owners and admins. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.
 //
 // Returns a wrapper object for the known response body format(s).
 //
@@ -42047,6 +42688,84 @@ func (c *ClientWithResponses) DnsUpdateDnsRecordWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParseDnsUpdateDnsRecordResponse(rsp)
+}
+
+// DnsCreateDnsRrsetWithBodyWithResponse Create a complete DNS RRset without replacing existing data
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+func (c *ClientWithResponses) DnsCreateDnsRrsetWithBodyWithResponse(ctx context.Context, zoneId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DnsCreateDnsRrsetResponse, error) {
+	rsp, err := c.DnsCreateDnsRrsetWithBody(ctx, zoneId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDnsCreateDnsRrsetResponse(rsp)
+}
+
+// DnsCreateDnsRrsetWithResponse Create a complete DNS RRset without replacing existing data
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /dns/zones/{zone_id}/rrsets (the `DnsCreateDnsRrset` operationId).
+func (c *ClientWithResponses) DnsCreateDnsRrsetWithResponse(ctx context.Context, zoneId string, body DnsCreateDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*DnsCreateDnsRrsetResponse, error) {
+	rsp, err := c.DnsCreateDnsRrset(ctx, zoneId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDnsCreateDnsRrsetResponse(rsp)
+}
+
+// DnsDeleteDnsRrsetWithResponse Delete a complete RRset only if the revision matches
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsDeleteDnsRrset` operationId).
+func (c *ClientWithResponses) DnsDeleteDnsRrsetWithResponse(ctx context.Context, zoneId string, rrsetId string, params *DnsDeleteDnsRrsetParams, reqEditors ...RequestEditorFn) (*DnsDeleteDnsRrsetResponse, error) {
+	rsp, err := c.DnsDeleteDnsRrset(ctx, zoneId, rrsetId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDnsDeleteDnsRrsetResponse(rsp)
+}
+
+// DnsGetDnsRrsetWithResponse Read a complete DNS RRset and its revision
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsGetDnsRrset` operationId).
+func (c *ClientWithResponses) DnsGetDnsRrsetWithResponse(ctx context.Context, zoneId string, rrsetId string, reqEditors ...RequestEditorFn) (*DnsGetDnsRrsetResponse, error) {
+	rsp, err := c.DnsGetDnsRrset(ctx, zoneId, rrsetId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDnsGetDnsRrsetResponse(rsp)
+}
+
+// DnsReplaceDnsRrsetWithBodyWithResponse Atomically replace RRset values and TTL if the revision matches
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+func (c *ClientWithResponses) DnsReplaceDnsRrsetWithBodyWithResponse(ctx context.Context, zoneId string, rrsetId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DnsReplaceDnsRrsetResponse, error) {
+	rsp, err := c.DnsReplaceDnsRrsetWithBody(ctx, zoneId, rrsetId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDnsReplaceDnsRrsetResponse(rsp)
+}
+
+// DnsReplaceDnsRrsetWithResponse Atomically replace RRset values and TTL if the revision matches
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /dns/zones/{zone_id}/rrsets/{rrset_id} (the `DnsReplaceDnsRrset` operationId).
+func (c *ClientWithResponses) DnsReplaceDnsRrsetWithResponse(ctx context.Context, zoneId string, rrsetId string, body DnsReplaceDnsRrsetJSONRequestBody, reqEditors ...RequestEditorFn) (*DnsReplaceDnsRrsetResponse, error) {
+	rsp, err := c.DnsReplaceDnsRrset(ctx, zoneId, rrsetId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDnsReplaceDnsRrsetResponse(rsp)
 }
 
 // DnsVerifyZoneWithResponse Verify NS delegation
@@ -46753,8 +47472,8 @@ func (c *ClientWithResponses) NetworkingGetVpcWithResponse(ctx context.Context, 
 // Returns a wrapper object for the known response body format(s).
 //
 // Corresponds with DELETE /vpcs/{vpc_id}/nat-gateway (the `NetworkingDisableNatGateway` operationId).
-func (c *ClientWithResponses) NetworkingDisableNatGatewayWithResponse(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*NetworkingDisableNatGatewayResponse, error) {
-	rsp, err := c.NetworkingDisableNatGateway(ctx, vpcId, reqEditors...)
+func (c *ClientWithResponses) NetworkingDisableNatGatewayWithResponse(ctx context.Context, vpcId string, params *NetworkingDisableNatGatewayParams, reqEditors ...RequestEditorFn) (*NetworkingDisableNatGatewayResponse, error) {
+	rsp, err := c.NetworkingDisableNatGateway(ctx, vpcId, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
@@ -47904,6 +48623,134 @@ func ParseDnsUpdateDnsRecordResponse(rsp *http.Response) (*DnsUpdateDnsRecordRes
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest V1DNSRecord
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDnsCreateDnsRrsetResponse parses an HTTP response from a DnsCreateDnsRrsetWithResponse call
+func ParseDnsCreateDnsRrsetResponse(rsp *http.Response) (*DnsCreateDnsRrsetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DnsCreateDnsRrsetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest V1DNSRRset
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDnsDeleteDnsRrsetResponse parses an HTTP response from a DnsDeleteDnsRrsetWithResponse call
+func ParseDnsDeleteDnsRrsetResponse(rsp *http.Response) (*DnsDeleteDnsRrsetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DnsDeleteDnsRrsetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case rsp.StatusCode == 204:
+		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDnsGetDnsRrsetResponse parses an HTTP response from a DnsGetDnsRrsetWithResponse call
+func ParseDnsGetDnsRrsetResponse(rsp *http.Response) (*DnsGetDnsRrsetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DnsGetDnsRrsetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1DNSRRset
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDnsReplaceDnsRrsetResponse parses an HTTP response from a DnsReplaceDnsRrsetWithResponse call
+func ParseDnsReplaceDnsRrsetResponse(rsp *http.Response) (*DnsReplaceDnsRrsetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DnsReplaceDnsRrsetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1DNSRRset
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
