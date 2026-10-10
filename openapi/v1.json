@@ -6172,6 +6172,144 @@
         "title": "V1ConnectionInfo",
         "type": "object"
       },
+      "V1DNSRRset": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "managed": {
+            "title": "Managed",
+            "type": "boolean"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "records": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Records",
+            "type": "array"
+          },
+          "revision": {
+            "title": "Revision",
+            "type": "string"
+          },
+          "ttl": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ttl"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "zone_id": {
+            "title": "Zone Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "zone_id",
+          "name",
+          "type",
+          "ttl",
+          "records",
+          "managed",
+          "revision"
+        ],
+        "title": "V1DNSRRset",
+        "type": "object"
+      },
+      "V1DNSRRsetCreate": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "records": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 256,
+            "minItems": 1,
+            "title": "Records",
+            "type": "array"
+          },
+          "ttl": {
+            "anyOf": [
+              {
+                "maximum": 2147483647.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ttl"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "type",
+          "ttl",
+          "records"
+        ],
+        "title": "V1DNSRRsetCreate",
+        "type": "object"
+      },
+      "V1DNSRRsetReplace": {
+        "properties": {
+          "expected_revision": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Expected Revision",
+            "type": "string"
+          },
+          "records": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 256,
+            "minItems": 1,
+            "title": "Records",
+            "type": "array"
+          },
+          "ttl": {
+            "anyOf": [
+              {
+                "maximum": 2147483647.0,
+                "minimum": 0.0,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ttl"
+          }
+        },
+        "required": [
+          "ttl",
+          "records",
+          "expected_revision"
+        ],
+        "title": "V1DNSRRsetReplace",
+        "type": "object"
+      },
       "V1DNSRecord": {
         "properties": {
           "content": {
@@ -10131,7 +10269,7 @@
     },
     "/account/balance": {
       "get": {
-        "description": "The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by the account owner only. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.",
+        "description": "The balance of the account the key belongs to, as the billing service sees it at the moment of the request. Requires `billing:read`, which is governed by `account:view_billing` — held by account owners and admins. `503 billing_unavailable` means the balance could not be read; it is never reported as zero.",
         "operationId": "account_get_balance",
         "responses": {
           "200": {
@@ -12075,6 +12213,240 @@
           }
         ],
         "summary": "Update a DNS record",
+        "tags": [
+          "dns"
+        ]
+      }
+    },
+    "/dns/zones/{zone_id}/rrsets": {
+      "post": {
+        "operationId": "dns_create_dns_rrset",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "zone_id",
+            "required": true,
+            "schema": {
+              "title": "Zone Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1DNSRRsetCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1DNSRRset"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Create a complete DNS RRset without replacing existing data",
+        "tags": [
+          "dns"
+        ]
+      }
+    },
+    "/dns/zones/{zone_id}/rrsets/{rrset_id}": {
+      "delete": {
+        "operationId": "dns_delete_dns_rrset",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "zone_id",
+            "required": true,
+            "schema": {
+              "title": "Zone Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "rrset_id",
+            "required": true,
+            "schema": {
+              "title": "Rrset Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expected_revision",
+            "required": true,
+            "schema": {
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Expected Revision",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Delete a complete RRset only if the revision matches",
+        "tags": [
+          "dns"
+        ]
+      },
+      "get": {
+        "operationId": "dns_get_dns_rrset",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "zone_id",
+            "required": true,
+            "schema": {
+              "title": "Zone Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "rrset_id",
+            "required": true,
+            "schema": {
+              "title": "Rrset Id",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1DNSRRset"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Read a complete DNS RRset and its revision",
+        "tags": [
+          "dns"
+        ]
+      },
+      "put": {
+        "operationId": "dns_replace_dns_rrset",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "zone_id",
+            "required": true,
+            "schema": {
+              "title": "Zone Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "rrset_id",
+            "required": true,
+            "schema": {
+              "title": "Rrset Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/V1DNSRRsetReplace"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1DNSRRset"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Atomically replace RRset values and TTL if the revision matches",
         "tags": [
           "dns"
         ]
@@ -25427,6 +25799,25 @@
             "schema": {
               "title": "Vpc Id",
               "type": "string"
+            }
+          },
+          {
+            "description": "Disable only this floating IP allocation; a replaced gateway returns 409 nat_gateway_changed.",
+            "in": "query",
+            "name": "expected_fip_id",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Disable only this floating IP allocation; a replaced gateway returns 409 nat_gateway_changed.",
+              "title": "Expected Fip Id"
             }
           }
         ],
