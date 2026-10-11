@@ -16332,7 +16332,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PgBackupsListResponse"
+                  "$ref": "#/components/schemas/PgBackupResponse"
                 }
               }
             },
@@ -21484,7 +21484,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PgBackupsListResponse"
+                  "$ref": "#/components/schemas/PgBackupResponse"
                 }
               }
             },
