@@ -34547,13 +34547,13 @@ type PostgresCreateBackupByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON201 the response for an HTTP 201 `application/json` response
-	JSON201 *PgBackupsListResponse
+	JSON201 *PgBackupResponse
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON201 returns the response for an HTTP 201 `application/json` response
-func (r PostgresCreateBackupByIdResponse) GetJSON201() *PgBackupsListResponse {
+func (r PostgresCreateBackupByIdResponse) GetJSON201() *PgBackupResponse {
 	return r.JSON201
 }
 
@@ -38399,13 +38399,13 @@ type PostgresCreateBackupResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
 	// JSON201 the response for an HTTP 201 `application/json` response
-	JSON201 *PgBackupsListResponse
+	JSON201 *PgBackupResponse
 	// JSON422 the response for an HTTP 422 `application/json` response
 	JSON422 *HTTPValidationError
 }
 
 // GetJSON201 returns the response for an HTTP 201 `application/json` response
-func (r PostgresCreateBackupResponse) GetJSON201() *PgBackupsListResponse {
+func (r PostgresCreateBackupResponse) GetJSON201() *PgBackupResponse {
 	return r.JSON201
 }
 
@@ -51084,7 +51084,7 @@ func ParsePostgresCreateBackupByIdResponse(rsp *http.Response) (*PostgresCreateB
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest PgBackupsListResponse
+		var dest PgBackupResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -53736,7 +53736,7 @@ func ParsePostgresCreateBackupResponse(rsp *http.Response) (*PostgresCreateBacku
 
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
-		var dest PgBackupsListResponse
+		var dest PgBackupResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
