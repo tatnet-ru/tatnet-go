@@ -556,17 +556,22 @@ type DeleteAccepted struct {
 // оплату только после реального пополнения. Вызывающий НЕ пересчитывает —
 // берёт “ok“/“shortfall“ как есть.
 type FundsCheckResponse struct {
-	Available       string  `json:"available"`
-	Balance         string  `json:"balance"`
-	Credits         string  `json:"credits"`
-	CreditsUnlocked bool    `json:"credits_unlocked"`
-	Currency        *string `json:"currency,omitempty"`
-	HasRealTopup    bool    `json:"has_real_topup"`
-	NeedsRealTopup  bool    `json:"needs_real_topup"`
-	Ok              bool    `json:"ok"`
-	RealTopupMin    string  `json:"real_topup_min"`
-	Required        string  `json:"required"`
-	Shortfall       string  `json:"shortfall"`
+	Available            string  `json:"available"`
+	Balance              string  `json:"balance"`
+	BonusCap             *string `json:"bonus_cap,omitempty"`
+	Credits              string  `json:"credits"`
+	CreditsUnlocked      bool    `json:"credits_unlocked"`
+	Currency             *string `json:"currency,omitempty"`
+	EstimatedBonusCharge *string `json:"estimated_bonus_charge,omitempty"`
+	EstimatedMainCharge  *string `json:"estimated_main_charge,omitempty"`
+	HasRealTopup         bool    `json:"has_real_topup"`
+	NeedsRealTopup       bool    `json:"needs_real_topup"`
+	Ok                   bool    `json:"ok"`
+	RealTopupMin         string  `json:"real_topup_min"`
+	Reason               *string `json:"reason,omitempty"`
+	Required             string  `json:"required"`
+	Shortfall            string  `json:"shortfall"`
+	UsableCredits        *string `json:"usable_credits,omitempty"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
