@@ -36,6 +36,24 @@ func (e CreateKafkaClusterRequestTopology) Valid() bool {
 	}
 }
 
+// Defines values for KafkaCanaryPowerRequestAction.
+const (
+	Start KafkaCanaryPowerRequestAction = "start"
+	Stop  KafkaCanaryPowerRequestAction = "stop"
+)
+
+// Valid indicates whether the value is a known member of the KafkaCanaryPowerRequestAction enum.
+func (e KafkaCanaryPowerRequestAction) Valid() bool {
+	switch e {
+	case Start:
+		return true
+	case Stop:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for KafkaTopologyResponseId.
 const (
 	KafkaTopologyResponseIdDev KafkaTopologyResponseId = "dev"
@@ -592,6 +610,14 @@ type ImagesListResponse struct {
 	Images   []ImageResponse       `json:"images"`
 }
 
+// KafkaCanaryPowerRequest defines model for KafkaCanaryPowerRequest.
+type KafkaCanaryPowerRequest struct {
+	Action KafkaCanaryPowerRequestAction `json:"action"`
+}
+
+// KafkaCanaryPowerRequestAction defines model for KafkaCanaryPowerRequest.Action.
+type KafkaCanaryPowerRequestAction string
+
 // KafkaCatalogResponse defines model for KafkaCatalogResponse.
 type KafkaCatalogResponse struct {
 	ControllerPlans       []KafkaPlanResponse     `json:"controller_plans"`
@@ -652,6 +678,12 @@ type KafkaClusterResponse struct {
 	Topology                string              `json:"topology"`
 	Username                *string             `json:"username,omitempty"`
 	VpcId                   *openapi_types.UUID `json:"vpc_id"`
+}
+
+// KafkaNodePowerResponse defines model for KafkaNodePowerResponse.
+type KafkaNodePowerResponse struct {
+	Message string `json:"message"`
+	Status  string `json:"status"`
 }
 
 // KafkaNodeResponse defines model for KafkaNodeResponse.
@@ -3319,6 +3351,9 @@ type KafkaCreateClusterJSONRequestBody = CreateKafkaClusterRequest
 // KafkaUpdateAllowlistJSONRequestBody defines body for KafkaUpdateAllowlist for application/json ContentType.
 type KafkaUpdateAllowlistJSONRequestBody = UpdateKafkaAllowlistRequest
 
+// KafkaCanaryNodeActionJSONRequestBody defines body for KafkaCanaryNodeAction for application/json ContentType.
+type KafkaCanaryNodeActionJSONRequestBody = KafkaCanaryPowerRequest
+
 // KubernetesCreateClusterJSONRequestBody defines body for KubernetesCreateCluster for application/json ContentType.
 type KubernetesCreateClusterJSONRequestBody = V1K8sClusterCreate
 
@@ -5200,6 +5235,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
 	KafkaUpdateAllowlist(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaCanaryNodeActionWithBody Closed canary node power verification; billing continues
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeActionWithBody(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaCanaryNodeAction Closed canary node power verification; billing continues
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesListClusters List Kubernetes clusters in a project
 	//
@@ -10337,6 +10386,40 @@ func (c *Client) KafkaUpdateAllowlistWithBody(ctx context.Context, projectId ope
 // Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
 func (c *Client) KafkaUpdateAllowlist(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewKafkaUpdateAllowlistRequest(c.Server, projectId, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaCanaryNodeActionWithBody Closed canary node power verification; billing continues
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *Client) KafkaCanaryNodeActionWithBody(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaCanaryNodeActionRequestWithBody(c.Server, projectId, clusterId, nodeId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaCanaryNodeAction Closed canary node power verification; billing continues
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *Client) KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaCanaryNodeActionRequest(c.Server, projectId, clusterId, nodeId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -21300,6 +21383,67 @@ func NewKafkaUpdateAllowlistRequestWithBody(server string, projectId openapi_typ
 	return req, nil
 }
 
+// NewKafkaCanaryNodeActionRequest calls the generic KafkaCanaryNodeAction builder with application/json body
+func NewKafkaCanaryNodeActionRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewKafkaCanaryNodeActionRequestWithBody(server, projectId, clusterId, nodeId, "application/json", bodyReader)
+}
+
+// NewKafkaCanaryNodeActionRequestWithBody constructs an http.Request for the KafkaCanaryNodeAction method, with any body, and a specified content type
+func NewKafkaCanaryNodeActionRequestWithBody(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "node_id", nodeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s/nodes/%s/canary-power", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewKubernetesListClustersRequest constructs an http.Request for the KubernetesListClusters method
 func NewKubernetesListClustersRequest(server string, projectId string, params *KubernetesListClustersParams) (*http.Request, error) {
 	var err error
@@ -28793,6 +28937,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
 	KafkaUpdateAllowlistWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaUpdateAllowlistResponse, error)
+
+	// KafkaCanaryNodeActionWithBodyWithResponse Closed canary node power verification; billing continues
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeActionWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error)
+
+	// KafkaCanaryNodeActionWithResponse Closed canary node power verification; billing continues
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeActionWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error)
 
 	// KubernetesListClustersWithResponse List Kubernetes clusters in a project
 	//
@@ -37846,6 +38004,54 @@ func (r KafkaUpdateAllowlistResponse) ContentType() string {
 	return ""
 }
 
+type KafkaCanaryNodeActionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaNodePowerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaCanaryNodeActionResponse) GetJSON200() *KafkaNodePowerResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaCanaryNodeActionResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaCanaryNodeActionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaCanaryNodeActionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaCanaryNodeActionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaCanaryNodeActionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type KubernetesListClustersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -46396,6 +46602,32 @@ func (c *ClientWithResponses) KafkaUpdateAllowlistWithResponse(ctx context.Conte
 	return ParseKafkaUpdateAllowlistResponse(rsp)
 }
 
+// KafkaCanaryNodeActionWithBodyWithResponse Closed canary node power verification; billing continues
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *ClientWithResponses) KafkaCanaryNodeActionWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error) {
+	rsp, err := c.KafkaCanaryNodeActionWithBody(ctx, projectId, clusterId, nodeId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaCanaryNodeActionResponse(rsp)
+}
+
+// KafkaCanaryNodeActionWithResponse Closed canary node power verification; billing continues
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *ClientWithResponses) KafkaCanaryNodeActionWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error) {
+	rsp, err := c.KafkaCanaryNodeAction(ctx, projectId, clusterId, nodeId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaCanaryNodeActionResponse(rsp)
+}
+
 // KubernetesListClustersWithResponse List Kubernetes clusters in a project
 //
 // Returns a wrapper object for the known response body format(s).
@@ -54026,6 +54258,39 @@ func ParseKafkaUpdateAllowlistResponse(rsp *http.Response) (*KafkaUpdateAllowlis
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest KafkaClusterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaCanaryNodeActionResponse parses an HTTP response from a KafkaCanaryNodeActionWithResponse call
+func ParseKafkaCanaryNodeActionResponse(rsp *http.Response) (*KafkaCanaryNodeActionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaCanaryNodeActionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaNodePowerResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
