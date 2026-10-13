@@ -626,7 +626,10 @@ type KafkaCanaryPowerRequestAction string
 // KafkaCatalogResponse defines model for KafkaCatalogResponse.
 type KafkaCatalogResponse struct {
 	ControllerPlans       []KafkaPlanResponse     `json:"controller_plans"`
+	ForecastHours         *int                    `json:"forecast_hours,omitempty"`
+	ManagementPercent     *float32                `json:"management_percent,omitempty"`
 	Plans                 []KafkaPlanResponse     `json:"plans"`
+	PublicIpPricePerHour  *float32                `json:"public_ip_price_per_hour,omitempty"`
 	PublicIpPricePerMonth float32                 `json:"public_ip_price_per_month"`
 	Regions               []KafkaRegionResponse   `json:"regions"`
 	Topologies            []KafkaTopologyResponse `json:"topologies"`
@@ -638,9 +641,11 @@ type KafkaClusterCreatedResponse struct {
 	CaPem                   *string             `json:"ca_pem,omitempty"`
 	ClusterId               openapi_types.UUID  `json:"cluster_id"`
 	ControllerPlanId        *openapi_types.UUID `json:"controller_plan_id"`
+	HourlyCost              *float32            `json:"hourly_cost,omitempty"`
 	Id                      openapi_types.UUID  `json:"id"`
 	IpAllowlist             []string            `json:"ip_allowlist"`
 	KafkaVersion            string              `json:"kafka_version"`
+	ManagementHourlyCost    *float32            `json:"management_hourly_cost,omitempty"`
 	MonthlyCost             *float32            `json:"monthly_cost,omitempty"`
 	Name                    string              `json:"name"`
 	Nodes                   []KafkaNodeResponse `json:"nodes"`
@@ -665,9 +670,11 @@ type KafkaClusterResponse struct {
 	CaPem                   *string             `json:"ca_pem,omitempty"`
 	ClusterId               openapi_types.UUID  `json:"cluster_id"`
 	ControllerPlanId        *openapi_types.UUID `json:"controller_plan_id"`
+	HourlyCost              *float32            `json:"hourly_cost,omitempty"`
 	Id                      openapi_types.UUID  `json:"id"`
 	IpAllowlist             []string            `json:"ip_allowlist"`
 	KafkaVersion            string              `json:"kafka_version"`
+	ManagementHourlyCost    *float32            `json:"management_hourly_cost,omitempty"`
 	MonthlyCost             *float32            `json:"monthly_cost,omitempty"`
 	Name                    string              `json:"name"`
 	Nodes                   []KafkaNodeResponse `json:"nodes"`
@@ -708,6 +715,7 @@ type KafkaPlanResponse struct {
 	Id            openapi_types.UUID `json:"id"`
 	Mem           int                `json:"mem"`
 	Name          string             `json:"name"`
+	PricePerHour  *float32           `json:"price_per_hour,omitempty"`
 	PricePerMonth *float32           `json:"price_per_month"`
 	Vcpu          int                `json:"vcpu"`
 }
@@ -5254,6 +5262,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
 	KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaResumeCluster Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/resume (the `KafkaResumeCluster` operationId).
+	KafkaResumeCluster(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesListClusters List Kubernetes clusters in a project
 	//
@@ -10425,6 +10438,21 @@ func (c *Client) KafkaCanaryNodeActionWithBody(ctx context.Context, projectId op
 // Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
 func (c *Client) KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewKafkaCanaryNodeActionRequest(c.Server, projectId, clusterId, nodeId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaResumeCluster Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/resume (the `KafkaResumeCluster` operationId).
+func (c *Client) KafkaResumeCluster(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaResumeClusterRequest(c.Server, projectId, clusterId)
 	if err != nil {
 		return nil, err
 	}
@@ -21449,6 +21477,47 @@ func NewKafkaCanaryNodeActionRequestWithBody(server string, projectId openapi_ty
 	return req, nil
 }
 
+// NewKafkaResumeClusterRequest constructs an http.Request for the KafkaResumeCluster method
+func NewKafkaResumeClusterRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s/resume", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewKubernetesListClustersRequest constructs an http.Request for the KubernetesListClusters method
 func NewKubernetesListClustersRequest(server string, projectId string, params *KubernetesListClustersParams) (*http.Request, error) {
 	var err error
@@ -28956,6 +29025,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
 	KafkaCanaryNodeActionWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error)
+
+	// KafkaResumeClusterWithResponse Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/resume (the `KafkaResumeCluster` operationId).
+	KafkaResumeClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaResumeClusterResponse, error)
 
 	// KubernetesListClustersWithResponse List Kubernetes clusters in a project
 	//
@@ -38057,6 +38133,54 @@ func (r KafkaCanaryNodeActionResponse) ContentType() string {
 	return ""
 }
 
+type KafkaResumeClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaClusterResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaResumeClusterResponse) GetJSON200() *KafkaClusterResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaResumeClusterResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaResumeClusterResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaResumeClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaResumeClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaResumeClusterResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type KubernetesListClustersResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -46633,6 +46757,19 @@ func (c *ClientWithResponses) KafkaCanaryNodeActionWithResponse(ctx context.Cont
 	return ParseKafkaCanaryNodeActionResponse(rsp)
 }
 
+// KafkaResumeClusterWithResponse Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/resume (the `KafkaResumeCluster` operationId).
+func (c *ClientWithResponses) KafkaResumeClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaResumeClusterResponse, error) {
+	rsp, err := c.KafkaResumeCluster(ctx, projectId, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaResumeClusterResponse(rsp)
+}
+
 // KubernetesListClustersWithResponse List Kubernetes clusters in a project
 //
 // Returns a wrapper object for the known response body format(s).
@@ -54296,6 +54433,39 @@ func ParseKafkaCanaryNodeActionResponse(rsp *http.Response) (*KafkaCanaryNodeAct
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest KafkaNodePowerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaResumeClusterResponse parses an HTTP response from a KafkaResumeClusterWithResponse call
+func ParseKafkaResumeClusterResponse(rsp *http.Response) (*KafkaResumeClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaResumeClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaClusterResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
