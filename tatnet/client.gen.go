@@ -18,6 +18,60 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for CreateKafkaClusterRequestTopology.
+const (
+	CreateKafkaClusterRequestTopologyDev CreateKafkaClusterRequestTopology = "dev"
+	CreateKafkaClusterRequestTopologyHa  CreateKafkaClusterRequestTopology = "ha"
+)
+
+// Valid indicates whether the value is a known member of the CreateKafkaClusterRequestTopology enum.
+func (e CreateKafkaClusterRequestTopology) Valid() bool {
+	switch e {
+	case CreateKafkaClusterRequestTopologyDev:
+		return true
+	case CreateKafkaClusterRequestTopologyHa:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KafkaCanaryPowerRequestAction.
+const (
+	Start KafkaCanaryPowerRequestAction = "start"
+	Stop  KafkaCanaryPowerRequestAction = "stop"
+)
+
+// Valid indicates whether the value is a known member of the KafkaCanaryPowerRequestAction enum.
+func (e KafkaCanaryPowerRequestAction) Valid() bool {
+	switch e {
+	case Start:
+		return true
+	case Stop:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KafkaTopologyResponseId.
+const (
+	KafkaTopologyResponseIdDev KafkaTopologyResponseId = "dev"
+	KafkaTopologyResponseIdHa  KafkaTopologyResponseId = "ha"
+)
+
+// Valid indicates whether the value is a known member of the KafkaTopologyResponseId enum.
+func (e KafkaTopologyResponseId) Valid() bool {
+	switch e {
+	case KafkaTopologyResponseIdDev:
+		return true
+	case KafkaTopologyResponseIdHa:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for LBHealthCheckSpecMode.
 const (
 	LBHealthCheckSpecModeHttp LBHealthCheckSpecMode = "http"
@@ -436,6 +490,22 @@ type ChangeValkeyTopologyRequest struct {
 	Topology string `json:"topology"`
 }
 
+// CreateKafkaClusterRequest defines model for CreateKafkaClusterRequest.
+type CreateKafkaClusterRequest struct {
+	ClusterId        openapi_types.UUID                 `json:"cluster_id"`
+	ControllerPlanId *openapi_types.UUID                `json:"controller_plan_id,omitempty"`
+	IpAllowlist      *[]string                          `json:"ip_allowlist,omitempty"`
+	KafkaVersion     *string                            `json:"kafka_version,omitempty"`
+	Name             string                             `json:"name"`
+	PlanId           openapi_types.UUID                 `json:"plan_id"`
+	RetentionHours   *int                               `json:"retention_hours,omitempty"`
+	Topology         *CreateKafkaClusterRequestTopology `json:"topology,omitempty"`
+	VpcId            *openapi_types.UUID                `json:"vpc_id,omitempty"`
+}
+
+// CreateKafkaClusterRequestTopology defines model for CreateKafkaClusterRequest.Topology.
+type CreateKafkaClusterRequestTopology string
+
 // CreatePgBackupRequest defines model for CreatePgBackupRequest.
 type CreatePgBackupRequest struct {
 	Label string `json:"label"`
@@ -480,6 +550,25 @@ type DeleteAccepted struct {
 	Status string `json:"status"`
 }
 
+// FundsCheckResponse Решение биллинга «хватает ли денег на действие».
+//
+// Правило одно на платформу (“libs/credits/eligibility.py“): бонусы идут в
+// оплату только после реального пополнения. Вызывающий НЕ пересчитывает —
+// берёт “ok“/“shortfall“ как есть.
+type FundsCheckResponse struct {
+	Available       string  `json:"available"`
+	Balance         string  `json:"balance"`
+	Credits         string  `json:"credits"`
+	CreditsUnlocked bool    `json:"credits_unlocked"`
+	Currency        *string `json:"currency,omitempty"`
+	HasRealTopup    bool    `json:"has_real_topup"`
+	NeedsRealTopup  bool    `json:"needs_real_topup"`
+	Ok              bool    `json:"ok"`
+	RealTopupMin    string  `json:"real_topup_min"`
+	Required        string  `json:"required"`
+	Shortfall       string  `json:"shortfall"`
+}
+
 // HTTPValidationError defines model for HTTPValidationError.
 type HTTPValidationError struct {
 	Detail *[]ValidationError `json:"detail,omitempty"`
@@ -520,6 +609,122 @@ type ImagesListResponse struct {
 	Families *[]ImageCatalogFamily `json:"families,omitempty"`
 	Images   []ImageResponse       `json:"images"`
 }
+
+// KafkaCanaryPowerRequest defines model for KafkaCanaryPowerRequest.
+type KafkaCanaryPowerRequest struct {
+	Action KafkaCanaryPowerRequestAction `json:"action"`
+}
+
+// KafkaCanaryPowerRequestAction defines model for KafkaCanaryPowerRequest.Action.
+type KafkaCanaryPowerRequestAction string
+
+// KafkaCatalogResponse defines model for KafkaCatalogResponse.
+type KafkaCatalogResponse struct {
+	ControllerPlans       []KafkaPlanResponse     `json:"controller_plans"`
+	Plans                 []KafkaPlanResponse     `json:"plans"`
+	PublicIpPricePerMonth float32                 `json:"public_ip_price_per_month"`
+	Regions               []KafkaRegionResponse   `json:"regions"`
+	Topologies            []KafkaTopologyResponse `json:"topologies"`
+}
+
+// KafkaClusterCreatedResponse defines model for KafkaClusterCreatedResponse.
+type KafkaClusterCreatedResponse struct {
+	AccountId               openapi_types.UUID  `json:"account_id"`
+	CaPem                   *string             `json:"ca_pem,omitempty"`
+	ClusterId               openapi_types.UUID  `json:"cluster_id"`
+	ControllerPlanId        *openapi_types.UUID `json:"controller_plan_id"`
+	Id                      openapi_types.UUID  `json:"id"`
+	IpAllowlist             []string            `json:"ip_allowlist"`
+	KafkaVersion            string              `json:"kafka_version"`
+	MonthlyCost             *float32            `json:"monthly_cost,omitempty"`
+	Name                    string              `json:"name"`
+	Nodes                   []KafkaNodeResponse `json:"nodes"`
+	Password                string              `json:"password"`
+	PlanId                  openapi_types.UUID  `json:"plan_id"`
+	PrivateBootstrapServers []string            `json:"private_bootstrap_servers"`
+	ProjectId               openapi_types.UUID  `json:"project_id"`
+	PublicBootstrapServers  []string            `json:"public_bootstrap_servers"`
+	RetentionHours          int                 `json:"retention_hours"`
+	SaslMechanism           *string             `json:"sasl_mechanism,omitempty"`
+	SecurityProtocol        *string             `json:"security_protocol,omitempty"`
+	Status                  string              `json:"status"`
+	StatusDetail            *string             `json:"status_detail,omitempty"`
+	Topology                string              `json:"topology"`
+	Username                *string             `json:"username,omitempty"`
+	VpcId                   *openapi_types.UUID `json:"vpc_id"`
+}
+
+// KafkaClusterResponse defines model for KafkaClusterResponse.
+type KafkaClusterResponse struct {
+	AccountId               openapi_types.UUID  `json:"account_id"`
+	CaPem                   *string             `json:"ca_pem,omitempty"`
+	ClusterId               openapi_types.UUID  `json:"cluster_id"`
+	ControllerPlanId        *openapi_types.UUID `json:"controller_plan_id"`
+	Id                      openapi_types.UUID  `json:"id"`
+	IpAllowlist             []string            `json:"ip_allowlist"`
+	KafkaVersion            string              `json:"kafka_version"`
+	MonthlyCost             *float32            `json:"monthly_cost,omitempty"`
+	Name                    string              `json:"name"`
+	Nodes                   []KafkaNodeResponse `json:"nodes"`
+	PlanId                  openapi_types.UUID  `json:"plan_id"`
+	PrivateBootstrapServers []string            `json:"private_bootstrap_servers"`
+	ProjectId               openapi_types.UUID  `json:"project_id"`
+	PublicBootstrapServers  []string            `json:"public_bootstrap_servers"`
+	RetentionHours          int                 `json:"retention_hours"`
+	SaslMechanism           *string             `json:"sasl_mechanism,omitempty"`
+	SecurityProtocol        *string             `json:"security_protocol,omitempty"`
+	Status                  string              `json:"status"`
+	StatusDetail            *string             `json:"status_detail,omitempty"`
+	Topology                string              `json:"topology"`
+	Username                *string             `json:"username,omitempty"`
+	VpcId                   *openapi_types.UUID `json:"vpc_id"`
+}
+
+// KafkaNodePowerResponse defines model for KafkaNodePowerResponse.
+type KafkaNodePowerResponse struct {
+	Message string `json:"message"`
+	Status  string `json:"status"`
+}
+
+// KafkaNodeResponse defines model for KafkaNodeResponse.
+type KafkaNodeResponse struct {
+	Id          openapi_types.UUID  `json:"id"`
+	Ordinal     int                 `json:"ordinal"`
+	PrivateHost *string             `json:"private_host,omitempty"`
+	PublicHost  *string             `json:"public_host,omitempty"`
+	Role        string              `json:"role"`
+	Status      string              `json:"status"`
+	VmId        *openapi_types.UUID `json:"vm_id"`
+}
+
+// KafkaPlanResponse defines model for KafkaPlanResponse.
+type KafkaPlanResponse struct {
+	DiskSize      int                `json:"disk_size"`
+	Id            openapi_types.UUID `json:"id"`
+	Mem           int                `json:"mem"`
+	Name          string             `json:"name"`
+	PricePerMonth *float32           `json:"price_per_month"`
+	Vcpu          int                `json:"vcpu"`
+}
+
+// KafkaRegionResponse defines model for KafkaRegionResponse.
+type KafkaRegionResponse struct {
+	DefaultVersion *string            `json:"default_version"`
+	Id             openapi_types.UUID `json:"id"`
+	Name           string             `json:"name"`
+	Versions       []string           `json:"versions"`
+}
+
+// KafkaTopologyResponse defines model for KafkaTopologyResponse.
+type KafkaTopologyResponse struct {
+	Brokers     int                     `json:"brokers"`
+	Controllers int                     `json:"controllers"`
+	Id          KafkaTopologyResponseId `json:"id"`
+	Nodes       int                     `json:"nodes"`
+}
+
+// KafkaTopologyResponseId defines model for KafkaTopologyResponse.Id.
+type KafkaTopologyResponseId string
 
 // LBCertificateResponse defines model for LBCertificateResponse.
 type LBCertificateResponse struct {
@@ -871,6 +1076,14 @@ type PageAppJobRunResponse struct {
 	Data   []AppJobRunResponse `json:"data"`
 	Limit  int                 `json:"limit"`
 	Offset int                 `json:"offset"`
+}
+
+// PageKafkaClusterResponse defines model for Page_KafkaClusterResponse_.
+type PageKafkaClusterResponse struct {
+	Count  int                    `json:"count"`
+	Data   []KafkaClusterResponse `json:"data"`
+	Limit  int                    `json:"limit"`
+	Offset int                    `json:"offset"`
 }
 
 // PageLoadBalancerResponse defines model for Page_LoadBalancerResponse_.
@@ -1319,6 +1532,11 @@ type PgRoleResponse struct {
 type PgTopologyResponse struct {
 	Id    string `json:"id"`
 	Nodes int    `json:"nodes"`
+}
+
+// UpdateKafkaAllowlistRequest defines model for UpdateKafkaAllowlistRequest.
+type UpdateKafkaAllowlistRequest struct {
+	IpAllowlist []string `json:"ip_allowlist"`
 }
 
 // UpdatePgAllowlistRequest defines model for UpdatePgAllowlistRequest.
@@ -2628,6 +2846,20 @@ type WhoAmIResponse struct {
 	Policy    []V1PolicyStatement `json:"policy"`
 }
 
+// AccountPreviewFundsParams defines parameters for AccountPreviewFunds.
+type AccountPreviewFundsParams struct {
+	Amount struct {
+		union json.RawMessage
+	} `form:"amount" json:"amount"`
+	PeriodType *string `form:"period_type,omitempty" json:"period_type,omitempty"`
+}
+
+// AccountPreviewFundsParamsAmount0 defines parameters for AccountPreviewFunds.
+type AccountPreviewFundsParamsAmount0 = float32
+
+// AccountPreviewFundsParamsAmount1 defines parameters for AccountPreviewFunds.
+type AccountPreviewFundsParamsAmount1 = string
+
 // AppsListAppsByAccountParams defines parameters for AppsListAppsByAccount.
 type AppsListAppsByAccountParams struct {
 	// ProjectId Only apps of this project (optional)
@@ -2831,6 +3063,12 @@ type FunctionsListEnvVarsParams struct {
 // VmsListImagesParams defines parameters for VmsListImages.
 type VmsListImagesParams struct {
 	ClusterId *string `form:"cluster_id,omitempty" json:"cluster_id,omitempty"`
+}
+
+// KafkaListClustersParams defines parameters for KafkaListClusters.
+type KafkaListClustersParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
 // KubernetesListClustersParams defines parameters for KubernetesListClusters.
@@ -3106,6 +3344,15 @@ type FunctionsUpdateFunctionRouteJSONRequestBody = V1FunctionUpdate
 
 // FunctionsAddEnvVarJSONRequestBody defines body for FunctionsAddEnvVar for application/json ContentType.
 type FunctionsAddEnvVarJSONRequestBody = V1EnvVarCreate
+
+// KafkaCreateClusterJSONRequestBody defines body for KafkaCreateCluster for application/json ContentType.
+type KafkaCreateClusterJSONRequestBody = CreateKafkaClusterRequest
+
+// KafkaUpdateAllowlistJSONRequestBody defines body for KafkaUpdateAllowlist for application/json ContentType.
+type KafkaUpdateAllowlistJSONRequestBody = UpdateKafkaAllowlistRequest
+
+// KafkaCanaryNodeActionJSONRequestBody defines body for KafkaCanaryNodeAction for application/json ContentType.
+type KafkaCanaryNodeActionJSONRequestBody = KafkaCanaryPowerRequest
 
 // KubernetesCreateClusterJSONRequestBody defines body for KubernetesCreateCluster for application/json ContentType.
 type KubernetesCreateClusterJSONRequestBody = V1K8sClusterCreate
@@ -3400,6 +3647,13 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
 	AccountGetBalance(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AccountPreviewFunds Preview payment allocation
+	//
+	// Billing's read-only quote, including credits, cash, reason and shortfall.
+	//
+	// Corresponds with GET /account/funds (the `AccountPreviewFunds` operationId).
+	AccountPreviewFunds(ctx context.Context, params *AccountPreviewFundsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AppsListAppsByAccount List apps across the account
 	//
@@ -3844,6 +4098,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
 	FunctionsDeleteEnvVarRouteById(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaRegions Kafka regions, plans and Dev/HA topologies
+	//
+	// Corresponds with GET /kafka/regions (the `KafkaRegions` operationId).
+	KafkaRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesListClustersByAccount List Kubernetes clusters in a project
 	//
@@ -4933,6 +5192,63 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
 	VmsListImages(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaListClusters List Clusters
+	//
+	// Corresponds with GET /projects/{project_id}/kafka-clusters (the `KafkaListClusters` operationId).
+	KafkaListClusters(ctx context.Context, projectId openapi_types.UUID, params *KafkaListClustersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaCreateClusterWithBody Create Cluster
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+	KafkaCreateClusterWithBody(ctx context.Context, projectId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaCreateCluster Create Cluster
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+	KafkaCreateCluster(ctx context.Context, projectId openapi_types.UUID, body KafkaCreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaDeleteCluster Delete Cluster
+	//
+	// Corresponds with DELETE /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaDeleteCluster` operationId).
+	KafkaDeleteCluster(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaGetCluster Get Cluster
+	//
+	// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaGetCluster` operationId).
+	KafkaGetCluster(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaUpdateAllowlistWithBody Update Allowlist
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+	KafkaUpdateAllowlistWithBody(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaUpdateAllowlist Update Allowlist
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+	KafkaUpdateAllowlist(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaCanaryNodeActionWithBody Closed canary node power verification; billing continues
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeActionWithBody(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaCanaryNodeAction Closed canary node power verification; billing continues
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesListClusters List Kubernetes clusters in a project
 	//
@@ -6302,6 +6618,23 @@ func (c *Client) AccountGetBalance(ctx context.Context, reqEditors ...RequestEdi
 	return c.Client.Do(req)
 }
 
+// AccountPreviewFunds Preview payment allocation
+//
+// Billing's read-only quote, including credits, cash, reason and shortfall.
+//
+// Corresponds with GET /account/funds (the `AccountPreviewFunds` operationId).
+func (c *Client) AccountPreviewFunds(ctx context.Context, params *AccountPreviewFundsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAccountPreviewFundsRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // AppsListAppsByAccount List apps across the account
 //
 // Все приложения аккаунта ключа, отфильтрованные его политикой — как
@@ -7446,6 +7779,21 @@ func (c *Client) FunctionsAddEnvVarById(ctx context.Context, functionId string, 
 // Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
 func (c *Client) FunctionsDeleteEnvVarRouteById(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewFunctionsDeleteEnvVarRouteByIdRequest(c.Server, functionId, envVarId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaRegions Kafka regions, plans and Dev/HA topologies
+//
+// Corresponds with GET /kafka/regions (the `KafkaRegions` operationId).
+func (c *Client) KafkaRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaRegionsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -9925,6 +10273,153 @@ func (c *Client) FunctionsDeleteEnvVarRoute(ctx context.Context, projectId strin
 // Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
 func (c *Client) VmsListImages(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewVmsListImagesRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaListClusters List Clusters
+//
+// Corresponds with GET /projects/{project_id}/kafka-clusters (the `KafkaListClusters` operationId).
+func (c *Client) KafkaListClusters(ctx context.Context, projectId openapi_types.UUID, params *KafkaListClustersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaListClustersRequest(c.Server, projectId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaCreateClusterWithBody Create Cluster
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+func (c *Client) KafkaCreateClusterWithBody(ctx context.Context, projectId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaCreateClusterRequestWithBody(c.Server, projectId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaCreateCluster Create Cluster
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+func (c *Client) KafkaCreateCluster(ctx context.Context, projectId openapi_types.UUID, body KafkaCreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaCreateClusterRequest(c.Server, projectId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaDeleteCluster Delete Cluster
+//
+// Corresponds with DELETE /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaDeleteCluster` operationId).
+func (c *Client) KafkaDeleteCluster(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaDeleteClusterRequest(c.Server, projectId, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaGetCluster Get Cluster
+//
+// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaGetCluster` operationId).
+func (c *Client) KafkaGetCluster(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaGetClusterRequest(c.Server, projectId, clusterId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaUpdateAllowlistWithBody Update Allowlist
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+func (c *Client) KafkaUpdateAllowlistWithBody(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaUpdateAllowlistRequestWithBody(c.Server, projectId, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaUpdateAllowlist Update Allowlist
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+func (c *Client) KafkaUpdateAllowlist(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaUpdateAllowlistRequest(c.Server, projectId, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaCanaryNodeActionWithBody Closed canary node power verification; billing continues
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *Client) KafkaCanaryNodeActionWithBody(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaCanaryNodeActionRequestWithBody(c.Server, projectId, clusterId, nodeId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaCanaryNodeAction Closed canary node power verification; billing continues
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *Client) KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaCanaryNodeActionRequest(c.Server, projectId, clusterId, nodeId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -12942,6 +13437,68 @@ func NewAccountGetBalanceRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewAccountPreviewFundsRequest constructs an http.Request for the AccountPreviewFunds method
+func NewAccountPreviewFundsRequest(server string, params *AccountPreviewFundsParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/account/funds")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "amount", params.Amount, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.PeriodType != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "period_type", *params.PeriodType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewAppsListAppsByAccountRequest constructs an http.Request for the AppsListAppsByAccount method
 func NewAppsListAppsByAccountRequest(server string, params *AppsListAppsByAccountParams) (*http.Request, error) {
 	var err error
@@ -15674,6 +16231,33 @@ func NewFunctionsDeleteEnvVarRouteByIdRequest(server string, functionId string, 
 	}
 
 	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKafkaRegionsRequest constructs an http.Request for the KafkaRegions method
+func NewKafkaRegionsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/kafka/regions")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -20539,6 +21123,323 @@ func NewVmsListImagesRequest(server string, projectId string, params *VmsListIma
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewKafkaListClustersRequest constructs an http.Request for the KafkaListClusters method
+func NewKafkaListClustersRequest(server string, projectId openapi_types.UUID, params *KafkaListClustersParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKafkaCreateClusterRequest calls the generic KafkaCreateCluster builder with application/json body
+func NewKafkaCreateClusterRequest(server string, projectId openapi_types.UUID, body KafkaCreateClusterJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewKafkaCreateClusterRequestWithBody(server, projectId, "application/json", bodyReader)
+}
+
+// NewKafkaCreateClusterRequestWithBody constructs an http.Request for the KafkaCreateCluster method, with any body, and a specified content type
+func NewKafkaCreateClusterRequestWithBody(server string, projectId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewKafkaDeleteClusterRequest constructs an http.Request for the KafkaDeleteCluster method
+func NewKafkaDeleteClusterRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKafkaGetClusterRequest constructs an http.Request for the KafkaGetCluster method
+func NewKafkaGetClusterRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKafkaUpdateAllowlistRequest calls the generic KafkaUpdateAllowlist builder with application/json body
+func NewKafkaUpdateAllowlistRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewKafkaUpdateAllowlistRequestWithBody(server, projectId, clusterId, "application/json", bodyReader)
+}
+
+// NewKafkaUpdateAllowlistRequestWithBody constructs an http.Request for the KafkaUpdateAllowlist method, with any body, and a specified content type
+func NewKafkaUpdateAllowlistRequestWithBody(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s/allowlist", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewKafkaCanaryNodeActionRequest calls the generic KafkaCanaryNodeAction builder with application/json body
+func NewKafkaCanaryNodeActionRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewKafkaCanaryNodeActionRequestWithBody(server, projectId, clusterId, nodeId, "application/json", bodyReader)
+}
+
+// NewKafkaCanaryNodeActionRequestWithBody constructs an http.Request for the KafkaCanaryNodeAction method, with any body, and a specified content type
+func NewKafkaCanaryNodeActionRequestWithBody(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "node_id", nodeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s/nodes/%s/canary-power", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -26247,6 +27148,15 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /account/balance (the `AccountGetBalance` operationId).
 	AccountGetBalanceWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*AccountGetBalanceResponse, error)
 
+	// AccountPreviewFundsWithResponse Preview payment allocation
+	//
+	// Billing's read-only quote, including credits, cash, reason and shortfall.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /account/funds (the `AccountPreviewFunds` operationId).
+	AccountPreviewFundsWithResponse(ctx context.Context, params *AccountPreviewFundsParams, reqEditors ...RequestEditorFn) (*AccountPreviewFundsResponse, error)
+
 	// AppsListAppsByAccountWithResponse List apps across the account
 	//
 	// Все приложения аккаунта ключа, отфильтрованные его политикой — как
@@ -26762,6 +27672,13 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with DELETE /functions/{function_id}/env/{env_var_id} (the `FunctionsDeleteEnvVarRouteById` operationId).
 	FunctionsDeleteEnvVarRouteByIdWithResponse(ctx context.Context, functionId string, envVarId string, reqEditors ...RequestEditorFn) (*FunctionsDeleteEnvVarRouteByIdResponse, error)
+
+	// KafkaRegionsWithResponse Kafka regions, plans and Dev/HA topologies
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /kafka/regions (the `KafkaRegions` operationId).
+	KafkaRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*KafkaRegionsResponse, error)
 
 	// KubernetesListClustersByAccountWithResponse List Kubernetes clusters in a project
 	//
@@ -27971,6 +28888,69 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /projects/{project_id}/images (the `VmsListImages` operationId).
 	VmsListImagesWithResponse(ctx context.Context, projectId string, params *VmsListImagesParams, reqEditors ...RequestEditorFn) (*VmsListImagesResponse, error)
+
+	// KafkaListClustersWithResponse List Clusters
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/kafka-clusters (the `KafkaListClusters` operationId).
+	KafkaListClustersWithResponse(ctx context.Context, projectId openapi_types.UUID, params *KafkaListClustersParams, reqEditors ...RequestEditorFn) (*KafkaListClustersResponse, error)
+
+	// KafkaCreateClusterWithBodyWithResponse Create Cluster
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+	KafkaCreateClusterWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaCreateClusterResponse, error)
+
+	// KafkaCreateClusterWithResponse Create Cluster
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+	KafkaCreateClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, body KafkaCreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCreateClusterResponse, error)
+
+	// KafkaDeleteClusterWithResponse Delete Cluster
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaDeleteCluster` operationId).
+	KafkaDeleteClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaDeleteClusterResponse, error)
+
+	// KafkaGetClusterWithResponse Get Cluster
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaGetCluster` operationId).
+	KafkaGetClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaGetClusterResponse, error)
+
+	// KafkaUpdateAllowlistWithBodyWithResponse Update Allowlist
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+	KafkaUpdateAllowlistWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaUpdateAllowlistResponse, error)
+
+	// KafkaUpdateAllowlistWithResponse Update Allowlist
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+	KafkaUpdateAllowlistWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaUpdateAllowlistResponse, error)
+
+	// KafkaCanaryNodeActionWithBodyWithResponse Closed canary node power verification; billing continues
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeActionWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error)
+
+	// KafkaCanaryNodeActionWithResponse Closed canary node power verification; billing continues
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+	KafkaCanaryNodeActionWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error)
 
 	// KubernetesListClustersWithResponse List Kubernetes clusters in a project
 	//
@@ -29514,6 +30494,54 @@ func (r AccountGetBalanceResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AccountGetBalanceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AccountPreviewFundsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *FundsCheckResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AccountPreviewFundsResponse) GetJSON200() *FundsCheckResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AccountPreviewFundsResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AccountPreviewFundsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AccountPreviewFundsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AccountPreviewFundsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AccountPreviewFundsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -32029,6 +33057,47 @@ func (r FunctionsDeleteEnvVarRouteByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r FunctionsDeleteEnvVarRouteByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaRegionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaCatalogResponse
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaRegionsResponse) GetJSON200() *KafkaCatalogResponse {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaRegionsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaRegionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaRegionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaRegionsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -36689,6 +37758,294 @@ func (r VmsListImagesResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r VmsListImagesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaListClustersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageKafkaClusterResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaListClustersResponse) GetJSON200() *PageKafkaClusterResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaListClustersResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaListClustersResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaListClustersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaListClustersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaListClustersResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaCreateClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON201 the response for an HTTP 201 `application/json` response
+	JSON201 *KafkaClusterCreatedResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON201 returns the response for an HTTP 201 `application/json` response
+func (r KafkaCreateClusterResponse) GetJSON201() *KafkaClusterCreatedResponse {
+	return r.JSON201
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaCreateClusterResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaCreateClusterResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaCreateClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaCreateClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaCreateClusterResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaDeleteClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON202 the response for an HTTP 202 `application/json` response
+	JSON202 *DeleteAccepted
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON202 returns the response for an HTTP 202 `application/json` response
+func (r KafkaDeleteClusterResponse) GetJSON202() *DeleteAccepted {
+	return r.JSON202
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaDeleteClusterResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaDeleteClusterResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaDeleteClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaDeleteClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaDeleteClusterResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaGetClusterResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaClusterResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaGetClusterResponse) GetJSON200() *KafkaClusterResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaGetClusterResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaGetClusterResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaGetClusterResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaGetClusterResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaGetClusterResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaUpdateAllowlistResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaClusterResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaUpdateAllowlistResponse) GetJSON200() *KafkaClusterResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaUpdateAllowlistResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaUpdateAllowlistResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaUpdateAllowlistResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaUpdateAllowlistResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaUpdateAllowlistResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaCanaryNodeActionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaNodePowerResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaCanaryNodeActionResponse) GetJSON200() *KafkaNodePowerResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaCanaryNodeActionResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaCanaryNodeActionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaCanaryNodeActionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaCanaryNodeActionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaCanaryNodeActionResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -42141,6 +43498,21 @@ func (c *ClientWithResponses) AccountGetBalanceWithResponse(ctx context.Context,
 	return ParseAccountGetBalanceResponse(rsp)
 }
 
+// AccountPreviewFundsWithResponse Preview payment allocation
+//
+// Billing's read-only quote, including credits, cash, reason and shortfall.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /account/funds (the `AccountPreviewFunds` operationId).
+func (c *ClientWithResponses) AccountPreviewFundsWithResponse(ctx context.Context, params *AccountPreviewFundsParams, reqEditors ...RequestEditorFn) (*AccountPreviewFundsResponse, error) {
+	rsp, err := c.AccountPreviewFunds(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAccountPreviewFundsResponse(rsp)
+}
+
 // AppsListAppsByAccountWithResponse List apps across the account
 //
 // Все приложения аккаунта ключа, отфильтрованные его политикой — как
@@ -43081,6 +44453,19 @@ func (c *ClientWithResponses) FunctionsDeleteEnvVarRouteByIdWithResponse(ctx con
 		return nil, err
 	}
 	return ParseFunctionsDeleteEnvVarRouteByIdResponse(rsp)
+}
+
+// KafkaRegionsWithResponse Kafka regions, plans and Dev/HA topologies
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /kafka/regions (the `KafkaRegions` operationId).
+func (c *ClientWithResponses) KafkaRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*KafkaRegionsResponse, error) {
+	rsp, err := c.KafkaRegions(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaRegionsResponse(rsp)
 }
 
 // KubernetesListClustersByAccountWithResponse List Kubernetes clusters in a project
@@ -45124,6 +46509,123 @@ func (c *ClientWithResponses) VmsListImagesWithResponse(ctx context.Context, pro
 		return nil, err
 	}
 	return ParseVmsListImagesResponse(rsp)
+}
+
+// KafkaListClustersWithResponse List Clusters
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/kafka-clusters (the `KafkaListClusters` operationId).
+func (c *ClientWithResponses) KafkaListClustersWithResponse(ctx context.Context, projectId openapi_types.UUID, params *KafkaListClustersParams, reqEditors ...RequestEditorFn) (*KafkaListClustersResponse, error) {
+	rsp, err := c.KafkaListClusters(ctx, projectId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaListClustersResponse(rsp)
+}
+
+// KafkaCreateClusterWithBodyWithResponse Create Cluster
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+func (c *ClientWithResponses) KafkaCreateClusterWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaCreateClusterResponse, error) {
+	rsp, err := c.KafkaCreateClusterWithBody(ctx, projectId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaCreateClusterResponse(rsp)
+}
+
+// KafkaCreateClusterWithResponse Create Cluster
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters (the `KafkaCreateCluster` operationId).
+func (c *ClientWithResponses) KafkaCreateClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, body KafkaCreateClusterJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCreateClusterResponse, error) {
+	rsp, err := c.KafkaCreateCluster(ctx, projectId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaCreateClusterResponse(rsp)
+}
+
+// KafkaDeleteClusterWithResponse Delete Cluster
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaDeleteCluster` operationId).
+func (c *ClientWithResponses) KafkaDeleteClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaDeleteClusterResponse, error) {
+	rsp, err := c.KafkaDeleteCluster(ctx, projectId, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaDeleteClusterResponse(rsp)
+}
+
+// KafkaGetClusterWithResponse Get Cluster
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id} (the `KafkaGetCluster` operationId).
+func (c *ClientWithResponses) KafkaGetClusterWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaGetClusterResponse, error) {
+	rsp, err := c.KafkaGetCluster(ctx, projectId, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaGetClusterResponse(rsp)
+}
+
+// KafkaUpdateAllowlistWithBodyWithResponse Update Allowlist
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+func (c *ClientWithResponses) KafkaUpdateAllowlistWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaUpdateAllowlistResponse, error) {
+	rsp, err := c.KafkaUpdateAllowlistWithBody(ctx, projectId, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaUpdateAllowlistResponse(rsp)
+}
+
+// KafkaUpdateAllowlistWithResponse Update Allowlist
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/kafka-clusters/{cluster_id}/allowlist (the `KafkaUpdateAllowlist` operationId).
+func (c *ClientWithResponses) KafkaUpdateAllowlistWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, body KafkaUpdateAllowlistJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaUpdateAllowlistResponse, error) {
+	rsp, err := c.KafkaUpdateAllowlist(ctx, projectId, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaUpdateAllowlistResponse(rsp)
+}
+
+// KafkaCanaryNodeActionWithBodyWithResponse Closed canary node power verification; billing continues
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *ClientWithResponses) KafkaCanaryNodeActionWithBodyWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error) {
+	rsp, err := c.KafkaCanaryNodeActionWithBody(ctx, projectId, clusterId, nodeId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaCanaryNodeActionResponse(rsp)
+}
+
+// KafkaCanaryNodeActionWithResponse Closed canary node power verification; billing continues
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
+func (c *ClientWithResponses) KafkaCanaryNodeActionWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error) {
+	rsp, err := c.KafkaCanaryNodeAction(ctx, projectId, clusterId, nodeId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaCanaryNodeActionResponse(rsp)
 }
 
 // KubernetesListClustersWithResponse List Kubernetes clusters in a project
@@ -47615,6 +49117,39 @@ func ParseAccountGetBalanceResponse(rsp *http.Response) (*AccountGetBalanceRespo
 	return response, nil
 }
 
+// ParseAccountPreviewFundsResponse parses an HTTP response from a AccountPreviewFundsWithResponse call
+func ParseAccountPreviewFundsResponse(rsp *http.Response) (*AccountPreviewFundsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AccountPreviewFundsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest FundsCheckResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseAppsListAppsByAccountResponse parses an HTTP response from a AppsListAppsByAccountWithResponse call
 func ParseAppsListAppsByAccountResponse(rsp *http.Response) (*AppsListAppsByAccountResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -49344,6 +50879,32 @@ func ParseFunctionsDeleteEnvVarRouteByIdResponse(rsp *http.Response) (*Functions
 			return nil, err
 		}
 		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaRegionsResponse parses an HTTP response from a KafkaRegionsWithResponse call
+func ParseKafkaRegionsResponse(rsp *http.Response) (*KafkaRegionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaRegionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaCatalogResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	}
 
@@ -52532,6 +54093,204 @@ func ParseVmsListImagesResponse(rsp *http.Response) (*VmsListImagesResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest ImagesListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaListClustersResponse parses an HTTP response from a KafkaListClustersWithResponse call
+func ParseKafkaListClustersResponse(rsp *http.Response) (*KafkaListClustersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaListClustersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageKafkaClusterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaCreateClusterResponse parses an HTTP response from a KafkaCreateClusterWithResponse call
+func ParseKafkaCreateClusterResponse(rsp *http.Response) (*KafkaCreateClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaCreateClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest KafkaClusterCreatedResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaDeleteClusterResponse parses an HTTP response from a KafkaDeleteClusterWithResponse call
+func ParseKafkaDeleteClusterResponse(rsp *http.Response) (*KafkaDeleteClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaDeleteClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 202:
+		var dest DeleteAccepted
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaGetClusterResponse parses an HTTP response from a KafkaGetClusterWithResponse call
+func ParseKafkaGetClusterResponse(rsp *http.Response) (*KafkaGetClusterResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaGetClusterResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaClusterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaUpdateAllowlistResponse parses an HTTP response from a KafkaUpdateAllowlistWithResponse call
+func ParseKafkaUpdateAllowlistResponse(rsp *http.Response) (*KafkaUpdateAllowlistResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaUpdateAllowlistResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaClusterResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaCanaryNodeActionResponse parses an HTTP response from a KafkaCanaryNodeActionWithResponse call
+func ParseKafkaCanaryNodeActionResponse(rsp *http.Response) (*KafkaCanaryNodeActionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaCanaryNodeActionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaNodePowerResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
