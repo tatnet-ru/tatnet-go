@@ -405,6 +405,60 @@ func (e LBTargetGroupSpecTargetType) Valid() bool {
 	}
 }
 
+// Defines values for LoadBalancerDetailResponseScheme.
+const (
+	LoadBalancerDetailResponseSchemeInternal       LoadBalancerDetailResponseScheme = "internal"
+	LoadBalancerDetailResponseSchemeInternetFacing LoadBalancerDetailResponseScheme = "internet-facing"
+)
+
+// Valid indicates whether the value is a known member of the LoadBalancerDetailResponseScheme enum.
+func (e LoadBalancerDetailResponseScheme) Valid() bool {
+	switch e {
+	case LoadBalancerDetailResponseSchemeInternal:
+		return true
+	case LoadBalancerDetailResponseSchemeInternetFacing:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LoadBalancerResponseScheme.
+const (
+	LoadBalancerResponseSchemeInternal       LoadBalancerResponseScheme = "internal"
+	LoadBalancerResponseSchemeInternetFacing LoadBalancerResponseScheme = "internet-facing"
+)
+
+// Valid indicates whether the value is a known member of the LoadBalancerResponseScheme enum.
+func (e LoadBalancerResponseScheme) Valid() bool {
+	switch e {
+	case LoadBalancerResponseSchemeInternal:
+		return true
+	case LoadBalancerResponseSchemeInternetFacing:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for V1LBCreateScheme.
+const (
+	V1LBCreateSchemeInternal       V1LBCreateScheme = "internal"
+	V1LBCreateSchemeInternetFacing V1LBCreateScheme = "internet-facing"
+)
+
+// Valid indicates whether the value is a known member of the V1LBCreateScheme enum.
+func (e V1LBCreateScheme) Valid() bool {
+	switch e {
+	case V1LBCreateSchemeInternal:
+		return true
+	case V1LBCreateSchemeInternetFacing:
+		return true
+	default:
+		return false
+	}
+}
+
 // AppJobCreateRequest defines model for AppJobCreateRequest.
 type AppJobCreateRequest struct {
 	// Command Shell-команда в VM из текущего образа аппа
@@ -556,22 +610,17 @@ type DeleteAccepted struct {
 // оплату только после реального пополнения. Вызывающий НЕ пересчитывает —
 // берёт “ok“/“shortfall“ как есть.
 type FundsCheckResponse struct {
-	Available            string  `json:"available"`
-	Balance              string  `json:"balance"`
-	BonusCap             *string `json:"bonus_cap,omitempty"`
-	Credits              string  `json:"credits"`
-	CreditsUnlocked      bool    `json:"credits_unlocked"`
-	Currency             *string `json:"currency,omitempty"`
-	EstimatedBonusCharge *string `json:"estimated_bonus_charge,omitempty"`
-	EstimatedMainCharge  *string `json:"estimated_main_charge,omitempty"`
-	HasRealTopup         bool    `json:"has_real_topup"`
-	NeedsRealTopup       bool    `json:"needs_real_topup"`
-	Ok                   bool    `json:"ok"`
-	RealTopupMin         string  `json:"real_topup_min"`
-	Reason               *string `json:"reason,omitempty"`
-	Required             string  `json:"required"`
-	Shortfall            string  `json:"shortfall"`
-	UsableCredits        *string `json:"usable_credits,omitempty"`
+	Available       string  `json:"available"`
+	Balance         string  `json:"balance"`
+	Credits         string  `json:"credits"`
+	CreditsUnlocked bool    `json:"credits_unlocked"`
+	Currency        *string `json:"currency,omitempty"`
+	HasRealTopup    bool    `json:"has_real_topup"`
+	NeedsRealTopup  bool    `json:"needs_real_topup"`
+	Ok              bool    `json:"ok"`
+	RealTopupMin    string  `json:"real_topup_min"`
+	Required        string  `json:"required"`
+	Shortfall       string  `json:"shortfall"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
@@ -1043,37 +1092,45 @@ type LBTargetsPutRequest struct {
 
 // LoadBalancerDetailResponse defines model for LoadBalancerDetailResponse.
 type LoadBalancerDetailResponse struct {
-	Config           *LBConfigResponse `json:"config,omitempty"`
-	CreatedAt        *time.Time        `json:"created_at,omitempty"`
-	Id               string            `json:"id"`
-	Mode             *string           `json:"mode,omitempty"`
-	Name             string            `json:"name"`
-	NodeCount        int               `json:"node_count"`
-	Nodes            *[]LBNodeResponse `json:"nodes,omitempty"`
-	ProjectId        string            `json:"project_id"`
-	RegionId         string            `json:"region_id"`
-	RegionObservedAt *time.Time        `json:"region_observed_at,omitempty"`
-	Status           string            `json:"status"`
-	StatusDetail     *string           `json:"status_detail,omitempty"`
-	Vip              *string           `json:"vip,omitempty"`
-	VpcId            string            `json:"vpc_id"`
+	Config           *LBConfigResponse                 `json:"config,omitempty"`
+	CreatedAt        *time.Time                        `json:"created_at,omitempty"`
+	Id               string                            `json:"id"`
+	Mode             *string                           `json:"mode,omitempty"`
+	Name             string                            `json:"name"`
+	NodeCount        int                               `json:"node_count"`
+	Nodes            *[]LBNodeResponse                 `json:"nodes,omitempty"`
+	ProjectId        string                            `json:"project_id"`
+	RegionId         string                            `json:"region_id"`
+	RegionObservedAt *time.Time                        `json:"region_observed_at,omitempty"`
+	Scheme           *LoadBalancerDetailResponseScheme `json:"scheme,omitempty"`
+	Status           string                            `json:"status"`
+	StatusDetail     *string                           `json:"status_detail,omitempty"`
+	Vip              *string                           `json:"vip,omitempty"`
+	VpcId            string                            `json:"vpc_id"`
 }
+
+// LoadBalancerDetailResponseScheme defines model for LoadBalancerDetailResponse.Scheme.
+type LoadBalancerDetailResponseScheme string
 
 // LoadBalancerResponse defines model for LoadBalancerResponse.
 type LoadBalancerResponse struct {
-	CreatedAt        *time.Time `json:"created_at,omitempty"`
-	Id               string     `json:"id"`
-	Mode             *string    `json:"mode,omitempty"`
-	Name             string     `json:"name"`
-	NodeCount        int        `json:"node_count"`
-	ProjectId        string     `json:"project_id"`
-	RegionId         string     `json:"region_id"`
-	RegionObservedAt *time.Time `json:"region_observed_at,omitempty"`
-	Status           string     `json:"status"`
-	StatusDetail     *string    `json:"status_detail,omitempty"`
-	Vip              *string    `json:"vip,omitempty"`
-	VpcId            string     `json:"vpc_id"`
+	CreatedAt        *time.Time                  `json:"created_at,omitempty"`
+	Id               string                      `json:"id"`
+	Mode             *string                     `json:"mode,omitempty"`
+	Name             string                      `json:"name"`
+	NodeCount        int                         `json:"node_count"`
+	ProjectId        string                      `json:"project_id"`
+	RegionId         string                      `json:"region_id"`
+	RegionObservedAt *time.Time                  `json:"region_observed_at,omitempty"`
+	Scheme           *LoadBalancerResponseScheme `json:"scheme,omitempty"`
+	Status           string                      `json:"status"`
+	StatusDetail     *string                     `json:"status_detail,omitempty"`
+	Vip              *string                     `json:"vip,omitempty"`
+	VpcId            string                      `json:"vpc_id"`
 }
+
+// LoadBalancerResponseScheme defines model for LoadBalancerResponse.Scheme.
+type LoadBalancerResponseScheme string
 
 // PageAppJobResponse defines model for Page_AppJobResponse_.
 type PageAppJobResponse struct {
@@ -1711,18 +1768,21 @@ type V1AppDeployResult struct {
 
 // V1AppDomain defines model for V1AppDomain.
 type V1AppDomain struct {
-	AppId         string  `json:"app_id"`
-	BuildId       *string `json:"build_id,omitempty"`
-	CertificateId *string `json:"certificate_id,omitempty"`
-	CreatedAt     *string `json:"created_at,omitempty"`
-	DnsConfigured *bool   `json:"dns_configured,omitempty"`
-	Domain        string  `json:"domain"`
-	Error         *string `json:"error,omitempty"`
-	Id            string  `json:"id"`
-	IsDefault     *bool   `json:"is_default,omitempty"`
-	Status        string  `json:"status"`
-	TargetIp      *string `json:"target_ip,omitempty"`
-	Type          *string `json:"type,omitempty"`
+	AppId              string  `json:"app_id"`
+	AutoConfigureDns   *bool   `json:"auto_configure_dns,omitempty"`
+	BuildId            *string `json:"build_id,omitempty"`
+	CertificateId      *string `json:"certificate_id,omitempty"`
+	CreatedAt          *string `json:"created_at,omitempty"`
+	DnsConfigured      *bool   `json:"dns_configured,omitempty"`
+	Domain             string  `json:"domain"`
+	Error              *string `json:"error,omitempty"`
+	Id                 string  `json:"id"`
+	IsDefault          *bool   `json:"is_default,omitempty"`
+	Status             string  `json:"status"`
+	TargetCname        *string `json:"target_cname,omitempty"`
+	TargetCnamePending *bool   `json:"target_cname_pending,omitempty"`
+	TargetIp           *string `json:"target_ip,omitempty"`
+	Type               *string `json:"type,omitempty"`
 }
 
 // V1AppUpdate defines model for V1AppUpdate.
@@ -1947,9 +2007,17 @@ type V1DeployRequest struct {
 
 // V1DomainCreate defines model for V1DomainCreate.
 type V1DomainCreate struct {
-	Domain          string `json:"domain"`
-	OverrideDns     *bool  `json:"override_dns,omitempty"`
-	SkipCertificate *bool  `json:"skip_certificate,omitempty"`
+	AutoConfigureDns *bool  `json:"auto_configure_dns,omitempty"`
+	Domain           string `json:"domain"`
+	OverrideDns      *bool  `json:"override_dns,omitempty"`
+	SkipCertificate  *bool  `json:"skip_certificate,omitempty"`
+}
+
+// V1DomainVerifyResponse defines model for V1DomainVerifyResponse.
+type V1DomainVerifyResponse struct {
+	Domain   *V1AppDomain `json:"domain,omitempty"`
+	Error    *string      `json:"error,omitempty"`
+	Verified bool         `json:"verified"`
 }
 
 // V1EnvVar defines model for V1EnvVar.
@@ -2210,11 +2278,15 @@ type V1LBCreate struct {
 	NodeCount    *int    `json:"node_count,omitempty"`
 
 	// RegionId vpc mode: must match the VPC's region
-	RegionId *string `json:"region_id,omitempty"`
+	RegionId *string           `json:"region_id,omitempty"`
+	Scheme   *V1LBCreateScheme `json:"scheme,omitempty"`
 
 	// VpcId VPC mode: targets attach here
 	VpcId *string `json:"vpc_id,omitempty"`
 }
+
+// V1LBCreateScheme defines model for V1LBCreate.Scheme.
+type V1LBCreateScheme string
 
 // V1LBLetsEncryptCreate defines model for V1LBLetsEncryptCreate.
 type V1LBLetsEncryptCreate struct {
@@ -5043,6 +5115,11 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /projects/{project_id}/apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomain` operationId).
 	AppsRemoveDomain(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsVerifyDomain Verify domain DNS and request a certificate
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/domains/{domain_id}/verify (the `AppsVerifyDomain` operationId).
+	AppsVerifyDomain(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// AppsListEnvVars List environment variables
 	//
@@ -9869,6 +9946,21 @@ func (c *Client) AppsAddDomain(ctx context.Context, projectId string, appId stri
 // Corresponds with DELETE /projects/{project_id}/apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomain` operationId).
 func (c *Client) AppsRemoveDomain(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAppsRemoveDomainRequest(c.Server, projectId, appId, domainId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsVerifyDomain Verify domain DNS and request a certificate
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/domains/{domain_id}/verify (the `AppsVerifyDomain` operationId).
+func (c *Client) AppsVerifyDomain(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsVerifyDomainRequest(c.Server, projectId, appId, domainId)
 	if err != nil {
 		return nil, err
 	}
@@ -20007,6 +20099,54 @@ func NewAppsRemoveDomainRequest(server string, projectId string, appId string, d
 	return req, nil
 }
 
+// NewAppsVerifyDomainRequest constructs an http.Request for the AppsVerifyDomain method
+func NewAppsVerifyDomainRequest(server string, projectId string, appId string, domainId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "domain_id", domainId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/domains/%s/verify", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewAppsListEnvVarsRequest constructs an http.Request for the AppsListEnvVars method
 func NewAppsListEnvVarsRequest(server string, projectId string, appId string, params *AppsListEnvVarsParams) (*http.Request, error) {
 	var err error
@@ -28773,6 +28913,13 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with DELETE /projects/{project_id}/apps/{app_id}/domains/{domain_id} (the `AppsRemoveDomain` operationId).
 	AppsRemoveDomainWithResponse(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*AppsRemoveDomainResponse, error)
 
+	// AppsVerifyDomainWithResponse Verify domain DNS and request a certificate
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/domains/{domain_id}/verify (the `AppsVerifyDomain` operationId).
+	AppsVerifyDomainWithResponse(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*AppsVerifyDomainResponse, error)
+
 	// AppsListEnvVarsWithResponse List environment variables
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -36907,6 +37054,54 @@ func (r AppsRemoveDomainResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AppsRemoveDomainResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsVerifyDomainResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1DomainVerifyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsVerifyDomainResponse) GetJSON200() *V1DomainVerifyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsVerifyDomainResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsVerifyDomainResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsVerifyDomainResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsVerifyDomainResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsVerifyDomainResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -46294,6 +46489,19 @@ func (c *ClientWithResponses) AppsRemoveDomainWithResponse(ctx context.Context, 
 	return ParseAppsRemoveDomainResponse(rsp)
 }
 
+// AppsVerifyDomainWithResponse Verify domain DNS and request a certificate
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/domains/{domain_id}/verify (the `AppsVerifyDomain` operationId).
+func (c *ClientWithResponses) AppsVerifyDomainWithResponse(ctx context.Context, projectId string, appId string, domainId string, reqEditors ...RequestEditorFn) (*AppsVerifyDomainResponse, error) {
+	rsp, err := c.AppsVerifyDomain(ctx, projectId, appId, domainId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsVerifyDomainResponse(rsp)
+}
+
 // AppsListEnvVarsWithResponse List environment variables
 //
 // Returns a wrapper object for the known response body format(s).
@@ -53595,6 +53803,39 @@ func ParseAppsRemoveDomainResponse(rsp *http.Response) (*AppsRemoveDomainRespons
 	switch {
 	case rsp.StatusCode == 204:
 		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsVerifyDomainResponse parses an HTTP response from a AppsVerifyDomainWithResponse call
+func ParseAppsVerifyDomainResponse(rsp *http.Response) (*AppsVerifyDomainResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsVerifyDomainResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1DomainVerifyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
