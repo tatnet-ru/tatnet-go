@@ -8626,6 +8626,7 @@
         "type": "object"
       },
       "V1LBUpdate": {
+        "additionalProperties": false,
         "properties": {
           "node_count": {
             "anyOf": [
