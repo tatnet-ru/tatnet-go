@@ -5521,6 +5521,23 @@
         "title": "PgTopologyResponse",
         "type": "object"
       },
+      "RenameVPCRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "description": "Display name; network identifiers stay unchanged",
+            "maxLength": 255,
+            "minLength": 1,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "RenameVPCRequest",
+        "type": "object"
+      },
       "UpdateKafkaAllowlistRequest": {
         "properties": {
           "ip_allowlist": {
@@ -27409,6 +27426,61 @@
           }
         ],
         "summary": "Get a VPC",
+        "tags": [
+          "networking"
+        ]
+      },
+      "patch": {
+        "operationId": "networking_rename_vpc",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "vpc_id",
+            "required": true,
+            "schema": {
+              "title": "Vpc Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameVPCRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1Vpc"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Rename a VPC",
         "tags": [
           "networking"
         ]
