@@ -1609,6 +1609,12 @@ type PgTopologyResponse struct {
 	Nodes int    `json:"nodes"`
 }
 
+// RenameVPCRequest defines model for RenameVPCRequest.
+type RenameVPCRequest struct {
+	// Name Display name; network identifiers stay unchanged
+	Name string `json:"name"`
+}
+
 // UpdateKafkaAllowlistRequest defines model for UpdateKafkaAllowlistRequest.
 type UpdateKafkaAllowlistRequest struct {
 	IpAllowlist []string `json:"ip_allowlist"`
@@ -3581,6 +3587,9 @@ type VolumesDetachVolumeByIdJSONRequestBody = VolumesDetachVolumeByIdJSONBody
 
 // NetworkingCreateVpcJSONRequestBody defines body for NetworkingCreateVpc for application/json ContentType.
 type NetworkingCreateVpcJSONRequestBody = V1VpcCreate
+
+// NetworkingRenameVpcJSONRequestBody defines body for NetworkingRenameVpc for application/json ContentType.
+type NetworkingRenameVpcJSONRequestBody = RenameVPCRequest
 
 // NetworkingEnableNatGatewayJSONRequestBody defines body for NetworkingEnableNatGateway for application/json ContentType.
 type NetworkingEnableNatGatewayJSONRequestBody = NetworkingEnableNatGatewayJSONBody
@@ -6623,6 +6632,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /vpcs/{vpc_id} (the `NetworkingGetVpc` operationId).
 	NetworkingGetVpc(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// NetworkingRenameVpcWithBody Rename a VPC
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+	NetworkingRenameVpcWithBody(ctx context.Context, vpcId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// NetworkingRenameVpc Rename a VPC
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+	NetworkingRenameVpc(ctx context.Context, vpcId string, body NetworkingRenameVpcJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// NetworkingDisableNatGateway Disable the VPC's NAT gateway
 	//
@@ -13384,6 +13407,40 @@ func (c *Client) NetworkingDeleteVpc(ctx context.Context, vpcId string, reqEdito
 // Corresponds with GET /vpcs/{vpc_id} (the `NetworkingGetVpc` operationId).
 func (c *Client) NetworkingGetVpc(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewNetworkingGetVpcRequest(c.Server, vpcId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NetworkingRenameVpcWithBody Rename a VPC
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+func (c *Client) NetworkingRenameVpcWithBody(ctx context.Context, vpcId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewNetworkingRenameVpcRequestWithBody(c.Server, vpcId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NetworkingRenameVpc Rename a VPC
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+func (c *Client) NetworkingRenameVpc(ctx context.Context, vpcId string, body NetworkingRenameVpcJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewNetworkingRenameVpcRequest(c.Server, vpcId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -27109,6 +27166,53 @@ func NewNetworkingGetVpcRequest(server string, vpcId string) (*http.Request, err
 	return req, nil
 }
 
+// NewNetworkingRenameVpcRequest calls the generic NetworkingRenameVpc builder with application/json body
+func NewNetworkingRenameVpcRequest(server string, vpcId string, body NetworkingRenameVpcJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewNetworkingRenameVpcRequestWithBody(server, vpcId, "application/json", bodyReader)
+}
+
+// NewNetworkingRenameVpcRequestWithBody constructs an http.Request for the NetworkingRenameVpc method, with any body, and a specified content type
+func NewNetworkingRenameVpcRequestWithBody(server string, vpcId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vpc_id", vpcId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vpcs/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewNetworkingDisableNatGatewayRequest constructs an http.Request for the NetworkingDisableNatGateway method
 func NewNetworkingDisableNatGatewayRequest(server string, vpcId string, params *NetworkingDisableNatGatewayParams) (*http.Request, error) {
 	var err error
@@ -30586,6 +30690,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /vpcs/{vpc_id} (the `NetworkingGetVpc` operationId).
 	NetworkingGetVpcWithResponse(ctx context.Context, vpcId string, reqEditors ...RequestEditorFn) (*NetworkingGetVpcResponse, error)
+
+	// NetworkingRenameVpcWithBodyWithResponse Rename a VPC
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+	NetworkingRenameVpcWithBodyWithResponse(ctx context.Context, vpcId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*NetworkingRenameVpcResponse, error)
+
+	// NetworkingRenameVpcWithResponse Rename a VPC
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+	NetworkingRenameVpcWithResponse(ctx context.Context, vpcId string, body NetworkingRenameVpcJSONRequestBody, reqEditors ...RequestEditorFn) (*NetworkingRenameVpcResponse, error)
 
 	// NetworkingDisableNatGatewayWithResponse Disable the VPC's NAT gateway
 	//
@@ -43612,6 +43730,54 @@ func (r NetworkingGetVpcResponse) ContentType() string {
 	return ""
 }
 
+type NetworkingRenameVpcResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1Vpc
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r NetworkingRenameVpcResponse) GetJSON200() *V1Vpc {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r NetworkingRenameVpcResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r NetworkingRenameVpcResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r NetworkingRenameVpcResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r NetworkingRenameVpcResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r NetworkingRenameVpcResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type NetworkingDisableNatGatewayResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -49319,6 +49485,32 @@ func (c *ClientWithResponses) NetworkingGetVpcWithResponse(ctx context.Context, 
 		return nil, err
 	}
 	return ParseNetworkingGetVpcResponse(rsp)
+}
+
+// NetworkingRenameVpcWithBodyWithResponse Rename a VPC
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+func (c *ClientWithResponses) NetworkingRenameVpcWithBodyWithResponse(ctx context.Context, vpcId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*NetworkingRenameVpcResponse, error) {
+	rsp, err := c.NetworkingRenameVpcWithBody(ctx, vpcId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseNetworkingRenameVpcResponse(rsp)
+}
+
+// NetworkingRenameVpcWithResponse Rename a VPC
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /vpcs/{vpc_id} (the `NetworkingRenameVpc` operationId).
+func (c *ClientWithResponses) NetworkingRenameVpcWithResponse(ctx context.Context, vpcId string, body NetworkingRenameVpcJSONRequestBody, reqEditors ...RequestEditorFn) (*NetworkingRenameVpcResponse, error) {
+	rsp, err := c.NetworkingRenameVpc(ctx, vpcId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseNetworkingRenameVpcResponse(rsp)
 }
 
 // NetworkingDisableNatGatewayWithResponse Disable the VPC's NAT gateway
@@ -58304,6 +58496,39 @@ func ParseNetworkingGetVpcResponse(rsp *http.Response) (*NetworkingGetVpcRespons
 	}
 
 	response := &NetworkingGetVpcResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1Vpc
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseNetworkingRenameVpcResponse parses an HTTP response from a NetworkingRenameVpcWithResponse call
+func ParseNetworkingRenameVpcResponse(rsp *http.Response) (*NetworkingRenameVpcResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &NetworkingRenameVpcResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
