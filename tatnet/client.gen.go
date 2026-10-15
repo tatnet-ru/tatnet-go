@@ -441,60 +441,6 @@ func (e LoadBalancerResponseScheme) Valid() bool {
 	}
 }
 
-// Defines values for UpdateK8sClusterSettingsRequestTlsMinVersion.
-const (
-	UpdateK8sClusterSettingsRequestTlsMinVersionVersionTLS12 UpdateK8sClusterSettingsRequestTlsMinVersion = "VersionTLS12"
-	UpdateK8sClusterSettingsRequestTlsMinVersionVersionTLS13 UpdateK8sClusterSettingsRequestTlsMinVersion = "VersionTLS13"
-)
-
-// Valid indicates whether the value is a known member of the UpdateK8sClusterSettingsRequestTlsMinVersion enum.
-func (e UpdateK8sClusterSettingsRequestTlsMinVersion) Valid() bool {
-	switch e {
-	case UpdateK8sClusterSettingsRequestTlsMinVersionVersionTLS12:
-		return true
-	case UpdateK8sClusterSettingsRequestTlsMinVersionVersionTLS13:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for V1K8sClusterTlsMinVersion.
-const (
-	V1K8sClusterTlsMinVersionVersionTLS12 V1K8sClusterTlsMinVersion = "VersionTLS12"
-	V1K8sClusterTlsMinVersionVersionTLS13 V1K8sClusterTlsMinVersion = "VersionTLS13"
-)
-
-// Valid indicates whether the value is a known member of the V1K8sClusterTlsMinVersion enum.
-func (e V1K8sClusterTlsMinVersion) Valid() bool {
-	switch e {
-	case V1K8sClusterTlsMinVersionVersionTLS12:
-		return true
-	case V1K8sClusterTlsMinVersionVersionTLS13:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for V1K8sClusterCreateTlsMinVersion.
-const (
-	V1K8sClusterCreateTlsMinVersionVersionTLS12 V1K8sClusterCreateTlsMinVersion = "VersionTLS12"
-	V1K8sClusterCreateTlsMinVersionVersionTLS13 V1K8sClusterCreateTlsMinVersion = "VersionTLS13"
-)
-
-// Valid indicates whether the value is a known member of the V1K8sClusterCreateTlsMinVersion enum.
-func (e V1K8sClusterCreateTlsMinVersion) Valid() bool {
-	switch e {
-	case V1K8sClusterCreateTlsMinVersionVersionTLS12:
-		return true
-	case V1K8sClusterCreateTlsMinVersionVersionTLS13:
-		return true
-	default:
-		return false
-	}
-}
-
 // Defines values for V1LBCreateScheme.
 const (
 	V1LBCreateSchemeInternal       V1LBCreateScheme = "internal"
@@ -507,27 +453,6 @@ func (e V1LBCreateScheme) Valid() bool {
 	case V1LBCreateSchemeInternal:
 		return true
 	case V1LBCreateSchemeInternetFacing:
-		return true
-	default:
-		return false
-	}
-}
-
-// Defines values for AccountPreviewFundsParamsProduct.
-const (
-	Apps     AccountPreviewFundsParamsProduct = "apps"
-	Supabase AccountPreviewFundsParamsProduct = "supabase"
-	T1000    AccountPreviewFundsParamsProduct = "t1000"
-)
-
-// Valid indicates whether the value is a known member of the AccountPreviewFundsParamsProduct enum.
-func (e AccountPreviewFundsParamsProduct) Valid() bool {
-	switch e {
-	case Apps:
-		return true
-	case Supabase:
-		return true
-	case T1000:
 		return true
 	default:
 		return false
@@ -1690,14 +1615,6 @@ type RenameVPCRequest struct {
 	Name string `json:"name"`
 }
 
-// UpdateK8sClusterSettingsRequest defines model for UpdateK8sClusterSettingsRequest.
-type UpdateK8sClusterSettingsRequest struct {
-	TlsMinVersion UpdateK8sClusterSettingsRequestTlsMinVersion `json:"tls_min_version"`
-}
-
-// UpdateK8sClusterSettingsRequestTlsMinVersion defines model for UpdateK8sClusterSettingsRequest.TlsMinVersion.
-type UpdateK8sClusterSettingsRequestTlsMinVersion string
-
 // UpdateKafkaAllowlistRequest defines model for UpdateKafkaAllowlistRequest.
 type UpdateKafkaAllowlistRequest struct {
 	IpAllowlist []string `json:"ip_allowlist"`
@@ -2249,18 +2166,14 @@ type V1K8sCluster struct {
 	ProjectId        string  `json:"project_id"`
 
 	// RegionId Region (infra cluster) UUID
-	RegionId      string                     `json:"region_id"`
-	Status        string                     `json:"status"`
-	TalosVersion  string                     `json:"talos_version"`
-	TlsMinVersion *V1K8sClusterTlsMinVersion `json:"tls_min_version,omitempty"`
+	RegionId     string `json:"region_id"`
+	Status       string `json:"status"`
+	TalosVersion string `json:"talos_version"`
 
 	// Upgrading A version upgrade is rolling across the nodes
 	Upgrading *bool   `json:"upgrading,omitempty"`
 	VpcId     *string `json:"vpc_id,omitempty"`
 }
-
-// V1K8sClusterTlsMinVersion defines model for V1K8sCluster.TlsMinVersion.
-type V1K8sClusterTlsMinVersion string
 
 // V1K8sClusterCreate defines model for V1K8sClusterCreate.
 type V1K8sClusterCreate struct {
@@ -2280,8 +2193,7 @@ type V1K8sClusterCreate struct {
 	RegionId *string `json:"region_id,omitempty"`
 
 	// TalosVersion Talos OS version for the nodes; the platform default when omitted
-	TalosVersion  *string                          `json:"talos_version,omitempty"`
-	TlsMinVersion *V1K8sClusterCreateTlsMinVersion `json:"tls_min_version,omitempty"`
+	TalosVersion *string `json:"talos_version,omitempty"`
 
 	// VmPlanId VM plan UUID used for every node
 	VmPlanId string `json:"vm_plan_id"`
@@ -2295,9 +2207,6 @@ type V1K8sClusterCreate struct {
 	// WorkerDiskSizeGb Per-worker disk override in GB (plan default when omitted)
 	WorkerDiskSizeGb *int `json:"worker_disk_size_gb,omitempty"`
 }
-
-// V1K8sClusterCreateTlsMinVersion defines model for V1K8sClusterCreate.TlsMinVersion.
-type V1K8sClusterCreateTlsMinVersion string
 
 // V1K8sNode Нода кластера: строка `k8s_nodes` плюс адрес её машины.
 type V1K8sNode struct {
@@ -3040,8 +2949,7 @@ type AccountPreviewFundsParams struct {
 	Amount struct {
 		union json.RawMessage
 	} `form:"amount" json:"amount"`
-	PeriodType *string                           `form:"period_type,omitempty" json:"period_type,omitempty"`
-	Product    *AccountPreviewFundsParamsProduct `form:"product,omitempty" json:"product,omitempty"`
+	PeriodType *string `form:"period_type,omitempty" json:"period_type,omitempty"`
 }
 
 // AccountPreviewFundsParamsAmount0 defines parameters for AccountPreviewFunds.
@@ -3049,9 +2957,6 @@ type AccountPreviewFundsParamsAmount0 = float32
 
 // AccountPreviewFundsParamsAmount1 defines parameters for AccountPreviewFunds.
 type AccountPreviewFundsParamsAmount1 = string
-
-// AccountPreviewFundsParamsProduct defines parameters for AccountPreviewFunds.
-type AccountPreviewFundsParamsProduct string
 
 // AppsListAppsByAccountParams defines parameters for AppsListAppsByAccount.
 type AppsListAppsByAccountParams struct {
@@ -3424,9 +3329,6 @@ type FunctionsAddEnvVarByIdJSONRequestBody = V1EnvVarCreate
 // KubernetesScaleNodePoolByIdJSONRequestBody defines body for KubernetesScaleNodePoolById for application/json ContentType.
 type KubernetesScaleNodePoolByIdJSONRequestBody = V1K8sScale
 
-// KubernetesUpdateClusterSettingsByIdJSONRequestBody defines body for KubernetesUpdateClusterSettingsById for application/json ContentType.
-type KubernetesUpdateClusterSettingsByIdJSONRequestBody = UpdateK8sClusterSettingsRequest
-
 // KubernetesUpgradeClusterByIdJSONRequestBody defines body for KubernetesUpgradeClusterById for application/json ContentType.
 type KubernetesUpgradeClusterByIdJSONRequestBody = V1K8sUpgrade
 
@@ -3555,9 +3457,6 @@ type KubernetesCreateClusterJSONRequestBody = V1K8sClusterCreate
 
 // KubernetesScaleNodePoolJSONRequestBody defines body for KubernetesScaleNodePool for application/json ContentType.
 type KubernetesScaleNodePoolJSONRequestBody = V1K8sScale
-
-// KubernetesUpdateClusterSettingsJSONRequestBody defines body for KubernetesUpdateClusterSettings for application/json ContentType.
-type KubernetesUpdateClusterSettingsJSONRequestBody = UpdateK8sClusterSettingsRequest
 
 // KubernetesUpgradeClusterJSONRequestBody defines body for KubernetesUpgradeCluster for application/json ContentType.
 type KubernetesUpgradeClusterJSONRequestBody = V1K8sUpgrade
@@ -4354,26 +4253,6 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
 	KubernetesListClusterNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// KubernetesUpdateClusterSettingsByIdWithBody Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-	KubernetesUpdateClusterSettingsByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// KubernetesUpdateClusterSettingsById Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-	KubernetesUpdateClusterSettingsById(ctx context.Context, clusterId string, body KubernetesUpdateClusterSettingsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesUpgradeClusterByIdWithBody Upgrade the Kubernetes version
 	//
@@ -5544,26 +5423,6 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /projects/{project_id}/kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodes` operationId).
 	KubernetesListClusterNodes(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// KubernetesUpdateClusterSettingsWithBody Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes any type of body and a specified content type.
-	//
-	// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-	KubernetesUpdateClusterSettingsWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
-
-	// KubernetesUpdateClusterSettings Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes a body of the `application/json` content type.
-	//
-	// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-	KubernetesUpdateClusterSettings(ctx context.Context, projectId string, clusterId string, body KubernetesUpdateClusterSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KubernetesUpgradeClusterWithBody Upgrade the Kubernetes version
 	//
@@ -8179,46 +8038,6 @@ func (c *Client) KubernetesScaleNodePoolById(ctx context.Context, clusterId stri
 // Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
 func (c *Client) KubernetesListClusterNodesById(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewKubernetesListClusterNodesByIdRequest(c.Server, clusterId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// KubernetesUpdateClusterSettingsByIdWithBody Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-func (c *Client) KubernetesUpdateClusterSettingsByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewKubernetesUpdateClusterSettingsByIdRequestWithBody(c.Server, clusterId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// KubernetesUpdateClusterSettingsById Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-func (c *Client) KubernetesUpdateClusterSettingsById(ctx context.Context, clusterId string, body KubernetesUpdateClusterSettingsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewKubernetesUpdateClusterSettingsByIdRequest(c.Server, clusterId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -10909,46 +10728,6 @@ func (c *Client) KubernetesScaleNodePool(ctx context.Context, projectId string, 
 // Corresponds with GET /projects/{project_id}/kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodes` operationId).
 func (c *Client) KubernetesListClusterNodes(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewKubernetesListClusterNodesRequest(c.Server, projectId, clusterId)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// KubernetesUpdateClusterSettingsWithBody Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes any type of body and a specified content type.
-//
-// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-func (c *Client) KubernetesUpdateClusterSettingsWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewKubernetesUpdateClusterSettingsRequestWithBody(c.Server, projectId, clusterId, contentType, body)
-	if err != nil {
-		return nil, err
-	}
-	req = req.WithContext(ctx)
-	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
-		return nil, err
-	}
-	return c.Client.Do(req)
-}
-
-// KubernetesUpdateClusterSettings Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes a body of the `application/json` content type.
-//
-// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-func (c *Client) KubernetesUpdateClusterSettings(ctx context.Context, projectId string, clusterId string, body KubernetesUpdateClusterSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewKubernetesUpdateClusterSettingsRequest(c.Server, projectId, clusterId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -13886,18 +13665,6 @@ func NewAccountPreviewFundsRequest(server string, params *AccountPreviewFundsPar
 		if params.PeriodType != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "period_type", *params.PeriodType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
-				return nil, err
-			} else {
-				for _, qp := range strings.Split(queryFrag, "&") {
-					rawQueryFragments = append(rawQueryFragments, qp)
-				}
-			}
-
-		}
-
-		if params.Product != nil {
-
-			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "product", *params.Product, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -16951,53 +16718,6 @@ func NewKubernetesListClusterNodesByIdRequest(server string, clusterId string) (
 	if err != nil {
 		return nil, err
 	}
-
-	return req, nil
-}
-
-// NewKubernetesUpdateClusterSettingsByIdRequest calls the generic KubernetesUpdateClusterSettingsById builder with application/json body
-func NewKubernetesUpdateClusterSettingsByIdRequest(server string, clusterId string, body KubernetesUpdateClusterSettingsByIdJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewKubernetesUpdateClusterSettingsByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
-}
-
-// NewKubernetesUpdateClusterSettingsByIdRequestWithBody constructs an http.Request for the KubernetesUpdateClusterSettingsById method, with any body, and a specified content type
-func NewKubernetesUpdateClusterSettingsByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/kubernetes-clusters/%s/settings", pathParam0)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -22343,60 +22063,6 @@ func NewKubernetesListClusterNodesRequest(server string, projectId string, clust
 	if err != nil {
 		return nil, err
 	}
-
-	return req, nil
-}
-
-// NewKubernetesUpdateClusterSettingsRequest calls the generic KubernetesUpdateClusterSettings builder with application/json body
-func NewKubernetesUpdateClusterSettingsRequest(server string, projectId string, clusterId string, body KubernetesUpdateClusterSettingsJSONRequestBody) (*http.Request, error) {
-	var bodyReader io.Reader
-	buf, err := json.Marshal(body)
-	if err != nil {
-		return nil, err
-	}
-	bodyReader = bytes.NewReader(buf)
-	return NewKubernetesUpdateClusterSettingsRequestWithBody(server, projectId, clusterId, "application/json", bodyReader)
-}
-
-// NewKubernetesUpdateClusterSettingsRequestWithBody constructs an http.Request for the KubernetesUpdateClusterSettings method, with any body, and a specified content type
-func NewKubernetesUpdateClusterSettingsRequestWithBody(server string, projectId string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
-	var err error
-
-	var pathParam0 string
-
-	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	var pathParam1 string
-
-	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
-	if err != nil {
-		return nil, err
-	}
-
-	serverURL, err := url.Parse(server)
-	if err != nil {
-		return nil, err
-	}
-
-	operationPath := fmt.Sprintf("/projects/%s/kubernetes-clusters/%s/settings", pathParam0, pathParam1)
-	if operationPath[0] == '/' {
-		operationPath = "." + operationPath
-	}
-
-	queryURL, err := serverURL.Parse(operationPath)
-	if err != nil {
-		return nil, err
-	}
-
-	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
-	if err != nil {
-		return nil, err
-	}
-
-	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -28398,26 +28064,6 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodesById` operationId).
 	KubernetesListClusterNodesByIdWithResponse(ctx context.Context, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesListClusterNodesByIdResponse, error)
 
-	// KubernetesUpdateClusterSettingsByIdWithBodyWithResponse Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-	KubernetesUpdateClusterSettingsByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsByIdResponse, error)
-
-	// KubernetesUpdateClusterSettingsByIdWithResponse Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-	KubernetesUpdateClusterSettingsByIdWithResponse(ctx context.Context, clusterId string, body KubernetesUpdateClusterSettingsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsByIdResponse, error)
-
 	// KubernetesUpgradeClusterByIdWithBodyWithResponse Upgrade the Kubernetes version
 	//
 	// Bump the desired Kubernetes version; nodes are rolled one at a time
@@ -29717,26 +29363,6 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /projects/{project_id}/kubernetes-clusters/{cluster_id}/nodes (the `KubernetesListClusterNodes` operationId).
 	KubernetesListClusterNodesWithResponse(ctx context.Context, projectId string, clusterId string, reqEditors ...RequestEditorFn) (*KubernetesListClusterNodesResponse, error)
-
-	// KubernetesUpdateClusterSettingsWithBodyWithResponse Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-	KubernetesUpdateClusterSettingsWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsResponse, error)
-
-	// KubernetesUpdateClusterSettingsWithResponse Update Kubernetes API TLS settings
-	//
-	// Set the minimum TLS version for kube-apiserver on every control-plane node.
-	// The orchestrator applies the configuration one node at a time.
-	//
-	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-	//
-	// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-	KubernetesUpdateClusterSettingsWithResponse(ctx context.Context, projectId string, clusterId string, body KubernetesUpdateClusterSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsResponse, error)
 
 	// KubernetesUpgradeClusterWithBodyWithResponse Upgrade the Kubernetes version
 	//
@@ -34113,54 +33739,6 @@ func (r KubernetesListClusterNodesByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r KubernetesListClusterNodesByIdResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type KubernetesUpdateClusterSettingsByIdResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *V1K8sCluster
-	// JSON422 the response for an HTTP 422 `application/json` response
-	JSON422 *HTTPValidationError
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r KubernetesUpdateClusterSettingsByIdResponse) GetJSON200() *V1K8sCluster {
-	return r.JSON200
-}
-
-// GetJSON422 returns the response for an HTTP 422 `application/json` response
-func (r KubernetesUpdateClusterSettingsByIdResponse) GetJSON422() *HTTPValidationError {
-	return r.JSON422
-}
-
-// GetBody returns the raw response body bytes
-func (r KubernetesUpdateClusterSettingsByIdResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r KubernetesUpdateClusterSettingsByIdResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r KubernetesUpdateClusterSettingsByIdResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r KubernetesUpdateClusterSettingsByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -39253,54 +38831,6 @@ func (r KubernetesListClusterNodesResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r KubernetesListClusterNodesResponse) ContentType() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Header.Get("Content-Type")
-	}
-	return ""
-}
-
-type KubernetesUpdateClusterSettingsResponse struct {
-	Body         []byte
-	HTTPResponse *http.Response
-	// JSON200 the response for an HTTP 200 `application/json` response
-	JSON200 *V1K8sCluster
-	// JSON422 the response for an HTTP 422 `application/json` response
-	JSON422 *HTTPValidationError
-}
-
-// GetJSON200 returns the response for an HTTP 200 `application/json` response
-func (r KubernetesUpdateClusterSettingsResponse) GetJSON200() *V1K8sCluster {
-	return r.JSON200
-}
-
-// GetJSON422 returns the response for an HTTP 422 `application/json` response
-func (r KubernetesUpdateClusterSettingsResponse) GetJSON422() *HTTPValidationError {
-	return r.JSON422
-}
-
-// GetBody returns the raw response body bytes
-func (r KubernetesUpdateClusterSettingsResponse) GetBody() []byte {
-	return r.Body
-}
-
-// Status returns HTTPResponse.Status
-func (r KubernetesUpdateClusterSettingsResponse) Status() string {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.Status
-	}
-	return http.StatusText(0)
-}
-
-// StatusCode returns HTTPResponse.StatusCode
-func (r KubernetesUpdateClusterSettingsResponse) StatusCode() int {
-	if r.HTTPResponse != nil {
-		return r.HTTPResponse.StatusCode
-	}
-	return 0
-}
-
-// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
-func (r KubernetesUpdateClusterSettingsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -45536,38 +45066,6 @@ func (c *ClientWithResponses) KubernetesListClusterNodesByIdWithResponse(ctx con
 	return ParseKubernetesListClusterNodesByIdResponse(rsp)
 }
 
-// KubernetesUpdateClusterSettingsByIdWithBodyWithResponse Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-func (c *ClientWithResponses) KubernetesUpdateClusterSettingsByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsByIdResponse, error) {
-	rsp, err := c.KubernetesUpdateClusterSettingsByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseKubernetesUpdateClusterSettingsByIdResponse(rsp)
-}
-
-// KubernetesUpdateClusterSettingsByIdWithResponse Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with PATCH /kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettingsById` operationId).
-func (c *ClientWithResponses) KubernetesUpdateClusterSettingsByIdWithResponse(ctx context.Context, clusterId string, body KubernetesUpdateClusterSettingsByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsByIdResponse, error) {
-	rsp, err := c.KubernetesUpdateClusterSettingsById(ctx, clusterId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseKubernetesUpdateClusterSettingsByIdResponse(rsp)
-}
-
 // KubernetesUpgradeClusterByIdWithBodyWithResponse Upgrade the Kubernetes version
 //
 // Bump the desired Kubernetes version; nodes are rolled one at a time
@@ -47778,38 +47276,6 @@ func (c *ClientWithResponses) KubernetesListClusterNodesWithResponse(ctx context
 		return nil, err
 	}
 	return ParseKubernetesListClusterNodesResponse(rsp)
-}
-
-// KubernetesUpdateClusterSettingsWithBodyWithResponse Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-func (c *ClientWithResponses) KubernetesUpdateClusterSettingsWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsResponse, error) {
-	rsp, err := c.KubernetesUpdateClusterSettingsWithBody(ctx, projectId, clusterId, contentType, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseKubernetesUpdateClusterSettingsResponse(rsp)
-}
-
-// KubernetesUpdateClusterSettingsWithResponse Update Kubernetes API TLS settings
-//
-// Set the minimum TLS version for kube-apiserver on every control-plane node.
-// The orchestrator applies the configuration one node at a time.
-//
-// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
-//
-// Corresponds with PATCH /projects/{project_id}/kubernetes-clusters/{cluster_id}/settings (the `KubernetesUpdateClusterSettings` operationId).
-func (c *ClientWithResponses) KubernetesUpdateClusterSettingsWithResponse(ctx context.Context, projectId string, clusterId string, body KubernetesUpdateClusterSettingsJSONRequestBody, reqEditors ...RequestEditorFn) (*KubernetesUpdateClusterSettingsResponse, error) {
-	rsp, err := c.KubernetesUpdateClusterSettings(ctx, projectId, clusterId, body, reqEditors...)
-	if err != nil {
-		return nil, err
-	}
-	return ParseKubernetesUpdateClusterSettingsResponse(rsp)
 }
 
 // KubernetesUpgradeClusterWithBodyWithResponse Upgrade the Kubernetes version
@@ -52192,39 +51658,6 @@ func ParseKubernetesListClusterNodesByIdResponse(rsp *http.Response) (*Kubernete
 	return response, nil
 }
 
-// ParseKubernetesUpdateClusterSettingsByIdResponse parses an HTTP response from a KubernetesUpdateClusterSettingsByIdWithResponse call
-func ParseKubernetesUpdateClusterSettingsByIdResponse(rsp *http.Response) (*KubernetesUpdateClusterSettingsByIdResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &KubernetesUpdateClusterSettingsByIdResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest V1K8sCluster
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
-		var dest HTTPValidationError
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON422 = &dest
-
-	}
-
-	return response, nil
-}
-
 // ParseKubernetesUpgradeClusterByIdResponse parses an HTTP response from a KubernetesUpgradeClusterByIdWithResponse call
 func ParseKubernetesUpgradeClusterByIdResponse(rsp *http.Response) (*KubernetesUpgradeClusterByIdResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -55704,39 +55137,6 @@ func ParseKubernetesListClusterNodesResponse(rsp *http.Response) (*KubernetesLis
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest []V1K8sNode
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON200 = &dest
-
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
-		var dest HTTPValidationError
-		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
-			return nil, err
-		}
-		response.JSON422 = &dest
-
-	}
-
-	return response, nil
-}
-
-// ParseKubernetesUpdateClusterSettingsResponse parses an HTTP response from a KubernetesUpdateClusterSettingsWithResponse call
-func ParseKubernetesUpdateClusterSettingsResponse(rsp *http.Response) (*KubernetesUpdateClusterSettingsResponse, error) {
-	bodyBytes, err := io.ReadAll(rsp.Body)
-	defer func() { _ = rsp.Body.Close() }()
-	if err != nil {
-		return nil, err
-	}
-
-	response := &KubernetesUpdateClusterSettingsResponse{
-		Body:         bodyBytes,
-		HTTPResponse: rsp,
-	}
-
-	switch {
-	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
-		var dest V1K8sCluster
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
