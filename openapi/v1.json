@@ -9817,6 +9817,22 @@
       },
       "V1VolumeAttachment": {
         "properties": {
+          "desired_state": {
+            "default": "present",
+            "title": "Desired State",
+            "type": "string"
+          },
+          "error_detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Detail"
+          },
           "status": {
             "title": "Status",
             "type": "string"
