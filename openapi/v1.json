@@ -5538,6 +5538,23 @@
         "title": "RenameVPCRequest",
         "type": "object"
       },
+      "UpdateK8sClusterSettingsRequest": {
+        "properties": {
+          "tls_min_version": {
+            "enum": [
+              "VersionTLS12",
+              "VersionTLS13"
+            ],
+            "title": "Tls Min Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tls_min_version"
+        ],
+        "title": "UpdateK8sClusterSettingsRequest",
+        "type": "object"
+      },
       "UpdateKafkaAllowlistRequest": {
         "properties": {
           "ip_allowlist": {
@@ -8145,6 +8162,15 @@
             "title": "Talos Version",
             "type": "string"
           },
+          "tls_min_version": {
+            "default": "VersionTLS12",
+            "enum": [
+              "VersionTLS12",
+              "VersionTLS13"
+            ],
+            "title": "Tls Min Version",
+            "type": "string"
+          },
           "upgrading": {
             "default": false,
             "description": "A version upgrade is rolling across the nodes",
@@ -8232,6 +8258,15 @@
             ],
             "description": "Talos OS version for the nodes; the platform default when omitted",
             "title": "Talos Version"
+          },
+          "tls_min_version": {
+            "default": "VersionTLS12",
+            "enum": [
+              "VersionTLS12",
+              "VersionTLS13"
+            ],
+            "title": "Tls Min Version",
+            "type": "string"
           },
           "vm_plan_id": {
             "description": "VM plan UUID used for every node",
@@ -11382,6 +11417,27 @@
                 }
               ],
               "title": "Period Type"
+            }
+          },
+          {
+            "in": "query",
+            "name": "product",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "apps",
+                    "supabase",
+                    "t1000"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Product"
             }
           }
         ],
@@ -14895,6 +14951,64 @@
           }
         ],
         "summary": "List the cluster's nodes and their backing VMs",
+        "tags": [
+          "kubernetes"
+        ]
+      }
+    },
+    "/kubernetes-clusters/{cluster_id}/settings": {
+      "patch": {
+        "description": "Set the minimum TLS version for kube-apiserver on every control-plane node.\nThe orchestrator applies the configuration one node at a time.",
+        "operationId": "kubernetes_update_cluster_settings_by_id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "title": "Cluster Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateK8sClusterSettingsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1K8sCluster"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Update Kubernetes API TLS settings",
         "tags": [
           "kubernetes"
         ]
@@ -21199,6 +21313,73 @@
           }
         ],
         "summary": "List the cluster's nodes and their backing VMs",
+        "tags": [
+          "kubernetes"
+        ]
+      }
+    },
+    "/projects/{project_id}/kubernetes-clusters/{cluster_id}/settings": {
+      "patch": {
+        "description": "Set the minimum TLS version for kube-apiserver on every control-plane node.\nThe orchestrator applies the configuration one node at a time.",
+        "operationId": "kubernetes_update_cluster_settings",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "project_id",
+            "required": true,
+            "schema": {
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "cluster_id",
+            "required": true,
+            "schema": {
+              "title": "Cluster Id",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateK8sClusterSettingsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/V1K8sCluster"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "security": [
+          {
+            "TatNetAPIKey": []
+          }
+        ],
+        "summary": "Update Kubernetes API TLS settings",
         "tags": [
           "kubernetes"
         ]
