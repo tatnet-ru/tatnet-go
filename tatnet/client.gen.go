@@ -2640,9 +2640,11 @@ type V1VolumeAttach struct {
 
 // V1VolumeAttachment defines model for V1VolumeAttachment.
 type V1VolumeAttachment struct {
-	Status    string  `json:"status"`
-	TargetDev *string `json:"target_dev,omitempty"`
-	VmId      string  `json:"vm_id"`
+	DesiredState *string `json:"desired_state,omitempty"`
+	ErrorDetail  *string `json:"error_detail,omitempty"`
+	Status       string  `json:"status"`
+	TargetDev    *string `json:"target_dev,omitempty"`
+	VmId         string  `json:"vm_id"`
 }
 
 // V1VolumeCreate defines model for V1VolumeCreate.
