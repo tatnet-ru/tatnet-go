@@ -1834,9 +1834,12 @@ type V1AppUpdate struct {
 type V1Backup struct {
 	Description    *string `json:"description,omitempty"`
 	Error          *string `json:"error,omitempty"`
+	ExpiresAt      *string `json:"expires_at,omitempty"`
 	Id             string  `json:"id"`
 	Name           string  `json:"name"`
+	Origin         *string `json:"origin,omitempty"`
 	ParentBackupId *string `json:"parent_backup_id,omitempty"`
+	ProtectedUntil *string `json:"protected_until,omitempty"`
 	SizeBytes      *int    `json:"size_bytes,omitempty"`
 	Status         string  `json:"status"`
 	Type           string  `json:"type"`
@@ -2563,7 +2566,8 @@ type V1VMCreate struct {
 	AutoRenew *bool `json:"auto_renew,omitempty"`
 
 	// BackupCount Deprecated compatibility field; backup storage is metered separately
-	BackupCount *int `json:"backup_count,omitempty"`
+	BackupCount  *int                   `json:"backup_count,omitempty"`
+	BackupPolicy *VMBackupPolicyRequest `json:"backup_policy,omitempty"`
 
 	// CloudInit Custom cloud-init user-data (YAML)
 	CloudInit *string `json:"cloud_init,omitempty"`
