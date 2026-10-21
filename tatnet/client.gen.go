@@ -459,6 +459,27 @@ func (e V1LBCreateScheme) Valid() bool {
 	}
 }
 
+// Defines values for AccountPreviewFundsParamsProduct.
+const (
+	Apps     AccountPreviewFundsParamsProduct = "apps"
+	Supabase AccountPreviewFundsParamsProduct = "supabase"
+	T1000    AccountPreviewFundsParamsProduct = "t1000"
+)
+
+// Valid indicates whether the value is a known member of the AccountPreviewFundsParamsProduct enum.
+func (e AccountPreviewFundsParamsProduct) Valid() bool {
+	switch e {
+	case Apps:
+		return true
+	case Supabase:
+		return true
+	case T1000:
+		return true
+	default:
+		return false
+	}
+}
+
 // AppJobCreateRequest defines model for AppJobCreateRequest.
 type AppJobCreateRequest struct {
 	// Command Shell-команда в VM из текущего образа аппа
@@ -610,22 +631,17 @@ type DeleteAccepted struct {
 // оплату только после реального пополнения. Вызывающий НЕ пересчитывает —
 // берёт “ok“/“shortfall“ как есть.
 type FundsCheckResponse struct {
-	Available            string  `json:"available"`
-	Balance              string  `json:"balance"`
-	BonusCap             *string `json:"bonus_cap,omitempty"`
-	Credits              string  `json:"credits"`
-	CreditsUnlocked      bool    `json:"credits_unlocked"`
-	Currency             *string `json:"currency,omitempty"`
-	EstimatedBonusCharge *string `json:"estimated_bonus_charge,omitempty"`
-	EstimatedMainCharge  *string `json:"estimated_main_charge,omitempty"`
-	HasRealTopup         bool    `json:"has_real_topup"`
-	NeedsRealTopup       bool    `json:"needs_real_topup"`
-	Ok                   bool    `json:"ok"`
-	RealTopupMin         string  `json:"real_topup_min"`
-	Reason               *string `json:"reason,omitempty"`
-	Required             string  `json:"required"`
-	Shortfall            string  `json:"shortfall"`
-	UsableCredits        *string `json:"usable_credits,omitempty"`
+	Available       string  `json:"available"`
+	Balance         string  `json:"balance"`
+	Credits         string  `json:"credits"`
+	CreditsUnlocked bool    `json:"credits_unlocked"`
+	Currency        *string `json:"currency,omitempty"`
+	HasRealTopup    bool    `json:"has_real_topup"`
+	NeedsRealTopup  bool    `json:"needs_real_topup"`
+	Ok              bool    `json:"ok"`
+	RealTopupMin    string  `json:"real_topup_min"`
+	Required        string  `json:"required"`
+	Shortfall       string  `json:"shortfall"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
@@ -1866,8 +1882,9 @@ type V1Bucket struct {
 	// PublicBaseUrl Anonymous read prefix; null when the bucket is private
 	PublicBaseUrl *string `json:"public_base_url,omitempty"`
 
-	// QuotaBytes Storage cap in bytes; null means the account default
-	QuotaBytes *int   `json:"quota_bytes,omitempty"`
+	// QuotaBytes Storage is unlimited; must be null
+	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	QuotaBytes any    `json:"quota_bytes,omitempty"`
 	Region     string `json:"region"`
 
 	// Status creating | active | deleting
@@ -1883,8 +1900,12 @@ type V1BucketCreate struct {
 	// Name 3-63 lowercase letters, digits, '.' or '-'; starts and ends alphanumeric. Globally unique across the platform
 	Name string `json:"name"`
 
-	// QuotaBytes Storage cap in bytes
-	QuotaBytes *int `json:"quota_bytes,omitempty"`
+	// QuotaBytes Storage is unlimited; must be null
+	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	QuotaBytes any `json:"quota_bytes,omitempty"`
+
+	// Region Storage region; omitted uses the default region
+	Region *string `json:"region,omitempty"`
 
 	// Versioning Keep previous versions of overwritten objects
 	Versioning *bool `json:"versioning,omitempty"`
@@ -1911,7 +1932,10 @@ type V1BucketUsage struct {
 	BytesStored int    `json:"bytes_stored"`
 	Name        string `json:"name"`
 	ObjectCount int    `json:"object_count"`
-	QuotaBytes  *int   `json:"quota_bytes,omitempty"`
+
+	// QuotaBytes Storage is unlimited; must be null
+	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	QuotaBytes any `json:"quota_bytes,omitempty"`
 
 	// SnapshotAt When the platform last measured this bucket; null if never
 	SnapshotAt *string `json:"snapshot_at,omitempty"`
@@ -2465,6 +2489,18 @@ type V1ReservedIpCreate struct {
 	Name    string `json:"name"`
 }
 
+// V1S3Region defines model for V1S3Region.
+type V1S3Region struct {
+	Enabled  bool   `json:"enabled"`
+	Endpoint string `json:"endpoint"`
+	Region   string `json:"region"`
+}
+
+// V1S3Regions defines model for V1S3Regions.
+type V1S3Regions struct {
+	Regions []V1S3Region `json:"regions"`
+}
+
 // V1SshKey defines model for V1SshKey.
 type V1SshKey struct {
 	Id        string `json:"id"`
@@ -2521,7 +2557,7 @@ type V1VMCreate struct {
 	// AutoRenew Automatically renew the paid VM subscription
 	AutoRenew *bool `json:"auto_renew,omitempty"`
 
-	// BackupCount Number of backup slots (0..10)
+	// BackupCount Deprecated compatibility field; backup storage is metered separately
 	BackupCount *int `json:"backup_count,omitempty"`
 
 	// CloudInit Custom cloud-init user-data (YAML)
@@ -2710,6 +2746,24 @@ type V1ZoneCreate struct {
 type V1ZoneUpdate struct {
 	DefaultTtl    *int  `json:"default_ttl,omitempty"`
 	DnssecEnabled *bool `json:"dnssec_enabled,omitempty"`
+}
+
+// VMBackupPolicyRequest defines model for VMBackupPolicyRequest.
+type VMBackupPolicyRequest struct {
+	Enabled       *bool `json:"enabled,omitempty"`
+	HourUtc       *int  `json:"hour_utc,omitempty"`
+	RetentionDays *int  `json:"retention_days,omitempty"`
+}
+
+// VMBackupPolicyResponse defines model for VMBackupPolicyResponse.
+type VMBackupPolicyResponse struct {
+	BillingModel   *string `json:"billing_model,omitempty"`
+	Enabled        *bool   `json:"enabled,omitempty"`
+	HourUtc        *int    `json:"hour_utc,omitempty"`
+	NextRunAt      *string `json:"next_run_at,omitempty"`
+	PricePerGbHour *string `json:"price_per_gb_hour,omitempty"`
+	RetentionDays  *int    `json:"retention_days,omitempty"`
+	StorageBytes   *int    `json:"storage_bytes,omitempty"`
 }
 
 // VMStartRequest Optional renewal confirmation supplied when starting an expired VM.
@@ -2949,7 +3003,8 @@ type AccountPreviewFundsParams struct {
 	Amount struct {
 		union json.RawMessage
 	} `form:"amount" json:"amount"`
-	PeriodType *string `form:"period_type,omitempty" json:"period_type,omitempty"`
+	PeriodType *string                           `form:"period_type,omitempty" json:"period_type,omitempty"`
+	Product    *AccountPreviewFundsParamsProduct `form:"product,omitempty" json:"product,omitempty"`
 }
 
 // AccountPreviewFundsParamsAmount0 defines parameters for AccountPreviewFunds.
@@ -2957,6 +3012,9 @@ type AccountPreviewFundsParamsAmount0 = float32
 
 // AccountPreviewFundsParamsAmount1 defines parameters for AccountPreviewFunds.
 type AccountPreviewFundsParamsAmount1 = string
+
+// AccountPreviewFundsParamsProduct defines parameters for AccountPreviewFunds.
+type AccountPreviewFundsParamsProduct string
 
 // AppsListAppsByAccountParams defines parameters for AppsListAppsByAccount.
 type AppsListAppsByAccountParams struct {
@@ -3093,6 +3151,11 @@ type ObjectStorageListObjectsParams struct {
 
 	// ContinuationToken `next_continuation_token` from the previous page
 	ContinuationToken *string `form:"continuation_token,omitempty" json:"continuation_token,omitempty"`
+}
+
+// ObjectStorageGetConnectionInfoParams defines parameters for ObjectStorageGetConnectionInfo.
+type ObjectStorageGetConnectionInfoParams struct {
+	Region *string `form:"region,omitempty" json:"region,omitempty"`
 }
 
 // PostgresListClustersByAccountParams defines parameters for PostgresListClustersByAccount.
@@ -3539,6 +3602,9 @@ type ValkeyChangeTopologyJSONRequestBody = ChangeValkeyTopologyRequest
 // VmsCreateVmJSONRequestBody defines body for VmsCreateVm for application/json ContentType.
 type VmsCreateVmJSONRequestBody = V1VMCreate
 
+// VmsSetBackupPolicyJSONRequestBody defines body for VmsSetBackupPolicy for application/json ContentType.
+type VmsSetBackupPolicyJSONRequestBody = VMBackupPolicyRequest
+
 // VmsCreateBackupJSONRequestBody defines body for VmsCreateBackup for application/json ContentType.
 type VmsCreateBackupJSONRequestBody = V1BackupCreate
 
@@ -3571,6 +3637,9 @@ type ValkeyChangePlanByIdJSONRequestBody = ChangeValkeyPlanRequest
 
 // ValkeyChangeTopologyByIdJSONRequestBody defines body for ValkeyChangeTopologyById for application/json ContentType.
 type ValkeyChangeTopologyByIdJSONRequestBody = ChangeValkeyTopologyRequest
+
+// VmsSetBackupPolicyByIdJSONRequestBody defines body for VmsSetBackupPolicyById for application/json ContentType.
+type VmsSetBackupPolicyByIdJSONRequestBody = VMBackupPolicyRequest
 
 // VmsCreateBackupByIdJSONRequestBody defines body for VmsCreateBackupById for application/json ContentType.
 type VmsCreateBackupByIdJSONRequestBody = V1BackupCreate
@@ -4773,7 +4842,12 @@ type ClientInterface interface {
 	// What to put in an S3 client's configuration. Pair it with an access key.
 	//
 	// Corresponds with GET /object-storage/connection-info (the `ObjectStorageGetConnectionInfo` operationId).
-	ObjectStorageGetConnectionInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+	ObjectStorageGetConnectionInfo(ctx context.Context, params *ObjectStorageGetConnectionInfoParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// ObjectStorageListRegions List S3 regions
+	//
+	// Corresponds with GET /object-storage/regions (the `ObjectStorageListRegions` operationId).
+	ObjectStorageListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ObjectStorageGetUsage Storage usage per bucket
 	//
@@ -6181,6 +6255,25 @@ type ClientInterface interface {
 	// Corresponds with GET /projects/{project_id}/vms/{vm_id} (the `VmsGetVm` operationId).
 	VmsGetVm(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// VmsGetBackupPolicy Get Backup Policy
+	//
+	// Corresponds with GET /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsGetBackupPolicy` operationId).
+	VmsGetBackupPolicy(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsSetBackupPolicyWithBody Set Backup Policy
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+	VmsSetBackupPolicyWithBody(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsSetBackupPolicy Set Backup Policy
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+	VmsSetBackupPolicy(ctx context.Context, projectId string, vmId string, body VmsSetBackupPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// VmsListBackups List VM backups
 	//
 	// Corresponds with GET /projects/{project_id}/vms/{vm_id}/backups (the `VmsListBackups` operationId).
@@ -6500,6 +6593,25 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /vms/{vm_id} (the `VmsGetVmById` operationId).
 	VmsGetVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsGetBackupPolicyById Get Backup Policy By Id
+	//
+	// Corresponds with GET /vms/{vm_id}/backup-policy (the `VmsGetBackupPolicyById` operationId).
+	VmsGetBackupPolicyById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsSetBackupPolicyByIdWithBody Set Backup Policy By Id
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+	VmsSetBackupPolicyByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsSetBackupPolicyById Set Backup Policy By Id
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+	VmsSetBackupPolicyById(ctx context.Context, vmId string, body VmsSetBackupPolicyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// VmsListBackupsById List VM backups
 	//
@@ -9207,8 +9319,23 @@ func (c *Client) ObjectStoragePresignObject(ctx context.Context, bucketId string
 // What to put in an S3 client's configuration. Pair it with an access key.
 //
 // Corresponds with GET /object-storage/connection-info (the `ObjectStorageGetConnectionInfo` operationId).
-func (c *Client) ObjectStorageGetConnectionInfo(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
-	req, err := NewObjectStorageGetConnectionInfoRequest(c.Server)
+func (c *Client) ObjectStorageGetConnectionInfo(ctx context.Context, params *ObjectStorageGetConnectionInfoParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewObjectStorageGetConnectionInfoRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// ObjectStorageListRegions List S3 regions
+//
+// Corresponds with GET /object-storage/regions (the `ObjectStorageListRegions` operationId).
+func (c *Client) ObjectStorageListRegions(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewObjectStorageListRegionsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -12325,6 +12452,55 @@ func (c *Client) VmsGetVm(ctx context.Context, projectId string, vmId string, re
 	return c.Client.Do(req)
 }
 
+// VmsGetBackupPolicy Get Backup Policy
+//
+// Corresponds with GET /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsGetBackupPolicy` operationId).
+func (c *Client) VmsGetBackupPolicy(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsGetBackupPolicyRequest(c.Server, projectId, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsSetBackupPolicyWithBody Set Backup Policy
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+func (c *Client) VmsSetBackupPolicyWithBody(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsSetBackupPolicyRequestWithBody(c.Server, projectId, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsSetBackupPolicy Set Backup Policy
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+func (c *Client) VmsSetBackupPolicy(ctx context.Context, projectId string, vmId string, body VmsSetBackupPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsSetBackupPolicyRequest(c.Server, projectId, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // VmsListBackups List VM backups
 //
 // Corresponds with GET /projects/{project_id}/vms/{vm_id}/backups (the `VmsListBackups` operationId).
@@ -13065,6 +13241,55 @@ func (c *Client) VmsGetVmById(ctx context.Context, vmId string, reqEditors ...Re
 	return c.Client.Do(req)
 }
 
+// VmsGetBackupPolicyById Get Backup Policy By Id
+//
+// Corresponds with GET /vms/{vm_id}/backup-policy (the `VmsGetBackupPolicyById` operationId).
+func (c *Client) VmsGetBackupPolicyById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsGetBackupPolicyByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsSetBackupPolicyByIdWithBody Set Backup Policy By Id
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+func (c *Client) VmsSetBackupPolicyByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsSetBackupPolicyByIdRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsSetBackupPolicyById Set Backup Policy By Id
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+func (c *Client) VmsSetBackupPolicyById(ctx context.Context, vmId string, body VmsSetBackupPolicyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsSetBackupPolicyByIdRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // VmsListBackupsById List VM backups
 //
 // Corresponds with GET /vms/{vm_id}/backups (the `VmsListBackupsById` operationId).
@@ -13665,6 +13890,18 @@ func NewAccountPreviewFundsRequest(server string, params *AccountPreviewFundsPar
 		if params.PeriodType != nil {
 
 			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "period_type", *params.PeriodType, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Product != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "product", *params.Product, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
 				return nil, err
 			} else {
 				for _, qp := range strings.Split(queryFrag, "&") {
@@ -18646,7 +18883,7 @@ func NewObjectStoragePresignObjectRequestWithBody(server string, bucketId string
 }
 
 // NewObjectStorageGetConnectionInfoRequest constructs an http.Request for the ObjectStorageGetConnectionInfo method
-func NewObjectStorageGetConnectionInfoRequest(server string) (*http.Request, error) {
+func NewObjectStorageGetConnectionInfoRequest(server string, params *ObjectStorageGetConnectionInfoParams) (*http.Request, error) {
 	var err error
 
 	serverURL, err := url.Parse(server)
@@ -18655,6 +18892,60 @@ func NewObjectStorageGetConnectionInfoRequest(server string) (*http.Request, err
 	}
 
 	operationPath := fmt.Sprintf("/object-storage/connection-info")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Region != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "region", *params.Region, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewObjectStorageListRegionsRequest constructs an http.Request for the ObjectStorageListRegions method
+func NewObjectStorageListRegionsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/object-storage/regions")
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -24947,6 +25238,101 @@ func NewVmsGetVmRequest(server string, projectId string, vmId string) (*http.Req
 	return req, nil
 }
 
+// NewVmsGetBackupPolicyRequest constructs an http.Request for the VmsGetBackupPolicy method
+func NewVmsGetBackupPolicyRequest(server string, projectId string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/vms/%s/backup-policy", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsSetBackupPolicyRequest calls the generic VmsSetBackupPolicy builder with application/json body
+func NewVmsSetBackupPolicyRequest(server string, projectId string, vmId string, body VmsSetBackupPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsSetBackupPolicyRequestWithBody(server, projectId, vmId, "application/json", bodyReader)
+}
+
+// NewVmsSetBackupPolicyRequestWithBody constructs an http.Request for the VmsSetBackupPolicy method, with any body, and a specified content type
+func NewVmsSetBackupPolicyRequestWithBody(server string, projectId string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/vms/%s/backup-policy", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewVmsListBackupsRequest constructs an http.Request for the VmsListBackups method
 func NewVmsListBackupsRequest(server string, projectId string, vmId string, params *VmsListBackupsParams) (*http.Request, error) {
 	var err error
@@ -26415,6 +26801,87 @@ func NewVmsGetVmByIdRequest(server string, vmId string) (*http.Request, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewVmsGetBackupPolicyByIdRequest constructs an http.Request for the VmsGetBackupPolicyById method
+func NewVmsGetBackupPolicyByIdRequest(server string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/backup-policy", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsSetBackupPolicyByIdRequest calls the generic VmsSetBackupPolicyById builder with application/json body
+func NewVmsSetBackupPolicyByIdRequest(server string, vmId string, body VmsSetBackupPolicyByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsSetBackupPolicyByIdRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewVmsSetBackupPolicyByIdRequestWithBody constructs an http.Request for the VmsSetBackupPolicyById method, with any body, and a specified content type
+func NewVmsSetBackupPolicyByIdRequestWithBody(server string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/backup-policy", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -28621,7 +29088,14 @@ type ClientWithResponsesInterface interface {
 	// Returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with GET /object-storage/connection-info (the `ObjectStorageGetConnectionInfo` operationId).
-	ObjectStorageGetConnectionInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ObjectStorageGetConnectionInfoResponse, error)
+	ObjectStorageGetConnectionInfoWithResponse(ctx context.Context, params *ObjectStorageGetConnectionInfoParams, reqEditors ...RequestEditorFn) (*ObjectStorageGetConnectionInfoResponse, error)
+
+	// ObjectStorageListRegionsWithResponse List S3 regions
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /object-storage/regions (the `ObjectStorageListRegions` operationId).
+	ObjectStorageListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ObjectStorageListRegionsResponse, error)
 
 	// ObjectStorageGetUsageWithResponse Storage usage per bucket
 	//
@@ -30179,6 +30653,27 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /projects/{project_id}/vms/{vm_id} (the `VmsGetVm` operationId).
 	VmsGetVmWithResponse(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmResponse, error)
 
+	// VmsGetBackupPolicyWithResponse Get Backup Policy
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsGetBackupPolicy` operationId).
+	VmsGetBackupPolicyWithResponse(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*VmsGetBackupPolicyResponse, error)
+
+	// VmsSetBackupPolicyWithBodyWithResponse Set Backup Policy
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+	VmsSetBackupPolicyWithBodyWithResponse(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyResponse, error)
+
+	// VmsSetBackupPolicyWithResponse Set Backup Policy
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+	VmsSetBackupPolicyWithResponse(ctx context.Context, projectId string, vmId string, body VmsSetBackupPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyResponse, error)
+
 	// VmsListBackupsWithResponse List VM backups
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -30538,6 +31033,27 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /vms/{vm_id} (the `VmsGetVmById` operationId).
 	VmsGetVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmByIdResponse, error)
+
+	// VmsGetBackupPolicyByIdWithResponse Get Backup Policy By Id
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /vms/{vm_id}/backup-policy (the `VmsGetBackupPolicyById` operationId).
+	VmsGetBackupPolicyByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetBackupPolicyByIdResponse, error)
+
+	// VmsSetBackupPolicyByIdWithBodyWithResponse Set Backup Policy By Id
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+	VmsSetBackupPolicyByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyByIdResponse, error)
+
+	// VmsSetBackupPolicyByIdWithResponse Set Backup Policy By Id
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+	VmsSetBackupPolicyByIdWithResponse(ctx context.Context, vmId string, body VmsSetBackupPolicyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyByIdResponse, error)
 
 	// VmsListBackupsByIdWithResponse List VM backups
 	//
@@ -35648,11 +36164,18 @@ type ObjectStorageGetConnectionInfoResponse struct {
 	HTTPResponse *http.Response
 	// JSON200 the response for an HTTP 200 `application/json` response
 	JSON200 *V1ConnectionInfo
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
 }
 
 // GetJSON200 returns the response for an HTTP 200 `application/json` response
 func (r ObjectStorageGetConnectionInfoResponse) GetJSON200() *V1ConnectionInfo {
 	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r ObjectStorageGetConnectionInfoResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
 }
 
 // GetBody returns the raw response body bytes
@@ -35678,6 +36201,47 @@ func (r ObjectStorageGetConnectionInfoResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r ObjectStorageGetConnectionInfoResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type ObjectStorageListRegionsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1S3Regions
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r ObjectStorageListRegionsResponse) GetJSON200() *V1S3Regions {
+	return r.JSON200
+}
+
+// GetBody returns the raw response body bytes
+func (r ObjectStorageListRegionsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r ObjectStorageListRegionsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r ObjectStorageListRegionsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r ObjectStorageListRegionsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -41497,6 +42061,102 @@ func (r VmsGetVmResponse) ContentType() string {
 	return ""
 }
 
+type VmsGetBackupPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *VMBackupPolicyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsGetBackupPolicyResponse) GetJSON200() *VMBackupPolicyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsGetBackupPolicyResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsGetBackupPolicyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsGetBackupPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsGetBackupPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsGetBackupPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsSetBackupPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *VMBackupPolicyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsSetBackupPolicyResponse) GetJSON200() *VMBackupPolicyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsSetBackupPolicyResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsSetBackupPolicyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsSetBackupPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsSetBackupPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsSetBackupPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type VmsListBackupsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -42965,6 +43625,102 @@ func (r VmsGetVmByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r VmsGetVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsGetBackupPolicyByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *VMBackupPolicyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsGetBackupPolicyByIdResponse) GetJSON200() *VMBackupPolicyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsGetBackupPolicyByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsGetBackupPolicyByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsGetBackupPolicyByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsGetBackupPolicyByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsGetBackupPolicyByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsSetBackupPolicyByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *VMBackupPolicyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsSetBackupPolicyByIdResponse) GetJSON200() *VMBackupPolicyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsSetBackupPolicyByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsSetBackupPolicyByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsSetBackupPolicyByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsSetBackupPolicyByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsSetBackupPolicyByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -46007,12 +46763,25 @@ func (c *ClientWithResponses) ObjectStoragePresignObjectWithResponse(ctx context
 // Returns a wrapper object for the known response body format(s).
 //
 // Corresponds with GET /object-storage/connection-info (the `ObjectStorageGetConnectionInfo` operationId).
-func (c *ClientWithResponses) ObjectStorageGetConnectionInfoWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ObjectStorageGetConnectionInfoResponse, error) {
-	rsp, err := c.ObjectStorageGetConnectionInfo(ctx, reqEditors...)
+func (c *ClientWithResponses) ObjectStorageGetConnectionInfoWithResponse(ctx context.Context, params *ObjectStorageGetConnectionInfoParams, reqEditors ...RequestEditorFn) (*ObjectStorageGetConnectionInfoResponse, error) {
+	rsp, err := c.ObjectStorageGetConnectionInfo(ctx, params, reqEditors...)
 	if err != nil {
 		return nil, err
 	}
 	return ParseObjectStorageGetConnectionInfoResponse(rsp)
+}
+
+// ObjectStorageListRegionsWithResponse List S3 regions
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /object-storage/regions (the `ObjectStorageListRegions` operationId).
+func (c *ClientWithResponses) ObjectStorageListRegionsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*ObjectStorageListRegionsResponse, error) {
+	rsp, err := c.ObjectStorageListRegions(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseObjectStorageListRegionsResponse(rsp)
 }
 
 // ObjectStorageGetUsageWithResponse Storage usage per bucket
@@ -48591,6 +49360,45 @@ func (c *ClientWithResponses) VmsGetVmWithResponse(ctx context.Context, projectI
 	return ParseVmsGetVmResponse(rsp)
 }
 
+// VmsGetBackupPolicyWithResponse Get Backup Policy
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsGetBackupPolicy` operationId).
+func (c *ClientWithResponses) VmsGetBackupPolicyWithResponse(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*VmsGetBackupPolicyResponse, error) {
+	rsp, err := c.VmsGetBackupPolicy(ctx, projectId, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsGetBackupPolicyResponse(rsp)
+}
+
+// VmsSetBackupPolicyWithBodyWithResponse Set Backup Policy
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+func (c *ClientWithResponses) VmsSetBackupPolicyWithBodyWithResponse(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyResponse, error) {
+	rsp, err := c.VmsSetBackupPolicyWithBody(ctx, projectId, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsSetBackupPolicyResponse(rsp)
+}
+
+// VmsSetBackupPolicyWithResponse Set Backup Policy
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/vms/{vm_id}/backup-policy (the `VmsSetBackupPolicy` operationId).
+func (c *ClientWithResponses) VmsSetBackupPolicyWithResponse(ctx context.Context, projectId string, vmId string, body VmsSetBackupPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyResponse, error) {
+	rsp, err := c.VmsSetBackupPolicy(ctx, projectId, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsSetBackupPolicyResponse(rsp)
+}
+
 // VmsListBackupsWithResponse List VM backups
 //
 // Returns a wrapper object for the known response body format(s).
@@ -49201,6 +50009,45 @@ func (c *ClientWithResponses) VmsGetVmByIdWithResponse(ctx context.Context, vmId
 		return nil, err
 	}
 	return ParseVmsGetVmByIdResponse(rsp)
+}
+
+// VmsGetBackupPolicyByIdWithResponse Get Backup Policy By Id
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /vms/{vm_id}/backup-policy (the `VmsGetBackupPolicyById` operationId).
+func (c *ClientWithResponses) VmsGetBackupPolicyByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetBackupPolicyByIdResponse, error) {
+	rsp, err := c.VmsGetBackupPolicyById(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsGetBackupPolicyByIdResponse(rsp)
+}
+
+// VmsSetBackupPolicyByIdWithBodyWithResponse Set Backup Policy By Id
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+func (c *ClientWithResponses) VmsSetBackupPolicyByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyByIdResponse, error) {
+	rsp, err := c.VmsSetBackupPolicyByIdWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsSetBackupPolicyByIdResponse(rsp)
+}
+
+// VmsSetBackupPolicyByIdWithResponse Set Backup Policy By Id
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /vms/{vm_id}/backup-policy (the `VmsSetBackupPolicyById` operationId).
+func (c *ClientWithResponses) VmsSetBackupPolicyByIdWithResponse(ctx context.Context, vmId string, body VmsSetBackupPolicyByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsSetBackupPolicyByIdResponse, error) {
+	rsp, err := c.VmsSetBackupPolicyById(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsSetBackupPolicyByIdResponse(rsp)
 }
 
 // VmsListBackupsByIdWithResponse List VM backups
@@ -52978,6 +53825,39 @@ func ParseObjectStorageGetConnectionInfoResponse(rsp *http.Response) (*ObjectSto
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest V1ConnectionInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseObjectStorageListRegionsResponse parses an HTTP response from a ObjectStorageListRegionsWithResponse call
+func ParseObjectStorageListRegionsResponse(rsp *http.Response) (*ObjectStorageListRegionsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &ObjectStorageListRegionsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1S3Regions
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
@@ -56986,6 +57866,72 @@ func ParseVmsGetVmResponse(rsp *http.Response) (*VmsGetVmResponse, error) {
 	return response, nil
 }
 
+// ParseVmsGetBackupPolicyResponse parses an HTTP response from a VmsGetBackupPolicyWithResponse call
+func ParseVmsGetBackupPolicyResponse(rsp *http.Response) (*VmsGetBackupPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsGetBackupPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VMBackupPolicyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsSetBackupPolicyResponse parses an HTTP response from a VmsSetBackupPolicyWithResponse call
+func ParseVmsSetBackupPolicyResponse(rsp *http.Response) (*VmsSetBackupPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsSetBackupPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VMBackupPolicyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseVmsListBackupsResponse parses an HTTP response from a VmsListBackupsWithResponse call
 func ParseVmsListBackupsResponse(rsp *http.Response) (*VmsListBackupsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -57981,6 +58927,72 @@ func ParseVmsGetVmByIdResponse(rsp *http.Response) (*VmsGetVmByIdResponse, error
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest V1VM
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsGetBackupPolicyByIdResponse parses an HTTP response from a VmsGetBackupPolicyByIdWithResponse call
+func ParseVmsGetBackupPolicyByIdResponse(rsp *http.Response) (*VmsGetBackupPolicyByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsGetBackupPolicyByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VMBackupPolicyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsSetBackupPolicyByIdResponse parses an HTTP response from a VmsSetBackupPolicyByIdWithResponse call
+func ParseVmsSetBackupPolicyByIdResponse(rsp *http.Response) (*VmsSetBackupPolicyByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsSetBackupPolicyByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VMBackupPolicyResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
