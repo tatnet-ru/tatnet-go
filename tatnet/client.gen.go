@@ -2563,10 +2563,7 @@ type V1VM struct {
 // V1VMCreate defines model for V1VMCreate.
 type V1VMCreate struct {
 	// AutoRenew Automatically renew the paid VM subscription
-	AutoRenew *bool `json:"auto_renew,omitempty"`
-
-	// BackupCount Deprecated compatibility field; backup storage is metered separately
-	BackupCount  *int                   `json:"backup_count,omitempty"`
+	AutoRenew    *bool                  `json:"auto_renew,omitempty"`
 	BackupPolicy *VMBackupPolicyRequest `json:"backup_policy,omitempty"`
 
 	// CloudInit Custom cloud-init user-data (YAML)
@@ -2581,7 +2578,7 @@ type V1VMCreate struct {
 	// DiskSizeGb Custom disk size in GB (within plan limits)
 	DiskSizeGb *int `json:"disk_size_gb,omitempty"`
 
-	// Ephemeral Ephemeral VM: no prepaid period or subscription. Billed per second of lifetime — from creation to the deletion request — at the plan's hourly rate (plus extra disk and public IP) through an hourly usage meter. Meant for short-lived machines (CI runners, batch jobs). Mutually exclusive with period_months/period_days and backup_count; cannot be resized; insufficient funds → 402 and no capacity → 503 immediately instead of a queued VM.
+	// Ephemeral Ephemeral VM: no prepaid period or subscription. Billed per second of lifetime — from creation to the deletion request — at the plan's hourly rate (plus extra disk and public IP) through an hourly usage meter. Meant for short-lived machines (CI runners, batch jobs). Mutually exclusive with period_months/period_days; cannot be resized; insufficient funds → 402 and no capacity → 503 immediately instead of a queued VM.
 	Ephemeral *bool `json:"ephemeral,omitempty"`
 
 	// Hostname VM hostname (lowercase letters, digits, hyphens)
