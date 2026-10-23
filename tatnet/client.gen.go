@@ -233,19 +233,19 @@ func (e LBRedirectSpecStatusCode) Valid() bool {
 
 // Defines values for LBRuleActionType.
 const (
-	FixedResponse LBRuleActionType = "fixed_response"
-	Forward       LBRuleActionType = "forward"
-	Redirect      LBRuleActionType = "redirect"
+	LBRuleActionTypeFixedResponse LBRuleActionType = "fixed_response"
+	LBRuleActionTypeForward       LBRuleActionType = "forward"
+	LBRuleActionTypeRedirect      LBRuleActionType = "redirect"
 )
 
 // Valid indicates whether the value is a known member of the LBRuleActionType enum.
 func (e LBRuleActionType) Valid() bool {
 	switch e {
-	case FixedResponse:
+	case LBRuleActionTypeFixedResponse:
 		return true
-	case Forward:
+	case LBRuleActionTypeForward:
 		return true
-	case Redirect:
+	case LBRuleActionTypeRedirect:
 		return true
 	default:
 		return false
@@ -441,6 +441,45 @@ func (e LoadBalancerResponseScheme) Valid() bool {
 	}
 }
 
+// Defines values for TechnicalDomainPolicyResponseMode.
+const (
+	TechnicalDomainPolicyResponseModeRedirect TechnicalDomainPolicyResponseMode = "redirect"
+	TechnicalDomainPolicyResponseModeServe    TechnicalDomainPolicyResponseMode = "serve"
+)
+
+// Valid indicates whether the value is a known member of the TechnicalDomainPolicyResponseMode enum.
+func (e TechnicalDomainPolicyResponseMode) Valid() bool {
+	switch e {
+	case TechnicalDomainPolicyResponseModeRedirect:
+		return true
+	case TechnicalDomainPolicyResponseModeServe:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for TechnicalDomainPolicyUpdateMode.
+const (
+	TechnicalDomainPolicyUpdateModeNoindex  TechnicalDomainPolicyUpdateMode = "noindex"
+	TechnicalDomainPolicyUpdateModeRedirect TechnicalDomainPolicyUpdateMode = "redirect"
+	TechnicalDomainPolicyUpdateModeServe    TechnicalDomainPolicyUpdateMode = "serve"
+)
+
+// Valid indicates whether the value is a known member of the TechnicalDomainPolicyUpdateMode enum.
+func (e TechnicalDomainPolicyUpdateMode) Valid() bool {
+	switch e {
+	case TechnicalDomainPolicyUpdateModeNoindex:
+		return true
+	case TechnicalDomainPolicyUpdateModeRedirect:
+		return true
+	case TechnicalDomainPolicyUpdateModeServe:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for V1LBCreateScheme.
 const (
 	V1LBCreateSchemeInternal       V1LBCreateScheme = "internal"
@@ -537,6 +576,18 @@ type AppJobUpdateRequest struct {
 	TimeoutSeconds *int    `json:"timeout_seconds,omitempty"`
 }
 
+// AttachInterfaceResponse defines model for AttachInterfaceResponse.
+type AttachInterfaceResponse struct {
+	InterfaceId string `json:"interface_id"`
+	Status      string `json:"status"`
+}
+
+// AttachVPCInterfaceRequest defines model for AttachVPCInterfaceRequest.
+type AttachVPCInterfaceRequest struct {
+	// VpcId VPC UUID in the VM's account and region
+	VpcId string `json:"vpc_id"`
+}
+
 // ChangePgPlanRequest Смена тарифа: только вверх (память, vCPU и диск не меньше текущих).
 // Узлы перезагружаются по одному — у одиночного кластера это простой на
 // время перезагрузки VM.
@@ -631,22 +682,17 @@ type DeleteAccepted struct {
 // оплату только после реального пополнения. Вызывающий НЕ пересчитывает —
 // берёт “ok“/“shortfall“ как есть.
 type FundsCheckResponse struct {
-	Available            string  `json:"available"`
-	Balance              string  `json:"balance"`
-	BonusCap             *string `json:"bonus_cap,omitempty"`
-	Credits              string  `json:"credits"`
-	CreditsUnlocked      bool    `json:"credits_unlocked"`
-	Currency             *string `json:"currency,omitempty"`
-	EstimatedBonusCharge *string `json:"estimated_bonus_charge,omitempty"`
-	EstimatedMainCharge  *string `json:"estimated_main_charge,omitempty"`
-	HasRealTopup         bool    `json:"has_real_topup"`
-	NeedsRealTopup       bool    `json:"needs_real_topup"`
-	Ok                   bool    `json:"ok"`
-	RealTopupMin         string  `json:"real_topup_min"`
-	Reason               *string `json:"reason,omitempty"`
-	Required             string  `json:"required"`
-	Shortfall            string  `json:"shortfall"`
-	UsableCredits        *string `json:"usable_credits,omitempty"`
+	Available       string  `json:"available"`
+	Balance         string  `json:"balance"`
+	Credits         string  `json:"credits"`
+	CreditsUnlocked bool    `json:"credits_unlocked"`
+	Currency        *string `json:"currency,omitempty"`
+	HasRealTopup    bool    `json:"has_real_topup"`
+	NeedsRealTopup  bool    `json:"needs_real_topup"`
+	Ok              bool    `json:"ok"`
+	RealTopupMin    string  `json:"real_topup_min"`
+	Required        string  `json:"required"`
+	Shortfall       string  `json:"shortfall"`
 }
 
 // HTTPValidationError defines model for HTTPValidationError.
@@ -1635,6 +1681,50 @@ type RenameVPCRequest struct {
 	// Name Display name; network identifiers stay unchanged
 	Name string `json:"name"`
 }
+
+// ReservedTechnicalDomain defines model for ReservedTechnicalDomain.
+type ReservedTechnicalDomain struct {
+	Attached bool   `json:"attached"`
+	Domain   string `json:"domain"`
+}
+
+// RestoreTechnicalDomainRequest defines model for RestoreTechnicalDomainRequest.
+type RestoreTechnicalDomainRequest struct {
+	Domain string `json:"domain"`
+}
+
+// StatusResponse defines model for StatusResponse.
+type StatusResponse struct {
+	Message *string `json:"message,omitempty"`
+	Status  string  `json:"status"`
+}
+
+// TechnicalDomainPolicyResponse defines model for TechnicalDomainPolicyResponse.
+type TechnicalDomainPolicyResponse struct {
+	EligiblePrimaryDomainIds []string                          `json:"eligible_primary_domain_ids"`
+	Mode                     TechnicalDomainPolicyResponseMode `json:"mode"`
+	Noindex                  bool                              `json:"noindex"`
+	PrimaryDomainId          *string                           `json:"primary_domain_id"`
+	RedirectDomain           *string                           `json:"redirect_domain"`
+
+	// Reservations Always empty; detached names are reusable.
+	// Deprecated: this property has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	Reservations            *[]ReservedTechnicalDomain `json:"reservations,omitempty"`
+	UnreadyPrimaryDomainIds *[]string                  `json:"unready_primary_domain_ids,omitempty"`
+}
+
+// TechnicalDomainPolicyResponseMode defines model for TechnicalDomainPolicyResponse.Mode.
+type TechnicalDomainPolicyResponseMode string
+
+// TechnicalDomainPolicyUpdate defines model for TechnicalDomainPolicyUpdate.
+type TechnicalDomainPolicyUpdate struct {
+	// Mode Serve Production or explicitly redirect. noindex is a legacy alias for serve.
+	Mode            TechnicalDomainPolicyUpdateMode `json:"mode"`
+	PrimaryDomainId *openapi_types.UUID             `json:"primary_domain_id,omitempty"`
+}
+
+// TechnicalDomainPolicyUpdateMode Serve Production or explicitly redirect. noindex is a legacy alias for serve.
+type TechnicalDomainPolicyUpdateMode string
 
 // UpdateKafkaAllowlistRequest defines model for UpdateKafkaAllowlistRequest.
 type UpdateKafkaAllowlistRequest struct {
@@ -3491,6 +3581,14 @@ type AppsUpdateAppRouteJSONRequestBody = V1AppUpdate
 // AppsDeployAppJSONRequestBody defines body for AppsDeployApp for application/json ContentType.
 type AppsDeployAppJSONRequestBody = V1DeployRequest
 
+// AppsSetDomainPolicyJSONRequestBody defines body for AppsSetDomainPolicy for application/json ContentType.
+type AppsSetDomainPolicyJSONRequestBody = TechnicalDomainPolicyUpdate
+
+// AppsRestoreTechnicalDomainJSONRequestBody defines body for AppsRestoreTechnicalDomain for application/json ContentType.
+//
+// Deprecated: this type has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+type AppsRestoreTechnicalDomainJSONRequestBody = RestoreTechnicalDomainRequest
+
 // AppsAddDomainJSONRequestBody defines body for AppsAddDomain for application/json ContentType.
 type AppsAddDomainJSONRequestBody = V1DomainCreate
 
@@ -3614,6 +3712,9 @@ type VmsSetBackupPolicyJSONRequestBody = VMBackupPolicyRequest
 // VmsCreateBackupJSONRequestBody defines body for VmsCreateBackup for application/json ContentType.
 type VmsCreateBackupJSONRequestBody = V1BackupCreate
 
+// VmsAttachVpcInterfaceJSONRequestBody defines body for VmsAttachVpcInterface for application/json ContentType.
+type VmsAttachVpcInterfaceJSONRequestBody = AttachVPCInterfaceRequest
+
 // VmsStartVmJSONRequestBody defines body for VmsStartVm for application/json ContentType.
 type VmsStartVmJSONRequestBody = VmsStartVmJSONBody
 
@@ -3649,6 +3750,9 @@ type VmsSetBackupPolicyByIdJSONRequestBody = VMBackupPolicyRequest
 
 // VmsCreateBackupByIdJSONRequestBody defines body for VmsCreateBackupById for application/json ContentType.
 type VmsCreateBackupByIdJSONRequestBody = V1BackupCreate
+
+// VmsAttachVpcInterfaceByIdJSONRequestBody defines body for VmsAttachVpcInterfaceById for application/json ContentType.
+type VmsAttachVpcInterfaceByIdJSONRequestBody = AttachVPCInterfaceRequest
 
 // VmsStartVmByIdJSONRequestBody defines body for VmsStartVmById for application/json ContentType.
 type VmsStartVmByIdJSONRequestBody = VmsStartVmByIdJSONBody
@@ -5188,6 +5292,43 @@ type ClientInterface interface {
 	// Corresponds with POST /projects/{project_id}/apps/{app_id}/deployments (the `AppsCreateDeployment` operationId).
 	AppsCreateDeploymentWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// AppsGetDomainPolicy Get technical domain indexing and redirect policy
+	//
+	// Corresponds with GET /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsGetDomainPolicy` operationId).
+	AppsGetDomainPolicy(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsSetDomainPolicyWithBody Set technical domain indexing and redirect policy
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+	AppsSetDomainPolicyWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsSetDomainPolicy Set technical domain indexing and redirect policy
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+	AppsSetDomainPolicy(ctx context.Context, projectId string, appId string, body AppsSetDomainPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsRestoreTechnicalDomainWithBody Legacy alias for normal domain allocation
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+	//
+	// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	AppsRestoreTechnicalDomainWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsRestoreTechnicalDomain Legacy alias for normal domain allocation
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+	//
+	// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	AppsRestoreTechnicalDomain(ctx context.Context, projectId string, appId string, body AppsRestoreTechnicalDomainJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// AppsListDomains List domains
 	//
 	// Corresponds with GET /projects/{project_id}/apps/{app_id}/domains (the `AppsListDomains` operationId).
@@ -6304,6 +6445,31 @@ type ClientInterface interface {
 	// Corresponds with DELETE /projects/{project_id}/vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackup` operationId).
 	VmsDeleteBackup(ctx context.Context, projectId string, vmId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// VmsAttachVpcInterfaceWithBody Attach Vpc Interface
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+	VmsAttachVpcInterfaceWithBody(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsAttachVpcInterface Attach Vpc Interface
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+	VmsAttachVpcInterface(ctx context.Context, projectId string, vmId string, body VmsAttachVpcInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsDetachVpcInterface Detach Vpc Interface
+	//
+	// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+	//
+	// Corresponds with DELETE /projects/{project_id}/vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterface` operationId).
+	VmsDetachVpcInterface(ctx context.Context, projectId string, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// VmsRestartVm Restart a VM
 	//
 	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/restart (the `VmsRestartVm` operationId).
@@ -6642,6 +6808,31 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
 	VmsDeleteBackupById(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsAttachVpcInterfaceByIdWithBody Attach Vpc Interface By Id
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+	VmsAttachVpcInterfaceByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsAttachVpcInterfaceById Attach Vpc Interface By Id
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+	VmsAttachVpcInterfaceById(ctx context.Context, vmId string, body VmsAttachVpcInterfaceByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsDetachVpcInterfaceById Detach Vpc Interface By Id
+	//
+	// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+	//
+	// Corresponds with DELETE /vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterfaceById` operationId).
+	VmsDetachVpcInterfaceById(ctx context.Context, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// VmsRestartVmById Restart a VM
 	//
@@ -10055,6 +10246,91 @@ func (c *Client) AppsCreateDeploymentWithBody(ctx context.Context, projectId str
 	return c.Client.Do(req)
 }
 
+// AppsGetDomainPolicy Get technical domain indexing and redirect policy
+//
+// Corresponds with GET /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsGetDomainPolicy` operationId).
+func (c *Client) AppsGetDomainPolicy(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsGetDomainPolicyRequest(c.Server, projectId, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsSetDomainPolicyWithBody Set technical domain indexing and redirect policy
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+func (c *Client) AppsSetDomainPolicyWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsSetDomainPolicyRequestWithBody(c.Server, projectId, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsSetDomainPolicy Set technical domain indexing and redirect policy
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+func (c *Client) AppsSetDomainPolicy(ctx context.Context, projectId string, appId string, body AppsSetDomainPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsSetDomainPolicyRequest(c.Server, projectId, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsRestoreTechnicalDomainWithBody Legacy alias for normal domain allocation
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+func (c *Client) AppsRestoreTechnicalDomainWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsRestoreTechnicalDomainRequestWithBody(c.Server, projectId, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsRestoreTechnicalDomain Legacy alias for normal domain allocation
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+func (c *Client) AppsRestoreTechnicalDomain(ctx context.Context, projectId string, appId string, body AppsRestoreTechnicalDomainJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsRestoreTechnicalDomainRequest(c.Server, projectId, appId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // AppsListDomains List domains
 //
 // Corresponds with GET /projects/{project_id}/apps/{app_id}/domains (the `AppsListDomains` operationId).
@@ -12571,6 +12847,61 @@ func (c *Client) VmsDeleteBackup(ctx context.Context, projectId string, vmId str
 	return c.Client.Do(req)
 }
 
+// VmsAttachVpcInterfaceWithBody Attach Vpc Interface
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+func (c *Client) VmsAttachVpcInterfaceWithBody(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsAttachVpcInterfaceRequestWithBody(c.Server, projectId, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsAttachVpcInterface Attach Vpc Interface
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+func (c *Client) VmsAttachVpcInterface(ctx context.Context, projectId string, vmId string, body VmsAttachVpcInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsAttachVpcInterfaceRequest(c.Server, projectId, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsDetachVpcInterface Detach Vpc Interface
+//
+// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+//
+// Corresponds with DELETE /projects/{project_id}/vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterface` operationId).
+func (c *Client) VmsDetachVpcInterface(ctx context.Context, projectId string, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsDetachVpcInterfaceRequest(c.Server, projectId, vmId, interfaceId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // VmsRestartVm Restart a VM
 //
 // Corresponds with POST /projects/{project_id}/vms/{vm_id}/restart (the `VmsRestartVm` operationId).
@@ -13350,6 +13681,61 @@ func (c *Client) VmsCreateBackupById(ctx context.Context, vmId string, body VmsC
 // Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
 func (c *Client) VmsDeleteBackupById(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewVmsDeleteBackupByIdRequest(c.Server, vmId, backupId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsAttachVpcInterfaceByIdWithBody Attach Vpc Interface By Id
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+func (c *Client) VmsAttachVpcInterfaceByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsAttachVpcInterfaceByIdRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsAttachVpcInterfaceById Attach Vpc Interface By Id
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+func (c *Client) VmsAttachVpcInterfaceById(ctx context.Context, vmId string, body VmsAttachVpcInterfaceByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsAttachVpcInterfaceByIdRequest(c.Server, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsDetachVpcInterfaceById Detach Vpc Interface By Id
+//
+// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+//
+// Corresponds with DELETE /vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterfaceById` operationId).
+func (c *Client) VmsDetachVpcInterfaceById(ctx context.Context, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsDetachVpcInterfaceByIdRequest(c.Server, vmId, interfaceId)
 	if err != nil {
 		return nil, err
 	}
@@ -20278,6 +20664,155 @@ func NewAppsCreateDeploymentRequestWithBody(server string, projectId string, app
 	return req, nil
 }
 
+// NewAppsGetDomainPolicyRequest constructs an http.Request for the AppsGetDomainPolicy method
+func NewAppsGetDomainPolicyRequest(server string, projectId string, appId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/domain-policy", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsSetDomainPolicyRequest calls the generic AppsSetDomainPolicy builder with application/json body
+func NewAppsSetDomainPolicyRequest(server string, projectId string, appId string, body AppsSetDomainPolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsSetDomainPolicyRequestWithBody(server, projectId, appId, "application/json", bodyReader)
+}
+
+// NewAppsSetDomainPolicyRequestWithBody constructs an http.Request for the AppsSetDomainPolicy method, with any body, and a specified content type
+func NewAppsSetDomainPolicyRequestWithBody(server string, projectId string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/domain-policy", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewAppsRestoreTechnicalDomainRequest calls the generic AppsRestoreTechnicalDomain builder with application/json body
+func NewAppsRestoreTechnicalDomainRequest(server string, projectId string, appId string, body AppsRestoreTechnicalDomainJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsRestoreTechnicalDomainRequestWithBody(server, projectId, appId, "application/json", bodyReader)
+}
+
+// NewAppsRestoreTechnicalDomainRequestWithBody constructs an http.Request for the AppsRestoreTechnicalDomain method, with any body, and a specified content type
+func NewAppsRestoreTechnicalDomainRequestWithBody(server string, projectId string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/domain-policy/restore", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewAppsListDomainsRequest constructs an http.Request for the AppsListDomains method
 func NewAppsListDomainsRequest(server string, projectId string, appId string, params *AppsListDomainsParams) (*http.Request, error) {
 	var err error
@@ -25521,6 +26056,108 @@ func NewVmsDeleteBackupRequest(server string, projectId string, vmId string, bac
 	return req, nil
 }
 
+// NewVmsAttachVpcInterfaceRequest calls the generic VmsAttachVpcInterface builder with application/json body
+func NewVmsAttachVpcInterfaceRequest(server string, projectId string, vmId string, body VmsAttachVpcInterfaceJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsAttachVpcInterfaceRequestWithBody(server, projectId, vmId, "application/json", bodyReader)
+}
+
+// NewVmsAttachVpcInterfaceRequestWithBody constructs an http.Request for the VmsAttachVpcInterface method, with any body, and a specified content type
+func NewVmsAttachVpcInterfaceRequestWithBody(server string, projectId string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/vms/%s/interfaces", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewVmsDetachVpcInterfaceRequest constructs an http.Request for the VmsDetachVpcInterface method
+func NewVmsDetachVpcInterfaceRequest(server string, projectId string, vmId string, interfaceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "interface_id", interfaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/vms/%s/interfaces/%s", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewVmsRestartVmRequest constructs an http.Request for the VmsRestartVm method
 func NewVmsRestartVmRequest(server string, projectId string, vmId string) (*http.Request, error) {
 	var err error
@@ -27036,6 +27673,94 @@ func NewVmsDeleteBackupByIdRequest(server string, vmId string, backupId string) 
 	}
 
 	operationPath := fmt.Sprintf("/vms/%s/backups/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodDelete, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsAttachVpcInterfaceByIdRequest calls the generic VmsAttachVpcInterfaceById builder with application/json body
+func NewVmsAttachVpcInterfaceByIdRequest(server string, vmId string, body VmsAttachVpcInterfaceByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsAttachVpcInterfaceByIdRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewVmsAttachVpcInterfaceByIdRequestWithBody constructs an http.Request for the VmsAttachVpcInterfaceById method, with any body, and a specified content type
+func NewVmsAttachVpcInterfaceByIdRequestWithBody(server string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/interfaces", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewVmsDetachVpcInterfaceByIdRequest constructs an http.Request for the VmsDetachVpcInterfaceById method
+func NewVmsDetachVpcInterfaceByIdRequest(server string, vmId string, interfaceId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "interface_id", interfaceId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/interfaces/%s", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -29476,6 +30201,45 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /projects/{project_id}/apps/{app_id}/deployments (the `AppsCreateDeployment` operationId).
 	AppsCreateDeploymentWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsCreateDeploymentResponse, error)
 
+	// AppsGetDomainPolicyWithResponse Get technical domain indexing and redirect policy
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsGetDomainPolicy` operationId).
+	AppsGetDomainPolicyWithResponse(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*AppsGetDomainPolicyResponse, error)
+
+	// AppsSetDomainPolicyWithBodyWithResponse Set technical domain indexing and redirect policy
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+	AppsSetDomainPolicyWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsSetDomainPolicyResponse, error)
+
+	// AppsSetDomainPolicyWithResponse Set technical domain indexing and redirect policy
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+	AppsSetDomainPolicyWithResponse(ctx context.Context, projectId string, appId string, body AppsSetDomainPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsSetDomainPolicyResponse, error)
+
+	// AppsRestoreTechnicalDomainWithBodyWithResponse Legacy alias for normal domain allocation
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+	//
+	// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	AppsRestoreTechnicalDomainWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsRestoreTechnicalDomainResponse, error)
+
+	// AppsRestoreTechnicalDomainWithResponse Legacy alias for normal domain allocation
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+	//
+	// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+	AppsRestoreTechnicalDomainWithResponse(ctx context.Context, projectId string, appId string, body AppsRestoreTechnicalDomainJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsRestoreTechnicalDomainResponse, error)
+
 	// AppsListDomainsWithResponse List domains
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -30708,6 +31472,33 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with DELETE /projects/{project_id}/vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackup` operationId).
 	VmsDeleteBackupWithResponse(ctx context.Context, projectId string, vmId string, backupId string, reqEditors ...RequestEditorFn) (*VmsDeleteBackupResponse, error)
 
+	// VmsAttachVpcInterfaceWithBodyWithResponse Attach Vpc Interface
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+	VmsAttachVpcInterfaceWithBodyWithResponse(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceResponse, error)
+
+	// VmsAttachVpcInterfaceWithResponse Attach Vpc Interface
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+	VmsAttachVpcInterfaceWithResponse(ctx context.Context, projectId string, vmId string, body VmsAttachVpcInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceResponse, error)
+
+	// VmsDetachVpcInterfaceWithResponse Detach Vpc Interface
+	//
+	// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /projects/{project_id}/vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterface` operationId).
+	VmsDetachVpcInterfaceWithResponse(ctx context.Context, projectId string, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*VmsDetachVpcInterfaceResponse, error)
+
 	// VmsRestartVmWithResponse Restart a VM
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -31088,6 +31879,33 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with DELETE /vms/{vm_id}/backups/{backup_id} (the `VmsDeleteBackupById` operationId).
 	VmsDeleteBackupByIdWithResponse(ctx context.Context, vmId string, backupId string, reqEditors ...RequestEditorFn) (*VmsDeleteBackupByIdResponse, error)
+
+	// VmsAttachVpcInterfaceByIdWithBodyWithResponse Attach Vpc Interface By Id
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+	VmsAttachVpcInterfaceByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceByIdResponse, error)
+
+	// VmsAttachVpcInterfaceByIdWithResponse Attach Vpc Interface By Id
+	//
+	// Attach a separate VPC NIC to a stopped VM in the same account and region.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+	VmsAttachVpcInterfaceByIdWithResponse(ctx context.Context, vmId string, body VmsAttachVpcInterfaceByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceByIdResponse, error)
+
+	// VmsDetachVpcInterfaceByIdWithResponse Detach Vpc Interface By Id
+	//
+	// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with DELETE /vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterfaceById` operationId).
+	VmsDetachVpcInterfaceByIdWithResponse(ctx context.Context, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*VmsDetachVpcInterfaceByIdResponse, error)
 
 	// VmsRestartVmByIdWithResponse Restart a VM
 	//
@@ -37618,6 +38436,150 @@ func (r AppsCreateDeploymentResponse) ContentType() string {
 	return ""
 }
 
+type AppsGetDomainPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TechnicalDomainPolicyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsGetDomainPolicyResponse) GetJSON200() *TechnicalDomainPolicyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsGetDomainPolicyResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsGetDomainPolicyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsGetDomainPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsGetDomainPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsGetDomainPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsSetDomainPolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *TechnicalDomainPolicyResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsSetDomainPolicyResponse) GetJSON200() *TechnicalDomainPolicyResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsSetDomainPolicyResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsSetDomainPolicyResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsSetDomainPolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsSetDomainPolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsSetDomainPolicyResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsRestoreTechnicalDomainResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1AppDomain
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsRestoreTechnicalDomainResponse) GetJSON200() *V1AppDomain {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsRestoreTechnicalDomainResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsRestoreTechnicalDomainResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsRestoreTechnicalDomainResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsRestoreTechnicalDomainResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsRestoreTechnicalDomainResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type AppsListDomainsResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -42307,6 +43269,102 @@ func (r VmsDeleteBackupResponse) ContentType() string {
 	return ""
 }
 
+type VmsAttachVpcInterfaceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AttachInterfaceResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsAttachVpcInterfaceResponse) GetJSON200() *AttachInterfaceResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsAttachVpcInterfaceResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsAttachVpcInterfaceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsAttachVpcInterfaceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsAttachVpcInterfaceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsAttachVpcInterfaceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsDetachVpcInterfaceResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *StatusResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsDetachVpcInterfaceResponse) GetJSON200() *StatusResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsDetachVpcInterfaceResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsDetachVpcInterfaceResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsDetachVpcInterfaceResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsDetachVpcInterfaceResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsDetachVpcInterfaceResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type VmsRestartVmResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -43871,6 +44929,102 @@ func (r VmsDeleteBackupByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r VmsDeleteBackupByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsAttachVpcInterfaceByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AttachInterfaceResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsAttachVpcInterfaceByIdResponse) GetJSON200() *AttachInterfaceResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsAttachVpcInterfaceByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsAttachVpcInterfaceByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsAttachVpcInterfaceByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsAttachVpcInterfaceByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsAttachVpcInterfaceByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsDetachVpcInterfaceByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *StatusResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsDetachVpcInterfaceByIdResponse) GetJSON200() *StatusResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsDetachVpcInterfaceByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsDetachVpcInterfaceByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsDetachVpcInterfaceByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsDetachVpcInterfaceByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsDetachVpcInterfaceByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -47385,6 +48539,74 @@ func (c *ClientWithResponses) AppsCreateDeploymentWithBodyWithResponse(ctx conte
 	return ParseAppsCreateDeploymentResponse(rsp)
 }
 
+// AppsGetDomainPolicyWithResponse Get technical domain indexing and redirect policy
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsGetDomainPolicy` operationId).
+func (c *ClientWithResponses) AppsGetDomainPolicyWithResponse(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*AppsGetDomainPolicyResponse, error) {
+	rsp, err := c.AppsGetDomainPolicy(ctx, projectId, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsGetDomainPolicyResponse(rsp)
+}
+
+// AppsSetDomainPolicyWithBodyWithResponse Set technical domain indexing and redirect policy
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+func (c *ClientWithResponses) AppsSetDomainPolicyWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsSetDomainPolicyResponse, error) {
+	rsp, err := c.AppsSetDomainPolicyWithBody(ctx, projectId, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsSetDomainPolicyResponse(rsp)
+}
+
+// AppsSetDomainPolicyWithResponse Set technical domain indexing and redirect policy
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/apps/{app_id}/domain-policy (the `AppsSetDomainPolicy` operationId).
+func (c *ClientWithResponses) AppsSetDomainPolicyWithResponse(ctx context.Context, projectId string, appId string, body AppsSetDomainPolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsSetDomainPolicyResponse, error) {
+	rsp, err := c.AppsSetDomainPolicy(ctx, projectId, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsSetDomainPolicyResponse(rsp)
+}
+
+// AppsRestoreTechnicalDomainWithBodyWithResponse Legacy alias for normal domain allocation
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+//
+// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+func (c *ClientWithResponses) AppsRestoreTechnicalDomainWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsRestoreTechnicalDomainResponse, error) {
+	rsp, err := c.AppsRestoreTechnicalDomainWithBody(ctx, projectId, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsRestoreTechnicalDomainResponse(rsp)
+}
+
+// AppsRestoreTechnicalDomainWithResponse Legacy alias for normal domain allocation
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/apps/{app_id}/domain-policy/restore (the `AppsRestoreTechnicalDomain` operationId).
+// Deprecated: this operation has been marked as deprecated upstream, but no `x-deprecated-reason` was set
+func (c *ClientWithResponses) AppsRestoreTechnicalDomainWithResponse(ctx context.Context, projectId string, appId string, body AppsRestoreTechnicalDomainJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsRestoreTechnicalDomainResponse, error) {
+	rsp, err := c.AppsRestoreTechnicalDomain(ctx, projectId, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsRestoreTechnicalDomainResponse(rsp)
+}
+
 // AppsListDomainsWithResponse List domains
 //
 // Returns a wrapper object for the known response body format(s).
@@ -49457,6 +50679,51 @@ func (c *ClientWithResponses) VmsDeleteBackupWithResponse(ctx context.Context, p
 	return ParseVmsDeleteBackupResponse(rsp)
 }
 
+// VmsAttachVpcInterfaceWithBodyWithResponse Attach Vpc Interface
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+func (c *ClientWithResponses) VmsAttachVpcInterfaceWithBodyWithResponse(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceResponse, error) {
+	rsp, err := c.VmsAttachVpcInterfaceWithBody(ctx, projectId, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsAttachVpcInterfaceResponse(rsp)
+}
+
+// VmsAttachVpcInterfaceWithResponse Attach Vpc Interface
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/vms/{vm_id}/interfaces (the `VmsAttachVpcInterface` operationId).
+func (c *ClientWithResponses) VmsAttachVpcInterfaceWithResponse(ctx context.Context, projectId string, vmId string, body VmsAttachVpcInterfaceJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceResponse, error) {
+	rsp, err := c.VmsAttachVpcInterface(ctx, projectId, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsAttachVpcInterfaceResponse(rsp)
+}
+
+// VmsDetachVpcInterfaceWithResponse Detach Vpc Interface
+//
+// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /projects/{project_id}/vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterface` operationId).
+func (c *ClientWithResponses) VmsDetachVpcInterfaceWithResponse(ctx context.Context, projectId string, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*VmsDetachVpcInterfaceResponse, error) {
+	rsp, err := c.VmsDetachVpcInterface(ctx, projectId, vmId, interfaceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsDetachVpcInterfaceResponse(rsp)
+}
+
 // VmsRestartVmWithResponse Restart a VM
 //
 // Returns a wrapper object for the known response body format(s).
@@ -50106,6 +51373,51 @@ func (c *ClientWithResponses) VmsDeleteBackupByIdWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseVmsDeleteBackupByIdResponse(rsp)
+}
+
+// VmsAttachVpcInterfaceByIdWithBodyWithResponse Attach Vpc Interface By Id
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+func (c *ClientWithResponses) VmsAttachVpcInterfaceByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceByIdResponse, error) {
+	rsp, err := c.VmsAttachVpcInterfaceByIdWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsAttachVpcInterfaceByIdResponse(rsp)
+}
+
+// VmsAttachVpcInterfaceByIdWithResponse Attach Vpc Interface By Id
+//
+// Attach a separate VPC NIC to a stopped VM in the same account and region.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /vms/{vm_id}/interfaces (the `VmsAttachVpcInterfaceById` operationId).
+func (c *ClientWithResponses) VmsAttachVpcInterfaceByIdWithResponse(ctx context.Context, vmId string, body VmsAttachVpcInterfaceByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsAttachVpcInterfaceByIdResponse, error) {
+	rsp, err := c.VmsAttachVpcInterfaceById(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsAttachVpcInterfaceByIdResponse(rsp)
+}
+
+// VmsDetachVpcInterfaceByIdWithResponse Detach Vpc Interface By Id
+//
+// Detach a secondary VPC NIC. The primary route and floating IP are protected.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with DELETE /vms/{vm_id}/interfaces/{interface_id} (the `VmsDetachVpcInterfaceById` operationId).
+func (c *ClientWithResponses) VmsDetachVpcInterfaceByIdWithResponse(ctx context.Context, vmId string, interfaceId string, reqEditors ...RequestEditorFn) (*VmsDetachVpcInterfaceByIdResponse, error) {
+	rsp, err := c.VmsDetachVpcInterfaceById(ctx, vmId, interfaceId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsDetachVpcInterfaceByIdResponse(rsp)
 }
 
 // VmsRestartVmByIdWithResponse Restart a VM
@@ -54806,6 +56118,105 @@ func ParseAppsCreateDeploymentResponse(rsp *http.Response) (*AppsCreateDeploymen
 	return response, nil
 }
 
+// ParseAppsGetDomainPolicyResponse parses an HTTP response from a AppsGetDomainPolicyWithResponse call
+func ParseAppsGetDomainPolicyResponse(rsp *http.Response) (*AppsGetDomainPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsGetDomainPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TechnicalDomainPolicyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsSetDomainPolicyResponse parses an HTTP response from a AppsSetDomainPolicyWithResponse call
+func ParseAppsSetDomainPolicyResponse(rsp *http.Response) (*AppsSetDomainPolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsSetDomainPolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest TechnicalDomainPolicyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsRestoreTechnicalDomainResponse parses an HTTP response from a AppsRestoreTechnicalDomainWithResponse call
+func ParseAppsRestoreTechnicalDomainResponse(rsp *http.Response) (*AppsRestoreTechnicalDomainResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsRestoreTechnicalDomainResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1AppDomain
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseAppsListDomainsResponse parses an HTTP response from a AppsListDomainsWithResponse call
 func ParseAppsListDomainsResponse(rsp *http.Response) (*AppsListDomainsResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -58037,6 +59448,72 @@ func ParseVmsDeleteBackupResponse(rsp *http.Response) (*VmsDeleteBackupResponse,
 	return response, nil
 }
 
+// ParseVmsAttachVpcInterfaceResponse parses an HTTP response from a VmsAttachVpcInterfaceWithResponse call
+func ParseVmsAttachVpcInterfaceResponse(rsp *http.Response) (*VmsAttachVpcInterfaceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsAttachVpcInterfaceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AttachInterfaceResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsDetachVpcInterfaceResponse parses an HTTP response from a VmsDetachVpcInterfaceWithResponse call
+func ParseVmsDetachVpcInterfaceResponse(rsp *http.Response) (*VmsDetachVpcInterfaceResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsDetachVpcInterfaceResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StatusResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseVmsRestartVmResponse parses an HTTP response from a VmsRestartVmWithResponse call
 func ParseVmsRestartVmResponse(rsp *http.Response) (*VmsRestartVmResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -59102,6 +60579,72 @@ func ParseVmsDeleteBackupByIdResponse(rsp *http.Response) (*VmsDeleteBackupByIdR
 			return nil, err
 		}
 		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsAttachVpcInterfaceByIdResponse parses an HTTP response from a VmsAttachVpcInterfaceByIdWithResponse call
+func ParseVmsAttachVpcInterfaceByIdResponse(rsp *http.Response) (*VmsAttachVpcInterfaceByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsAttachVpcInterfaceByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AttachInterfaceResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsDetachVpcInterfaceByIdResponse parses an HTTP response from a VmsDetachVpcInterfaceByIdWithResponse call
+func ParseVmsDetachVpcInterfaceByIdResponse(rsp *http.Response) (*VmsDetachVpcInterfaceByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsDetachVpcInterfaceByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest StatusResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
