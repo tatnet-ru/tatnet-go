@@ -498,6 +498,36 @@ func (e V1LBCreateScheme) Valid() bool {
 	}
 }
 
+// Defines values for V1VMSubscriptionUpdatePeriodType.
+const (
+	N12m V1VMSubscriptionUpdatePeriodType = "12m"
+	N1d  V1VMSubscriptionUpdatePeriodType = "1d"
+	N1h  V1VMSubscriptionUpdatePeriodType = "1h"
+	N1m  V1VMSubscriptionUpdatePeriodType = "1m"
+	N3m  V1VMSubscriptionUpdatePeriodType = "3m"
+	N6m  V1VMSubscriptionUpdatePeriodType = "6m"
+)
+
+// Valid indicates whether the value is a known member of the V1VMSubscriptionUpdatePeriodType enum.
+func (e V1VMSubscriptionUpdatePeriodType) Valid() bool {
+	switch e {
+	case N12m:
+		return true
+	case N1d:
+		return true
+	case N1h:
+		return true
+	case N1m:
+		return true
+	case N3m:
+		return true
+	case N6m:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for AccountPreviewFundsParamsProduct.
 const (
 	Apps     AccountPreviewFundsParamsProduct = "apps"
@@ -2692,10 +2722,10 @@ type V1VMCreate struct {
 	// Name VM display name
 	Name string `json:"name"`
 
-	// PeriodDays Payment period in days (e.g. 1)
+	// PeriodDays Daily subscription: only 1 is supported. For a month use period_months=1, not period_days=30.
 	PeriodDays *int `json:"period_days,omitempty"`
 
-	// PeriodMonths Payment period in months (1, 3, 6, 12)
+	// PeriodMonths Calendar payment period in months: 1, 3, 6, or 12. Mutually exclusive with period_days.
 	PeriodMonths *int `json:"period_months,omitempty"`
 
 	// SshKeyIds SSH key UUIDs to inject (0 or more)
@@ -2753,6 +2783,27 @@ type V1VMInterfaceOut struct {
 	// VpcId VPC (logical switch) UUID for VPC-attached interfaces
 	VpcId *string `json:"vpc_id,omitempty"`
 }
+
+// V1VMSubscription defines model for V1VMSubscription.
+type V1VMSubscription struct {
+	AmountPerPeriod string     `json:"amount_per_period"`
+	AutoRenew       bool       `json:"auto_renew"`
+	Currency        string     `json:"currency"`
+	NextChargeAt    *time.Time `json:"next_charge_at,omitempty"`
+	PaidThroughAt   *time.Time `json:"paid_through_at,omitempty"`
+	PeriodType      string     `json:"period_type"`
+	ResourceId      string     `json:"resource_id"`
+	Status          string     `json:"status"`
+}
+
+// V1VMSubscriptionUpdate defines model for V1VMSubscriptionUpdate.
+type V1VMSubscriptionUpdate struct {
+	AutoRenew  *bool                             `json:"auto_renew,omitempty"`
+	PeriodType *V1VMSubscriptionUpdatePeriodType `json:"period_type,omitempty"`
+}
+
+// V1VMSubscriptionUpdatePeriodType defines model for V1VMSubscriptionUpdate.PeriodType.
+type V1VMSubscriptionUpdatePeriodType string
 
 // V1Volume defines model for V1Volume.
 type V1Volume struct {
@@ -3723,6 +3774,9 @@ type VmsAttachVpcInterfaceJSONRequestBody = AttachVPCInterfaceRequest
 // VmsStartVmJSONRequestBody defines body for VmsStartVm for application/json ContentType.
 type VmsStartVmJSONRequestBody = VmsStartVmJSONBody
 
+// VmsPatchVmSubscriptionJSONRequestBody defines body for VmsPatchVmSubscription for application/json ContentType.
+type VmsPatchVmSubscriptionJSONRequestBody = V1VMSubscriptionUpdate
+
 // VolumesCreateVolumeJSONRequestBody defines body for VolumesCreateVolume for application/json ContentType.
 type VolumesCreateVolumeJSONRequestBody = V1VolumeCreate
 
@@ -3761,6 +3815,9 @@ type VmsAttachVpcInterfaceByIdJSONRequestBody = AttachVPCInterfaceRequest
 
 // VmsStartVmByIdJSONRequestBody defines body for VmsStartVmById for application/json ContentType.
 type VmsStartVmByIdJSONRequestBody = VmsStartVmByIdJSONBody
+
+// VmsPatchVmSubscriptionByIdJSONRequestBody defines body for VmsPatchVmSubscriptionById for application/json ContentType.
+type VmsPatchVmSubscriptionByIdJSONRequestBody = V1VMSubscriptionUpdate
 
 // VolumesResizeVolumeByIdJSONRequestBody defines body for VolumesResizeVolumeById for application/json ContentType.
 type VolumesResizeVolumeByIdJSONRequestBody = V1VolumeResize
@@ -6499,6 +6556,37 @@ type ClientInterface interface {
 	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/stop (the `VmsStopVm` operationId).
 	VmsStopVm(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// VmsGetVmSubscription Read a VM subscription
+	//
+	// Corresponds with GET /projects/{project_id}/vms/{vm_id}/subscription (the `VmsGetVmSubscription` operationId).
+	VmsGetVmSubscription(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsPatchVmSubscriptionWithBody Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+	VmsPatchVmSubscriptionWithBody(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsPatchVmSubscription Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+	VmsPatchVmSubscription(ctx context.Context, projectId string, vmId string, body VmsPatchVmSubscriptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// VolumesListVolumes List block volumes in a project
 	//
 	// Corresponds with GET /projects/{project_id}/volumes (the `VolumesListVolumes` operationId).
@@ -6862,6 +6950,37 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
 	VmsStopVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsGetVmSubscriptionById Read a VM subscription
+	//
+	// Corresponds with GET /vms/{vm_id}/subscription (the `VmsGetVmSubscriptionById` operationId).
+	VmsGetVmSubscriptionById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsPatchVmSubscriptionByIdWithBody Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+	VmsPatchVmSubscriptionByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsPatchVmSubscriptionById Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+	VmsPatchVmSubscriptionById(ctx context.Context, vmId string, body VmsPatchVmSubscriptionByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// VolumesListVolumesByAccount List block volumes in a project
 	//
@@ -12971,6 +13090,67 @@ func (c *Client) VmsStopVm(ctx context.Context, projectId string, vmId string, r
 	return c.Client.Do(req)
 }
 
+// VmsGetVmSubscription Read a VM subscription
+//
+// Corresponds with GET /projects/{project_id}/vms/{vm_id}/subscription (the `VmsGetVmSubscription` operationId).
+func (c *Client) VmsGetVmSubscription(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsGetVmSubscriptionRequest(c.Server, projectId, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsPatchVmSubscriptionWithBody Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+func (c *Client) VmsPatchVmSubscriptionWithBody(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsPatchVmSubscriptionRequestWithBody(c.Server, projectId, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsPatchVmSubscription Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+func (c *Client) VmsPatchVmSubscription(ctx context.Context, projectId string, vmId string, body VmsPatchVmSubscriptionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsPatchVmSubscriptionRequest(c.Server, projectId, vmId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // VolumesListVolumes List block volumes in a project
 //
 // Corresponds with GET /projects/{project_id}/volumes (the `VolumesListVolumes` operationId).
@@ -13805,6 +13985,67 @@ func (c *Client) VmsStartVmById(ctx context.Context, vmId string, body VmsStartV
 // Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
 func (c *Client) VmsStopVmById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewVmsStopVmByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsGetVmSubscriptionById Read a VM subscription
+//
+// Corresponds with GET /vms/{vm_id}/subscription (the `VmsGetVmSubscriptionById` operationId).
+func (c *Client) VmsGetVmSubscriptionById(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsGetVmSubscriptionByIdRequest(c.Server, vmId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsPatchVmSubscriptionByIdWithBody Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+func (c *Client) VmsPatchVmSubscriptionByIdWithBody(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsPatchVmSubscriptionByIdRequestWithBody(c.Server, vmId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsPatchVmSubscriptionById Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+func (c *Client) VmsPatchVmSubscriptionById(ctx context.Context, vmId string, body VmsPatchVmSubscriptionByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsPatchVmSubscriptionByIdRequest(c.Server, vmId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -26299,6 +26540,101 @@ func NewVmsStopVmRequest(server string, projectId string, vmId string) (*http.Re
 	return req, nil
 }
 
+// NewVmsGetVmSubscriptionRequest constructs an http.Request for the VmsGetVmSubscription method
+func NewVmsGetVmSubscriptionRequest(server string, projectId string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/vms/%s/subscription", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsPatchVmSubscriptionRequest calls the generic VmsPatchVmSubscription builder with application/json body
+func NewVmsPatchVmSubscriptionRequest(server string, projectId string, vmId string, body VmsPatchVmSubscriptionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsPatchVmSubscriptionRequestWithBody(server, projectId, vmId, "application/json", bodyReader)
+}
+
+// NewVmsPatchVmSubscriptionRequestWithBody constructs an http.Request for the VmsPatchVmSubscription method, with any body, and a specified content type
+func NewVmsPatchVmSubscriptionRequestWithBody(server string, projectId string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/vms/%s/subscription", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewVolumesListVolumesRequest constructs an http.Request for the VolumesListVolumes method
 func NewVolumesListVolumesRequest(server string, projectId string, params *VolumesListVolumesParams) (*http.Request, error) {
 	var err error
@@ -27894,6 +28230,87 @@ func NewVmsStopVmByIdRequest(server string, vmId string) (*http.Request, error) 
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewVmsGetVmSubscriptionByIdRequest constructs an http.Request for the VmsGetVmSubscriptionById method
+func NewVmsGetVmSubscriptionByIdRequest(server string, vmId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/subscription", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewVmsPatchVmSubscriptionByIdRequest calls the generic VmsPatchVmSubscriptionById builder with application/json body
+func NewVmsPatchVmSubscriptionByIdRequest(server string, vmId string, body VmsPatchVmSubscriptionByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewVmsPatchVmSubscriptionByIdRequestWithBody(server, vmId, "application/json", bodyReader)
+}
+
+// NewVmsPatchVmSubscriptionByIdRequestWithBody constructs an http.Request for the VmsPatchVmSubscriptionById method, with any body, and a specified content type
+func NewVmsPatchVmSubscriptionByIdRequestWithBody(server string, vmId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "vm_id", vmId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/%s/subscription", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPatch, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -31532,6 +31949,39 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /projects/{project_id}/vms/{vm_id}/stop (the `VmsStopVm` operationId).
 	VmsStopVmWithResponse(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*VmsStopVmResponse, error)
 
+	// VmsGetVmSubscriptionWithResponse Read a VM subscription
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/vms/{vm_id}/subscription (the `VmsGetVmSubscription` operationId).
+	VmsGetVmSubscriptionWithResponse(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmSubscriptionResponse, error)
+
+	// VmsPatchVmSubscriptionWithBodyWithResponse Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+	VmsPatchVmSubscriptionWithBodyWithResponse(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionResponse, error)
+
+	// VmsPatchVmSubscriptionWithResponse Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+	VmsPatchVmSubscriptionWithResponse(ctx context.Context, projectId string, vmId string, body VmsPatchVmSubscriptionJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionResponse, error)
+
 	// VolumesListVolumesWithResponse List block volumes in a project
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -31939,6 +32389,39 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /vms/{vm_id}/stop (the `VmsStopVmById` operationId).
 	VmsStopVmByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsStopVmByIdResponse, error)
+
+	// VmsGetVmSubscriptionByIdWithResponse Read a VM subscription
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /vms/{vm_id}/subscription (the `VmsGetVmSubscriptionById` operationId).
+	VmsGetVmSubscriptionByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmSubscriptionByIdResponse, error)
+
+	// VmsPatchVmSubscriptionByIdWithBodyWithResponse Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+	VmsPatchVmSubscriptionByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionByIdResponse, error)
+
+	// VmsPatchVmSubscriptionByIdWithResponse Update a VM subscription without replacing or restarting the VM
+	//
+	// Set the desired period and/or automatic renewal. Repeating the same
+	// settings is a no-op. A period change refunds unused prepaid time as bonus
+	// credit and charges the server-priced new period. Insufficient funds: 402.
+	// An expired subscription must be renewed before changing its period.
+	// Auto-renewal alone neither charges nor starts a stopped VM.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+	VmsPatchVmSubscriptionByIdWithResponse(ctx context.Context, vmId string, body VmsPatchVmSubscriptionByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionByIdResponse, error)
 
 	// VolumesListVolumesByAccountWithResponse List block volumes in a project
 	//
@@ -43514,6 +43997,102 @@ func (r VmsStopVmResponse) ContentType() string {
 	return ""
 }
 
+type VmsGetVmSubscriptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1VMSubscription
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsGetVmSubscriptionResponse) GetJSON200() *V1VMSubscription {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsGetVmSubscriptionResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsGetVmSubscriptionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsGetVmSubscriptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsGetVmSubscriptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsGetVmSubscriptionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsPatchVmSubscriptionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1VMSubscription
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsPatchVmSubscriptionResponse) GetJSON200() *V1VMSubscription {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsPatchVmSubscriptionResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsPatchVmSubscriptionResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsPatchVmSubscriptionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsPatchVmSubscriptionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsPatchVmSubscriptionResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type VolumesListVolumesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -45174,6 +45753,102 @@ func (r VmsStopVmByIdResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r VmsStopVmByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsGetVmSubscriptionByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1VMSubscription
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsGetVmSubscriptionByIdResponse) GetJSON200() *V1VMSubscription {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsGetVmSubscriptionByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsGetVmSubscriptionByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsGetVmSubscriptionByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsGetVmSubscriptionByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsGetVmSubscriptionByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type VmsPatchVmSubscriptionByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *V1VMSubscription
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsPatchVmSubscriptionByIdResponse) GetJSON200() *V1VMSubscription {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsPatchVmSubscriptionByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsPatchVmSubscriptionByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsPatchVmSubscriptionByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsPatchVmSubscriptionByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsPatchVmSubscriptionByIdResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -50781,6 +51456,57 @@ func (c *ClientWithResponses) VmsStopVmWithResponse(ctx context.Context, project
 	return ParseVmsStopVmResponse(rsp)
 }
 
+// VmsGetVmSubscriptionWithResponse Read a VM subscription
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/vms/{vm_id}/subscription (the `VmsGetVmSubscription` operationId).
+func (c *ClientWithResponses) VmsGetVmSubscriptionWithResponse(ctx context.Context, projectId string, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmSubscriptionResponse, error) {
+	rsp, err := c.VmsGetVmSubscription(ctx, projectId, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsGetVmSubscriptionResponse(rsp)
+}
+
+// VmsPatchVmSubscriptionWithBodyWithResponse Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+func (c *ClientWithResponses) VmsPatchVmSubscriptionWithBodyWithResponse(ctx context.Context, projectId string, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionResponse, error) {
+	rsp, err := c.VmsPatchVmSubscriptionWithBody(ctx, projectId, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsPatchVmSubscriptionResponse(rsp)
+}
+
+// VmsPatchVmSubscriptionWithResponse Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /projects/{project_id}/vms/{vm_id}/subscription (the `VmsPatchVmSubscription` operationId).
+func (c *ClientWithResponses) VmsPatchVmSubscriptionWithResponse(ctx context.Context, projectId string, vmId string, body VmsPatchVmSubscriptionJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionResponse, error) {
+	rsp, err := c.VmsPatchVmSubscription(ctx, projectId, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsPatchVmSubscriptionResponse(rsp)
+}
+
 // VolumesListVolumesWithResponse List block volumes in a project
 //
 // Returns a wrapper object for the known response body format(s).
@@ -51475,6 +52201,57 @@ func (c *ClientWithResponses) VmsStopVmByIdWithResponse(ctx context.Context, vmI
 		return nil, err
 	}
 	return ParseVmsStopVmByIdResponse(rsp)
+}
+
+// VmsGetVmSubscriptionByIdWithResponse Read a VM subscription
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /vms/{vm_id}/subscription (the `VmsGetVmSubscriptionById` operationId).
+func (c *ClientWithResponses) VmsGetVmSubscriptionByIdWithResponse(ctx context.Context, vmId string, reqEditors ...RequestEditorFn) (*VmsGetVmSubscriptionByIdResponse, error) {
+	rsp, err := c.VmsGetVmSubscriptionById(ctx, vmId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsGetVmSubscriptionByIdResponse(rsp)
+}
+
+// VmsPatchVmSubscriptionByIdWithBodyWithResponse Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+func (c *ClientWithResponses) VmsPatchVmSubscriptionByIdWithBodyWithResponse(ctx context.Context, vmId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionByIdResponse, error) {
+	rsp, err := c.VmsPatchVmSubscriptionByIdWithBody(ctx, vmId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsPatchVmSubscriptionByIdResponse(rsp)
+}
+
+// VmsPatchVmSubscriptionByIdWithResponse Update a VM subscription without replacing or restarting the VM
+//
+// Set the desired period and/or automatic renewal. Repeating the same
+// settings is a no-op. A period change refunds unused prepaid time as bonus
+// credit and charges the server-priced new period. Insufficient funds: 402.
+// An expired subscription must be renewed before changing its period.
+// Auto-renewal alone neither charges nor starts a stopped VM.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PATCH /vms/{vm_id}/subscription (the `VmsPatchVmSubscriptionById` operationId).
+func (c *ClientWithResponses) VmsPatchVmSubscriptionByIdWithResponse(ctx context.Context, vmId string, body VmsPatchVmSubscriptionByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*VmsPatchVmSubscriptionByIdResponse, error) {
+	rsp, err := c.VmsPatchVmSubscriptionById(ctx, vmId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsPatchVmSubscriptionByIdResponse(rsp)
 }
 
 // VolumesListVolumesByAccountWithResponse List block volumes in a project
@@ -59618,6 +60395,72 @@ func ParseVmsStopVmResponse(rsp *http.Response) (*VmsStopVmResponse, error) {
 	return response, nil
 }
 
+// ParseVmsGetVmSubscriptionResponse parses an HTTP response from a VmsGetVmSubscriptionWithResponse call
+func ParseVmsGetVmSubscriptionResponse(rsp *http.Response) (*VmsGetVmSubscriptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsGetVmSubscriptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1VMSubscription
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsPatchVmSubscriptionResponse parses an HTTP response from a VmsPatchVmSubscriptionWithResponse call
+func ParseVmsPatchVmSubscriptionResponse(rsp *http.Response) (*VmsPatchVmSubscriptionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsPatchVmSubscriptionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1VMSubscription
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseVolumesListVolumesResponse parses an HTTP response from a VolumesListVolumesWithResponse call
 func ParseVolumesListVolumesResponse(rsp *http.Response) (*VolumesListVolumesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -60745,6 +61588,72 @@ func ParseVmsStopVmByIdResponse(rsp *http.Response) (*VmsStopVmByIdResponse, err
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest V1PowerActionResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsGetVmSubscriptionByIdResponse parses an HTTP response from a VmsGetVmSubscriptionByIdWithResponse call
+func ParseVmsGetVmSubscriptionByIdResponse(rsp *http.Response) (*VmsGetVmSubscriptionByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsGetVmSubscriptionByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1VMSubscription
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsPatchVmSubscriptionByIdResponse parses an HTTP response from a VmsPatchVmSubscriptionByIdWithResponse call
+func ParseVmsPatchVmSubscriptionByIdResponse(rsp *http.Response) (*VmsPatchVmSubscriptionByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsPatchVmSubscriptionByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest V1VMSubscription
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
