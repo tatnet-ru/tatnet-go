@@ -1235,6 +1235,7 @@ type LBTargetsPutRequest struct {
 type LoadBalancerDetailResponse struct {
 	Config           *LBConfigResponse                 `json:"config,omitempty"`
 	CreatedAt        *time.Time                        `json:"created_at,omitempty"`
+	FloatingIpId     *string                           `json:"floating_ip_id,omitempty"`
 	Id               string                            `json:"id"`
 	Mode             *string                           `json:"mode,omitempty"`
 	Name             string                            `json:"name"`
@@ -1256,6 +1257,7 @@ type LoadBalancerDetailResponseScheme string
 // LoadBalancerResponse defines model for LoadBalancerResponse.
 type LoadBalancerResponse struct {
 	CreatedAt        *time.Time                  `json:"created_at,omitempty"`
+	FloatingIpId     *string                     `json:"floating_ip_id,omitempty"`
 	Id               string                      `json:"id"`
 	Mode             *string                     `json:"mode,omitempty"`
 	Name             string                      `json:"name"`
@@ -2249,20 +2251,22 @@ type V1EnvVarCreate struct {
 
 // V1FloatingIP defines model for V1FloatingIP.
 type V1FloatingIP struct {
-	Address         string  `json:"address"`
-	AutoRelease     *bool   `json:"auto_release,omitempty"`
-	ClusterId       string  `json:"cluster_id"`
-	CreatedAt       *string `json:"created_at,omitempty"`
-	Id              string  `json:"id"`
-	InternalAddress *string `json:"internal_address,omitempty"`
-	LastError       *string `json:"last_error,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Status          string  `json:"status"`
-	TargetKind      *string `json:"target_kind,omitempty"`
-	VmId            *string `json:"vm_id,omitempty"`
-	VmInterfaceId   *string `json:"vm_interface_id,omitempty"`
-	VmProjectId     *string `json:"vm_project_id,omitempty"`
-	VpcId           *string `json:"vpc_id,omitempty"`
+	Address               string  `json:"address"`
+	AutoRelease           *bool   `json:"auto_release,omitempty"`
+	ClusterId             string  `json:"cluster_id"`
+	CreatedAt             *string `json:"created_at,omitempty"`
+	Id                    string  `json:"id"`
+	InternalAddress       *string `json:"internal_address,omitempty"`
+	LastError             *string `json:"last_error,omitempty"`
+	LoadBalancerId        *string `json:"load_balancer_id,omitempty"`
+	LoadBalancerProjectId *string `json:"load_balancer_project_id,omitempty"`
+	Name                  *string `json:"name,omitempty"`
+	Status                string  `json:"status"`
+	TargetKind            *string `json:"target_kind,omitempty"`
+	VmId                  *string `json:"vm_id,omitempty"`
+	VmInterfaceId         *string `json:"vm_interface_id,omitempty"`
+	VmProjectId           *string `json:"vm_project_id,omitempty"`
+	VpcId                 *string `json:"vpc_id,omitempty"`
 }
 
 // V1FloatingIPAttach defines model for V1FloatingIPAttach.
@@ -2482,6 +2486,9 @@ type V1Kubeconfig struct {
 // V1LBCreate defines model for V1LBCreate.
 type V1LBCreate struct {
 	Config *LBConfigSpec `json:"config,omitempty"`
+
+	// FloatingIpId Reserved public IP allocation in the same account and region; retained after LB deletion
+	FloatingIpId *string `json:"floating_ip_id,omitempty"`
 
 	// K8sClusterId k8s mode: front this cluster's NodePorts (CCM)
 	K8sClusterId *string `json:"k8s_cluster_id,omitempty"`

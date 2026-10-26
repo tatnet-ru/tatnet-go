@@ -3171,6 +3171,17 @@
             ],
             "title": "Created At"
           },
+          "floating_ip_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Floating Ip Id"
+          },
           "id": {
             "title": "Id",
             "type": "string"
@@ -3280,6 +3291,17 @@
               }
             ],
             "title": "Created At"
+          },
+          "floating_ip_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Floating Ip Id"
           },
           "id": {
             "title": "Id",
@@ -7942,6 +7964,28 @@
             ],
             "title": "Last Error"
           },
+          "load_balancer_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Load Balancer Id"
+          },
+          "load_balancer_project_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Load Balancer Project Id"
+          },
           "name": {
             "anyOf": [
               {
@@ -8868,6 +8912,19 @@
                 "type": "null"
               }
             ]
+          },
+          "floating_ip_id": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Reserved public IP allocation in the same account and region; retained after LB deletion",
+            "title": "Floating Ip Id"
           },
           "k8s_cluster_id": {
             "anyOf": [
