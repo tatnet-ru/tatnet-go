@@ -116,3 +116,13 @@ scripts/generate.sh          перегенерировать клиент из 
 `image_id` может указывать на более новую сборку, ещё не разложенную в регионе.
 Отсутствие RED OS в каталоге означает, что нет доступной сборки; SDK не выдаёт разрешения.
 Проверяйте HTTP status и JSON200: отказ доступа к проекту не является пустым каталогом.
+
+## Реплики PostgreSQL
+
+`PostgresChangeReadReplicasWithResponse` записывает число выделенных
+асинхронных реплик (`ChangePgReadReplicasRequest.ReadReplicaCount`, 0–5).
+`CreatePgClusterRequest.ReadReplicaCount` позволяет создать их вместе с кластером.
+Проверяйте `ReadReplicasPending`, узлы и лаг в `PostgresGetClusterWithResponse`.
+Reader endpoint возвращается как `ReadHost` / `ReadPort` (TCP/5433), независимо
+от HA; primary не используется как fallback. Каждая реплика оплачивается по
+тарифу узла. `VersionCapabilities` описывает возможности выбранного мажора.
