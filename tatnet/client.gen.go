@@ -625,6 +625,11 @@ type ChangePgPlanRequest struct {
 	PlanId string `json:"plan_id"`
 }
 
+// ChangePgReadReplicasRequest defines model for ChangePgReadReplicasRequest.
+type ChangePgReadReplicasRequest struct {
+	ReadReplicaCount int `json:"read_replica_count"`
+}
+
 // ChangePgTopologyRequest Смена топологии: single ↔ ha. Рост — без простоя (реплика и witness
 // добавляются к живому кластеру), сжатие — с переключением лидера, если
 // он сидит на выводимой реплике.
@@ -669,16 +674,17 @@ type CreatePgBackupRequest struct {
 
 // CreatePgClusterRequest defines model for CreatePgClusterRequest.
 type CreatePgClusterRequest struct {
-	ClusterId   *string               `json:"cluster_id,omitempty"`
-	Database    *string               `json:"database,omitempty"`
-	DbUser      *string               `json:"db_user,omitempty"`
-	IpAllowlist *[]string             `json:"ip_allowlist,omitempty"`
-	Name        string                `json:"name"`
-	PgVersion   *string               `json:"pg_version,omitempty"`
-	PlanId      string                `json:"plan_id"`
-	RestoreFrom *PgRestoreFromRequest `json:"restore_from,omitempty"`
-	Topology    *string               `json:"topology,omitempty"`
-	VpcId       *string               `json:"vpc_id,omitempty"`
+	ClusterId        *string               `json:"cluster_id,omitempty"`
+	Database         *string               `json:"database,omitempty"`
+	DbUser           *string               `json:"db_user,omitempty"`
+	IpAllowlist      *[]string             `json:"ip_allowlist,omitempty"`
+	Name             string                `json:"name"`
+	PgVersion        *string               `json:"pg_version,omitempty"`
+	PlanId           string                `json:"plan_id"`
+	ReadReplicaCount *int                  `json:"read_replica_count,omitempty"`
+	RestoreFrom      *PgRestoreFromRequest `json:"restore_from,omitempty"`
+	Topology         *string               `json:"topology,omitempty"`
+	VpcId            *string               `json:"vpc_id,omitempty"`
 }
 
 // CreateValkeyClusterRequest defines model for CreateValkeyClusterRequest.
@@ -1130,10 +1136,12 @@ type LBTargetGroupResponse struct {
 	ManagedBy                  *string             `json:"managed_by,omitempty"`
 	Name                       string              `json:"name"`
 	Port                       *int                `json:"port,omitempty"`
+	PreserveClientIp           *bool               `json:"preserve_client_ip,omitempty"`
 	Protocol                   string              `json:"protocol"`
 	SendProxy                  *string             `json:"send_proxy,omitempty"`
 	ServerTimeoutSeconds       *int                `json:"server_timeout_seconds,omitempty"`
 	SlowStartSeconds           *int                `json:"slow_start_seconds,omitempty"`
+	SourceCidrs                *[]string           `json:"source_cidrs,omitempty"`
 	Stickiness                 *LBStickinessSpec   `json:"stickiness,omitempty"`
 	TargetType                 string              `json:"target_type"`
 	Targets                    *[]LBTargetResponse `json:"targets,omitempty"`
@@ -1147,10 +1155,12 @@ type LBTargetGroupSpec struct {
 	HealthCheck                *LBHealthCheckSpec          `json:"health_check,omitempty"`
 	Name                       string                      `json:"name"`
 	Port                       *int                        `json:"port,omitempty"`
+	PreserveClientIp           *bool                       `json:"preserve_client_ip,omitempty"`
 	Protocol                   LBTargetGroupSpecProtocol   `json:"protocol"`
 	SendProxy                  *LBTargetGroupSpecSendProxy `json:"send_proxy,omitempty"`
 	ServerTimeoutSeconds       *int                        `json:"server_timeout_seconds,omitempty"`
 	SlowStartSeconds           *int                        `json:"slow_start_seconds,omitempty"`
+	SourceCidrs                *[]string                   `json:"source_cidrs,omitempty"`
 	Stickiness                 *LBStickinessSpec           `json:"stickiness,omitempty"`
 	TargetType                 LBTargetGroupSpecTargetType `json:"target_type"`
 	Targets                    *[]LBTargetSpec             `json:"targets,omitempty"`
@@ -1477,105 +1487,114 @@ type PgCaResponse struct {
 // было свойством контракта, а не договорённостью. В обычной карточке поля
 // нет вовсе: пароль лежит в keystore, api его не хранит и прочитать не может.
 type PgClusterCreatedResponse struct {
-	AccessMode            *string               `json:"access_mode,omitempty"`
-	AccountId             string                `json:"account_id"`
-	BackupsEnabled        *bool                 `json:"backups_enabled,omitempty"`
-	CaAvailable           *bool                 `json:"ca_available,omitempty"`
-	CreatedAt             *time.Time            `json:"created_at,omitempty"`
-	Databases             *[]PgDatabaseResponse `json:"databases,omitempty"`
-	EndpointDns           *string               `json:"endpoint_dns,omitempty"`
-	EndpointIp            *string               `json:"endpoint_ip,omitempty"`
-	Host                  *string               `json:"host,omitempty"`
-	Id                    string                `json:"id"`
-	IpAllowlist           *[]string             `json:"ip_allowlist,omitempty"`
-	MonthlyCost           *float32              `json:"monthly_cost,omitempty"`
-	Name                  string                `json:"name"`
-	NodeCount             int                   `json:"node_count"`
-	Nodes                 *[]PgNodeResponse     `json:"nodes,omitempty"`
-	NodesOutdated         *int                  `json:"nodes_outdated,omitempty"`
-	Parameters            *map[string]string    `json:"parameters,omitempty"`
-	ParametersApplied     *bool                 `json:"parameters_applied,omitempty"`
-	PendingRestart        *bool                 `json:"pending_restart,omitempty"`
-	PgVersion             string                `json:"pg_version"`
-	Plan                  *PgPlanResponse       `json:"plan,omitempty"`
-	PlanChangePending     *bool                 `json:"plan_change_pending,omitempty"`
-	Port                  int                   `json:"port"`
-	ProjectId             string                `json:"project_id"`
-	ReadHost              *string               `json:"read_host,omitempty"`
-	RegionClusterId       string                `json:"region_cluster_id"`
-	RegionName            *string               `json:"region_name,omitempty"`
-	ReplacePending        *bool                 `json:"replace_pending,omitempty"`
-	RolePassword          *string               `json:"role_password,omitempty"`
-	Roles                 *[]PgRoleResponse     `json:"roles,omitempty"`
-	Status                string                `json:"status"`
-	StatusDetail          *string               `json:"status_detail,omitempty"`
-	Topology              string                `json:"topology"`
-	TopologyChangePending *bool                 `json:"topology_change_pending,omitempty"`
-	VpcId                 *string               `json:"vpc_id,omitempty"`
-	VpcName               *string               `json:"vpc_name,omitempty"`
-	VpcVip                *string               `json:"vpc_vip,omitempty"`
-	WalArchivedAt         *time.Time            `json:"wal_archived_at,omitempty"`
+	AccessMode            *string                 `json:"access_mode,omitempty"`
+	AccountId             string                  `json:"account_id"`
+	BackupsEnabled        *bool                   `json:"backups_enabled,omitempty"`
+	CaAvailable           *bool                   `json:"ca_available,omitempty"`
+	CreatedAt             *time.Time              `json:"created_at,omitempty"`
+	Databases             *[]PgDatabaseResponse   `json:"databases,omitempty"`
+	EndpointDns           *string                 `json:"endpoint_dns,omitempty"`
+	EndpointIp            *string                 `json:"endpoint_ip,omitempty"`
+	Host                  *string                 `json:"host,omitempty"`
+	Id                    string                  `json:"id"`
+	IpAllowlist           *[]string               `json:"ip_allowlist,omitempty"`
+	MonthlyCost           *float32                `json:"monthly_cost,omitempty"`
+	Name                  string                  `json:"name"`
+	NodeCount             int                     `json:"node_count"`
+	Nodes                 *[]PgNodeResponse       `json:"nodes,omitempty"`
+	NodesOutdated         *int                    `json:"nodes_outdated,omitempty"`
+	Parameters            *map[string]string      `json:"parameters,omitempty"`
+	ParametersApplied     *bool                   `json:"parameters_applied,omitempty"`
+	PendingRestart        *bool                   `json:"pending_restart,omitempty"`
+	PgVersion             string                  `json:"pg_version"`
+	Plan                  *PgPlanResponse         `json:"plan,omitempty"`
+	PlanChangePending     *bool                   `json:"plan_change_pending,omitempty"`
+	Port                  int                     `json:"port"`
+	ProjectId             string                  `json:"project_id"`
+	ReadHost              *string                 `json:"read_host,omitempty"`
+	ReadPort              *int                    `json:"read_port,omitempty"`
+	ReadReplicaCount      *int                    `json:"read_replica_count,omitempty"`
+	ReadReplicasPending   *bool                   `json:"read_replicas_pending,omitempty"`
+	RegionClusterId       string                  `json:"region_cluster_id"`
+	RegionName            *string                 `json:"region_name,omitempty"`
+	ReplacePending        *bool                   `json:"replace_pending,omitempty"`
+	RolePassword          *string                 `json:"role_password,omitempty"`
+	Roles                 *[]PgRoleResponse       `json:"roles,omitempty"`
+	Status                string                  `json:"status"`
+	StatusDetail          *string                 `json:"status_detail,omitempty"`
+	Topology              string                  `json:"topology"`
+	TopologyChangePending *bool                   `json:"topology_change_pending,omitempty"`
+	VersionCapabilities   *map[string]interface{} `json:"version_capabilities,omitempty"`
+	VpcId                 *string                 `json:"vpc_id,omitempty"`
+	VpcName               *string                 `json:"vpc_name,omitempty"`
+	VpcVip                *string                 `json:"vpc_vip,omitempty"`
+	WalArchivedAt         *time.Time              `json:"wal_archived_at,omitempty"`
 }
 
 // PgClusterDetailResponse defines model for PgClusterDetailResponse.
 type PgClusterDetailResponse struct {
-	AccessMode            *string               `json:"access_mode,omitempty"`
-	AccountId             string                `json:"account_id"`
-	BackupsEnabled        *bool                 `json:"backups_enabled,omitempty"`
-	CaAvailable           *bool                 `json:"ca_available,omitempty"`
-	CreatedAt             *time.Time            `json:"created_at,omitempty"`
-	Databases             *[]PgDatabaseResponse `json:"databases,omitempty"`
-	EndpointDns           *string               `json:"endpoint_dns,omitempty"`
-	EndpointIp            *string               `json:"endpoint_ip,omitempty"`
-	Host                  *string               `json:"host,omitempty"`
-	Id                    string                `json:"id"`
-	IpAllowlist           *[]string             `json:"ip_allowlist,omitempty"`
-	MonthlyCost           *float32              `json:"monthly_cost,omitempty"`
-	Name                  string                `json:"name"`
-	NodeCount             int                   `json:"node_count"`
-	Nodes                 *[]PgNodeResponse     `json:"nodes,omitempty"`
-	NodesOutdated         *int                  `json:"nodes_outdated,omitempty"`
-	Parameters            *map[string]string    `json:"parameters,omitempty"`
-	ParametersApplied     *bool                 `json:"parameters_applied,omitempty"`
-	PendingRestart        *bool                 `json:"pending_restart,omitempty"`
-	PgVersion             string                `json:"pg_version"`
-	Plan                  *PgPlanResponse       `json:"plan,omitempty"`
-	PlanChangePending     *bool                 `json:"plan_change_pending,omitempty"`
-	Port                  int                   `json:"port"`
-	ProjectId             string                `json:"project_id"`
-	ReadHost              *string               `json:"read_host,omitempty"`
-	RegionClusterId       string                `json:"region_cluster_id"`
-	RegionName            *string               `json:"region_name,omitempty"`
-	ReplacePending        *bool                 `json:"replace_pending,omitempty"`
-	Roles                 *[]PgRoleResponse     `json:"roles,omitempty"`
-	Status                string                `json:"status"`
-	StatusDetail          *string               `json:"status_detail,omitempty"`
-	Topology              string                `json:"topology"`
-	TopologyChangePending *bool                 `json:"topology_change_pending,omitempty"`
-	VpcId                 *string               `json:"vpc_id,omitempty"`
-	VpcName               *string               `json:"vpc_name,omitempty"`
-	VpcVip                *string               `json:"vpc_vip,omitempty"`
-	WalArchivedAt         *time.Time            `json:"wal_archived_at,omitempty"`
+	AccessMode            *string                 `json:"access_mode,omitempty"`
+	AccountId             string                  `json:"account_id"`
+	BackupsEnabled        *bool                   `json:"backups_enabled,omitempty"`
+	CaAvailable           *bool                   `json:"ca_available,omitempty"`
+	CreatedAt             *time.Time              `json:"created_at,omitempty"`
+	Databases             *[]PgDatabaseResponse   `json:"databases,omitempty"`
+	EndpointDns           *string                 `json:"endpoint_dns,omitempty"`
+	EndpointIp            *string                 `json:"endpoint_ip,omitempty"`
+	Host                  *string                 `json:"host,omitempty"`
+	Id                    string                  `json:"id"`
+	IpAllowlist           *[]string               `json:"ip_allowlist,omitempty"`
+	MonthlyCost           *float32                `json:"monthly_cost,omitempty"`
+	Name                  string                  `json:"name"`
+	NodeCount             int                     `json:"node_count"`
+	Nodes                 *[]PgNodeResponse       `json:"nodes,omitempty"`
+	NodesOutdated         *int                    `json:"nodes_outdated,omitempty"`
+	Parameters            *map[string]string      `json:"parameters,omitempty"`
+	ParametersApplied     *bool                   `json:"parameters_applied,omitempty"`
+	PendingRestart        *bool                   `json:"pending_restart,omitempty"`
+	PgVersion             string                  `json:"pg_version"`
+	Plan                  *PgPlanResponse         `json:"plan,omitempty"`
+	PlanChangePending     *bool                   `json:"plan_change_pending,omitempty"`
+	Port                  int                     `json:"port"`
+	ProjectId             string                  `json:"project_id"`
+	ReadHost              *string                 `json:"read_host,omitempty"`
+	ReadPort              *int                    `json:"read_port,omitempty"`
+	ReadReplicaCount      *int                    `json:"read_replica_count,omitempty"`
+	ReadReplicasPending   *bool                   `json:"read_replicas_pending,omitempty"`
+	RegionClusterId       string                  `json:"region_cluster_id"`
+	RegionName            *string                 `json:"region_name,omitempty"`
+	ReplacePending        *bool                   `json:"replace_pending,omitempty"`
+	Roles                 *[]PgRoleResponse       `json:"roles,omitempty"`
+	Status                string                  `json:"status"`
+	StatusDetail          *string                 `json:"status_detail,omitempty"`
+	Topology              string                  `json:"topology"`
+	TopologyChangePending *bool                   `json:"topology_change_pending,omitempty"`
+	VersionCapabilities   *map[string]interface{} `json:"version_capabilities,omitempty"`
+	VpcId                 *string                 `json:"vpc_id,omitempty"`
+	VpcName               *string                 `json:"vpc_name,omitempty"`
+	VpcVip                *string                 `json:"vpc_vip,omitempty"`
+	WalArchivedAt         *time.Time              `json:"wal_archived_at,omitempty"`
 }
 
 // PgClusterResponse defines model for PgClusterResponse.
 type PgClusterResponse struct {
-	AccountId       string          `json:"account_id"`
-	CreatedAt       *time.Time      `json:"created_at,omitempty"`
-	Host            *string         `json:"host,omitempty"`
-	Id              string          `json:"id"`
-	MonthlyCost     *float32        `json:"monthly_cost,omitempty"`
-	Name            string          `json:"name"`
-	NodeCount       int             `json:"node_count"`
-	PgVersion       string          `json:"pg_version"`
-	Plan            *PgPlanResponse `json:"plan,omitempty"`
-	Port            int             `json:"port"`
-	ProjectId       string          `json:"project_id"`
-	RegionClusterId string          `json:"region_cluster_id"`
-	Status          string          `json:"status"`
-	StatusDetail    *string         `json:"status_detail,omitempty"`
-	Topology        string          `json:"topology"`
-	VpcId           *string         `json:"vpc_id,omitempty"`
+	AccountId        string          `json:"account_id"`
+	CreatedAt        *time.Time      `json:"created_at,omitempty"`
+	Host             *string         `json:"host,omitempty"`
+	Id               string          `json:"id"`
+	MonthlyCost      *float32        `json:"monthly_cost,omitempty"`
+	Name             string          `json:"name"`
+	NodeCount        int             `json:"node_count"`
+	PgVersion        string          `json:"pg_version"`
+	Plan             *PgPlanResponse `json:"plan,omitempty"`
+	Port             int             `json:"port"`
+	ProjectId        string          `json:"project_id"`
+	ReadReplicaCount *int            `json:"read_replica_count,omitempty"`
+	RegionClusterId  string          `json:"region_cluster_id"`
+	Status           string          `json:"status"`
+	StatusDetail     *string         `json:"status_detail,omitempty"`
+	Topology         string          `json:"topology"`
+	VpcId            *string         `json:"vpc_id,omitempty"`
 }
 
 // PgDatabaseResponse defines model for PgDatabaseResponse.
@@ -3625,6 +3644,9 @@ type PostgresUpdateParametersByIdJSONRequestBody = UpdatePgParametersRequest
 // PostgresChangePlanByIdJSONRequestBody defines body for PostgresChangePlanById for application/json ContentType.
 type PostgresChangePlanByIdJSONRequestBody = ChangePgPlanRequest
 
+// PostgresChangeReadReplicasByIdJSONRequestBody defines body for PostgresChangeReadReplicasById for application/json ContentType.
+type PostgresChangeReadReplicasByIdJSONRequestBody = ChangePgReadReplicasRequest
+
 // PostgresChangeTopologyByIdJSONRequestBody defines body for PostgresChangeTopologyById for application/json ContentType.
 type PostgresChangeTopologyByIdJSONRequestBody = ChangePgTopologyRequest
 
@@ -3740,6 +3762,9 @@ type PostgresUpdateParametersJSONRequestBody = UpdatePgParametersRequest
 
 // PostgresChangePlanJSONRequestBody defines body for PostgresChangePlan for application/json ContentType.
 type PostgresChangePlanJSONRequestBody = ChangePgPlanRequest
+
+// PostgresChangeReadReplicasJSONRequestBody defines body for PostgresChangeReadReplicas for application/json ContentType.
+type PostgresChangeReadReplicasJSONRequestBody = ChangePgReadReplicasRequest
 
 // PostgresChangeTopologyJSONRequestBody defines body for PostgresChangeTopology for application/json ContentType.
 type PostgresChangeTopologyJSONRequestBody = ChangePgTopologyRequest
@@ -5180,6 +5205,20 @@ type ClientInterface interface {
 	// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
 	PostgresChangePlanById(ctx context.Context, clusterId string, body PostgresChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PostgresChangeReadReplicasByIdWithBody Set dedicated asynchronous read replicas
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+	PostgresChangeReadReplicasByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangeReadReplicasById Set dedicated asynchronous read replicas
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+	PostgresChangeReadReplicasById(ctx context.Context, clusterId string, body PostgresChangeReadReplicasByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostgresReplaceOutdatedNodesById Replace outdated nodes with the newest image
 	//
 	// Marks every live node whose VM is not on the newest ready image build in
@@ -6201,6 +6240,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/plan (the `PostgresChangePlan` operationId).
 	PostgresChangePlan(ctx context.Context, projectId string, clusterId string, body PostgresChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangeReadReplicasWithBody Set dedicated asynchronous read replicas
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+	PostgresChangeReadReplicasWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostgresChangeReadReplicas Set dedicated asynchronous read replicas
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+	PostgresChangeReadReplicas(ctx context.Context, projectId string, clusterId string, body PostgresChangeReadReplicasJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostgresReplaceOutdatedNodes Replace outdated nodes with the newest image
 	//
@@ -9996,6 +10049,40 @@ func (c *Client) PostgresChangePlanById(ctx context.Context, clusterId string, b
 	return c.Client.Do(req)
 }
 
+// PostgresChangeReadReplicasByIdWithBody Set dedicated asynchronous read replicas
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+func (c *Client) PostgresChangeReadReplicasByIdWithBody(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangeReadReplicasByIdRequestWithBody(c.Server, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangeReadReplicasById Set dedicated asynchronous read replicas
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+func (c *Client) PostgresChangeReadReplicasById(ctx context.Context, clusterId string, body PostgresChangeReadReplicasByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangeReadReplicasByIdRequest(c.Server, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // PostgresReplaceOutdatedNodesById Replace outdated nodes with the newest image
 //
 // Marks every live node whose VM is not on the newest ready image build in
@@ -12316,6 +12403,40 @@ func (c *Client) PostgresChangePlanWithBody(ctx context.Context, projectId strin
 // Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/plan (the `PostgresChangePlan` operationId).
 func (c *Client) PostgresChangePlan(ctx context.Context, projectId string, clusterId string, body PostgresChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostgresChangePlanRequest(c.Server, projectId, clusterId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangeReadReplicasWithBody Set dedicated asynchronous read replicas
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+func (c *Client) PostgresChangeReadReplicasWithBody(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangeReadReplicasRequestWithBody(c.Server, projectId, clusterId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// PostgresChangeReadReplicas Set dedicated asynchronous read replicas
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+func (c *Client) PostgresChangeReadReplicas(ctx context.Context, projectId string, clusterId string, body PostgresChangeReadReplicasJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostgresChangeReadReplicasRequest(c.Server, projectId, clusterId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -20146,6 +20267,53 @@ func NewPostgresChangePlanByIdRequestWithBody(server string, clusterId string, c
 	return req, nil
 }
 
+// NewPostgresChangeReadReplicasByIdRequest calls the generic PostgresChangeReadReplicasById builder with application/json body
+func NewPostgresChangeReadReplicasByIdRequest(server string, clusterId string, body PostgresChangeReadReplicasByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresChangeReadReplicasByIdRequestWithBody(server, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresChangeReadReplicasByIdRequestWithBody constructs an http.Request for the PostgresChangeReadReplicasById method, with any body, and a specified content type
+func NewPostgresChangeReadReplicasByIdRequestWithBody(server string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/pg-clusters/%s/read-replicas", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewPostgresReplaceOutdatedNodesByIdRequest constructs an http.Request for the PostgresReplaceOutdatedNodesById method
 func NewPostgresReplaceOutdatedNodesByIdRequest(server string, clusterId string) (*http.Request, error) {
 	var err error
@@ -25031,6 +25199,60 @@ func NewPostgresChangePlanRequestWithBody(server string, projectId string, clust
 	}
 
 	operationPath := fmt.Sprintf("/projects/%s/pg-clusters/%s/plan", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostgresChangeReadReplicasRequest calls the generic PostgresChangeReadReplicas builder with application/json body
+func NewPostgresChangeReadReplicasRequest(server string, projectId string, clusterId string, body PostgresChangeReadReplicasJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostgresChangeReadReplicasRequestWithBody(server, projectId, clusterId, "application/json", bodyReader)
+}
+
+// NewPostgresChangeReadReplicasRequestWithBody constructs an http.Request for the PostgresChangeReadReplicas method, with any body, and a specified content type
+func NewPostgresChangeReadReplicasRequestWithBody(server string, projectId string, clusterId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/pg-clusters/%s/read-replicas", pathParam0, pathParam1)
 	if operationPath[0] == '/' {
 		operationPath = "." + operationPath
 	}
@@ -30427,6 +30649,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /pg-clusters/{cluster_id}/plan (the `PostgresChangePlanById` operationId).
 	PostgresChangePlanByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangePlanByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangePlanByIdResponse, error)
 
+	// PostgresChangeReadReplicasByIdWithBodyWithResponse Set dedicated asynchronous read replicas
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+	PostgresChangeReadReplicasByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasByIdResponse, error)
+
+	// PostgresChangeReadReplicasByIdWithResponse Set dedicated asynchronous read replicas
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+	PostgresChangeReadReplicasByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangeReadReplicasByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasByIdResponse, error)
+
 	// PostgresReplaceOutdatedNodesByIdWithResponse Replace outdated nodes with the newest image
 	//
 	// Marks every live node whose VM is not on the newest ready image build in
@@ -31556,6 +31792,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/plan (the `PostgresChangePlan` operationId).
 	PostgresChangePlanWithResponse(ctx context.Context, projectId string, clusterId string, body PostgresChangePlanJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangePlanResponse, error)
+
+	// PostgresChangeReadReplicasWithBodyWithResponse Set dedicated asynchronous read replicas
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+	PostgresChangeReadReplicasWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasResponse, error)
+
+	// PostgresChangeReadReplicasWithResponse Set dedicated asynchronous read replicas
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+	PostgresChangeReadReplicasWithResponse(ctx context.Context, projectId string, clusterId string, body PostgresChangeReadReplicasJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasResponse, error)
 
 	// PostgresReplaceOutdatedNodesWithResponse Replace outdated nodes with the newest image
 	//
@@ -38177,6 +38427,54 @@ func (r PostgresChangePlanByIdResponse) ContentType() string {
 	return ""
 }
 
+type PostgresChangeReadReplicasByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresChangeReadReplicasByIdResponse) GetJSON200() *PgClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresChangeReadReplicasByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresChangeReadReplicasByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresChangeReadReplicasByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresChangeReadReplicasByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresChangeReadReplicasByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type PostgresReplaceOutdatedNodesByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -42551,6 +42849,54 @@ func (r PostgresChangePlanResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r PostgresChangePlanResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type PostgresChangeReadReplicasResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PgClusterDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r PostgresChangeReadReplicasResponse) GetJSON200() *PgClusterDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r PostgresChangeReadReplicasResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r PostgresChangeReadReplicasResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r PostgresChangeReadReplicasResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostgresChangeReadReplicasResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r PostgresChangeReadReplicasResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -48903,6 +49249,32 @@ func (c *ClientWithResponses) PostgresChangePlanByIdWithResponse(ctx context.Con
 	return ParsePostgresChangePlanByIdResponse(rsp)
 }
 
+// PostgresChangeReadReplicasByIdWithBodyWithResponse Set dedicated asynchronous read replicas
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+func (c *ClientWithResponses) PostgresChangeReadReplicasByIdWithBodyWithResponse(ctx context.Context, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasByIdResponse, error) {
+	rsp, err := c.PostgresChangeReadReplicasByIdWithBody(ctx, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangeReadReplicasByIdResponse(rsp)
+}
+
+// PostgresChangeReadReplicasByIdWithResponse Set dedicated asynchronous read replicas
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicasById` operationId).
+func (c *ClientWithResponses) PostgresChangeReadReplicasByIdWithResponse(ctx context.Context, clusterId string, body PostgresChangeReadReplicasByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasByIdResponse, error) {
+	rsp, err := c.PostgresChangeReadReplicasById(ctx, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangeReadReplicasByIdResponse(rsp)
+}
+
 // PostgresReplaceOutdatedNodesByIdWithResponse Replace outdated nodes with the newest image
 //
 // Marks every live node whose VM is not on the newest ready image build in
@@ -50816,6 +51188,32 @@ func (c *ClientWithResponses) PostgresChangePlanWithResponse(ctx context.Context
 		return nil, err
 	}
 	return ParsePostgresChangePlanResponse(rsp)
+}
+
+// PostgresChangeReadReplicasWithBodyWithResponse Set dedicated asynchronous read replicas
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+func (c *ClientWithResponses) PostgresChangeReadReplicasWithBodyWithResponse(ctx context.Context, projectId string, clusterId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasResponse, error) {
+	rsp, err := c.PostgresChangeReadReplicasWithBody(ctx, projectId, clusterId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangeReadReplicasResponse(rsp)
+}
+
+// PostgresChangeReadReplicasWithResponse Set dedicated asynchronous read replicas
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/pg-clusters/{cluster_id}/read-replicas (the `PostgresChangeReadReplicas` operationId).
+func (c *ClientWithResponses) PostgresChangeReadReplicasWithResponse(ctx context.Context, projectId string, clusterId string, body PostgresChangeReadReplicasJSONRequestBody, reqEditors ...RequestEditorFn) (*PostgresChangeReadReplicasResponse, error) {
+	rsp, err := c.PostgresChangeReadReplicas(ctx, projectId, clusterId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostgresChangeReadReplicasResponse(rsp)
 }
 
 // PostgresReplaceOutdatedNodesWithResponse Replace outdated nodes with the newest image
@@ -56390,6 +56788,39 @@ func ParsePostgresChangePlanByIdResponse(rsp *http.Response) (*PostgresChangePla
 	return response, nil
 }
 
+// ParsePostgresChangeReadReplicasByIdResponse parses an HTTP response from a PostgresChangeReadReplicasByIdWithResponse call
+func ParsePostgresChangeReadReplicasByIdResponse(rsp *http.Response) (*PostgresChangeReadReplicasByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresChangeReadReplicasByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParsePostgresReplaceOutdatedNodesByIdResponse parses an HTTP response from a PostgresReplaceOutdatedNodesByIdWithResponse call
 func ParsePostgresReplaceOutdatedNodesByIdResponse(rsp *http.Response) (*PostgresReplaceOutdatedNodesByIdResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -59381,6 +59812,39 @@ func ParsePostgresChangePlanResponse(rsp *http.Response) (*PostgresChangePlanRes
 	}
 
 	response := &PostgresChangePlanResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PgClusterDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostgresChangeReadReplicasResponse parses an HTTP response from a PostgresChangeReadReplicasWithResponse call
+func ParsePostgresChangeReadReplicasResponse(rsp *http.Response) (*PostgresChangeReadReplicasResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostgresChangeReadReplicasResponse{
 		Body:         bodyBytes,
 		HTTPResponse: rsp,
 	}
