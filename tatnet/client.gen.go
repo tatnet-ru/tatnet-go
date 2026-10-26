@@ -386,19 +386,19 @@ func (e LBTargetGroupSpecSendProxy) Valid() bool {
 
 // Defines values for LBTargetGroupSpecTargetType.
 const (
-	App LBTargetGroupSpecTargetType = "app"
-	Ip  LBTargetGroupSpecTargetType = "ip"
-	Vm  LBTargetGroupSpecTargetType = "vm"
+	LBTargetGroupSpecTargetTypeApp LBTargetGroupSpecTargetType = "app"
+	LBTargetGroupSpecTargetTypeIp  LBTargetGroupSpecTargetType = "ip"
+	LBTargetGroupSpecTargetTypeVm  LBTargetGroupSpecTargetType = "vm"
 )
 
 // Valid indicates whether the value is a known member of the LBTargetGroupSpecTargetType enum.
 func (e LBTargetGroupSpecTargetType) Valid() bool {
 	switch e {
-	case App:
+	case LBTargetGroupSpecTargetTypeApp:
 		return true
-	case Ip:
+	case LBTargetGroupSpecTargetTypeIp:
 		return true
-	case Vm:
+	case LBTargetGroupSpecTargetTypeVm:
 		return true
 	default:
 		return false
@@ -543,6 +543,30 @@ func (e AccountPreviewFundsParamsProduct) Valid() bool {
 	case Supabase:
 		return true
 	case T1000:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for VmsListPlansParamsRole.
+const (
+	VmsListPlansParamsRoleDb  VmsListPlansParamsRole = "db"
+	VmsListPlansParamsRoleK8s VmsListPlansParamsRole = "k8s"
+	VmsListPlansParamsRoleLb  VmsListPlansParamsRole = "lb"
+	VmsListPlansParamsRoleVm  VmsListPlansParamsRole = "vm"
+)
+
+// Valid indicates whether the value is a known member of the VmsListPlansParamsRole enum.
+func (e VmsListPlansParamsRole) Valid() bool {
+	switch e {
+	case VmsListPlansParamsRoleDb:
+		return true
+	case VmsListPlansParamsRoleK8s:
+		return true
+	case VmsListPlansParamsRoleLb:
+		return true
+	case VmsListPlansParamsRoleVm:
 		return true
 	default:
 		return false
@@ -2937,6 +2961,40 @@ type VMBackupPolicyResponse struct {
 	StorageBytes   *int    `json:"storage_bytes,omitempty"`
 }
 
+// VMFormPlanResponse defines model for VMFormPlanResponse.
+type VMFormPlanResponse struct {
+	BillingPlanGroupId   *string   `json:"billing_plan_group_id"`
+	BillingPlanGroupName *string   `json:"billing_plan_group_name"`
+	CustomDiskMaxGb      *int      `json:"custom_disk_max_gb,omitempty"`
+	DiskMaxGb            *int      `json:"disk_max_gb"`
+	DiskPricePerGb       float32   `json:"disk_price_per_gb"`
+	DiskSize             int       `json:"disk_size"`
+	Id                   string    `json:"id"`
+	IsArchived           bool      `json:"is_archived"`
+	Mem                  int       `json:"mem"`
+	MemMaxMb             *int      `json:"mem_max_mb,omitempty"`
+	Name                 string    `json:"name"`
+	PricePerDay          *float32  `json:"price_per_day"`
+	PricePerHour         *float32  `json:"price_per_hour"`
+	PricePerMonth        *int      `json:"price_per_month"`
+	RamPricePerDay       *float32  `json:"ram_price_per_day,omitempty"`
+	RamPricePerHour      *float32  `json:"ram_price_per_hour,omitempty"`
+	RamPricePerMonth     *float32  `json:"ram_price_per_month,omitempty"`
+	SuitableFor          *[]string `json:"suitable_for,omitempty"`
+	Tags                 *[]string `json:"tags,omitempty"`
+	Vcpu                 int       `json:"vcpu"`
+	VcpuMax              *int      `json:"vcpu_max,omitempty"`
+	VcpuPricePerDay      *float32  `json:"vcpu_price_per_day,omitempty"`
+	VcpuPricePerHour     *float32  `json:"vcpu_price_per_hour,omitempty"`
+	VcpuPricePerMonth    *float32  `json:"vcpu_price_per_month,omitempty"`
+	VcpuSteps            *[]int    `json:"vcpu_steps,omitempty"`
+}
+
+// VMFormPlansListResponse defines model for VMFormPlansListResponse.
+type VMFormPlansListResponse struct {
+	Plans []VMFormPlanResponse `json:"plans"`
+}
+
 // VMStartRequest Optional renewal confirmation supplied when starting an expired VM.
 type VMStartRequest struct {
 	IdempotencyKey *string `json:"idempotency_key,omitempty"`
@@ -3472,6 +3530,18 @@ type VmsListVmsByAccountParams struct {
 	Limit     *int    `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset    *int    `form:"offset,omitempty" json:"offset,omitempty"`
 }
+
+// VmsListPlansParams defines parameters for VmsListPlans.
+type VmsListPlansParams struct {
+	// ClusterId Region UUID; only plans compatible with its active node tags
+	ClusterId *openapi_types.UUID `form:"cluster_id,omitempty" json:"cluster_id,omitempty"`
+
+	// Role Product the plan is offered for
+	Role *VmsListPlansParamsRole `form:"role,omitempty" json:"role,omitempty"`
+}
+
+// VmsListPlansParamsRole defines parameters for VmsListPlans.
+type VmsListPlansParamsRole string
 
 // VmsListBackupsByIdParams defines parameters for VmsListBackupsById.
 type VmsListBackupsByIdParams struct {
@@ -6890,6 +6960,18 @@ type ClientInterface interface {
 	//
 	// Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
 	VmsListVmsByAccount(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// VmsListPlans List available VM plans
+	//
+	// Active, non-archived plans with UUIDs accepted by VM creation.
+	//
+	// Requires the `vm:read` action ceiling. This is a shared product catalog,
+	// independent of project allowlists. `mem` is MiB, disk sizes are GiB,
+	// prices are RUB. `billing_plan_group_name` and `tags` identify the CPU
+	// family (for example Standard CPU). Omit cluster_id for all regions.
+	//
+	// Corresponds with GET /vms/plans (the `VmsListPlans` operationId).
+	VmsListPlans(ctx context.Context, params *VmsListPlansParams, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// VmsDeleteVmById Delete a VM
 	//
@@ -13833,6 +13915,28 @@ func (c *Client) ValkeyListRegions(ctx context.Context, reqEditors ...RequestEdi
 // Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
 func (c *Client) VmsListVmsByAccount(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewVmsListVmsByAccountRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// VmsListPlans List available VM plans
+//
+// Active, non-archived plans with UUIDs accepted by VM creation.
+//
+// Requires the `vm:read` action ceiling. This is a shared product catalog,
+// independent of project allowlists. `mem` is MiB, disk sizes are GiB,
+// prices are RUB. `billing_plan_group_name` and `tags` identify the CPU
+// family (for example Standard CPU). Omit cluster_id for all regions.
+//
+// Corresponds with GET /vms/plans (the `VmsListPlans` operationId).
+func (c *Client) VmsListPlans(ctx context.Context, params *VmsListPlansParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewVmsListPlansRequest(c.Server, params)
 	if err != nil {
 		return nil, err
 	}
@@ -27943,6 +28047,72 @@ func NewVmsListVmsByAccountRequest(server string, params *VmsListVmsByAccountPar
 	return req, nil
 }
 
+// NewVmsListPlansRequest constructs an http.Request for the VmsListPlans method
+func NewVmsListPlansRequest(server string, params *VmsListPlansParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/vms/plans")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.ClusterId != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "cluster_id", *params.ClusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Role != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "role", *params.Role, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewVmsDeleteVmByIdRequest constructs an http.Request for the VmsDeleteVmById method
 func NewVmsDeleteVmByIdRequest(server string, vmId string) (*http.Request, error) {
 	var err error
@@ -32510,6 +32680,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with GET /vms (the `VmsListVmsByAccount` operationId).
 	VmsListVmsByAccountWithResponse(ctx context.Context, params *VmsListVmsByAccountParams, reqEditors ...RequestEditorFn) (*VmsListVmsByAccountResponse, error)
+
+	// VmsListPlansWithResponse List available VM plans
+	//
+	// Active, non-archived plans with UUIDs accepted by VM creation.
+	//
+	// Requires the `vm:read` action ceiling. This is a shared product catalog,
+	// independent of project allowlists. `mem` is MiB, disk sizes are GiB,
+	// prices are RUB. `billing_plan_group_name` and `tags` identify the CPU
+	// family (for example Standard CPU). Omit cluster_id for all regions.
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /vms/plans (the `VmsListPlans` operationId).
+	VmsListPlansWithResponse(ctx context.Context, params *VmsListPlansParams, reqEditors ...RequestEditorFn) (*VmsListPlansResponse, error)
 
 	// VmsDeleteVmByIdWithResponse Delete a VM
 	//
@@ -45529,6 +45713,54 @@ func (r VmsListVmsByAccountResponse) ContentType() string {
 	return ""
 }
 
+type VmsListPlansResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *VMFormPlansListResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r VmsListPlansResponse) GetJSON200() *VMFormPlansListResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r VmsListPlansResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r VmsListPlansResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r VmsListPlansResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r VmsListPlansResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r VmsListPlansResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type VmsDeleteVmByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -52374,6 +52606,26 @@ func (c *ClientWithResponses) VmsListVmsByAccountWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseVmsListVmsByAccountResponse(rsp)
+}
+
+// VmsListPlansWithResponse List available VM plans
+//
+// Active, non-archived plans with UUIDs accepted by VM creation.
+//
+// Requires the `vm:read` action ceiling. This is a shared product catalog,
+// independent of project allowlists. `mem` is MiB, disk sizes are GiB,
+// prices are RUB. `billing_plan_group_name` and `tags` identify the CPU
+// family (for example Standard CPU). Omit cluster_id for all regions.
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /vms/plans (the `VmsListPlans` operationId).
+func (c *ClientWithResponses) VmsListPlansWithResponse(ctx context.Context, params *VmsListPlansParams, reqEditors ...RequestEditorFn) (*VmsListPlansResponse, error) {
+	rsp, err := c.VmsListPlans(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseVmsListPlansResponse(rsp)
 }
 
 // VmsDeleteVmByIdWithResponse Delete a VM
@@ -61656,6 +61908,39 @@ func ParseVmsListVmsByAccountResponse(rsp *http.Response) (*VmsListVmsByAccountR
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest PageV1VM
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseVmsListPlansResponse parses an HTTP response from a VmsListPlansWithResponse call
+func ParseVmsListPlansResponse(rsp *http.Response) (*VmsListPlansResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &VmsListPlansResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest VMFormPlansListResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
