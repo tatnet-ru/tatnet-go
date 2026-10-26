@@ -1,5 +1,11 @@
 # tatnet-go
 
+Каталог тарифов ВМ: `VmsListPlansWithResponse` (`GET /v1/vms/plans`).
+`VmsListPlansParams` принимает UUID региона `ClusterId` и назначение `Role`
+(`vm`, `k8s`, `db`, `lb`). `JSON200.Plans` содержит UUID для `vm_plan_id`,
+CPU, память в МиБ, ограничения диска и цены в рублях; `nil` у цены означает
+отсутствие ставки. Требуется API-ключ и `vm:read`.
+
 [tatnet.ru](https://tatnet.ru) · [панель](https://min.tatnet.ru) ·
 [документация](https://docs.tatnet.ru) ·
 [справочник API](https://api.tatnet.ru/v1/docs)
