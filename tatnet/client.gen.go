@@ -3585,6 +3585,9 @@ type NetworkingListVpcsParams struct {
 type NetworkingDisableNatGatewayParams struct {
 	// ExpectedFipId Disable only this floating IP allocation; a replaced gateway returns 409 nat_gateway_changed.
 	ExpectedFipId *openapi_types.UUID `form:"expected_fip_id,omitempty" json:"expected_fip_id,omitempty"`
+
+	// RetainIp Keep the floating IP allocated to the account after removing SNAT. It remains billable and can be reused once available.
+	RetainIp *bool `form:"retain_ip,omitempty" json:"retain_ip,omitempty"`
 }
 
 // NetworkingEnableNatGatewayJSONBody defines parameters for NetworkingEnableNatGateway.
@@ -7233,7 +7236,9 @@ type ClientInterface interface {
 	// NetworkingDisableNatGateway Disable the VPC's NAT gateway
 	//
 	// Remove the SNAT; the gateway's address is released automatically once
-	// the region confirms (`202`, `status: detaching`).
+	// the region confirms (`202`, `status: detaching`). With `retain_ip=true`,
+	// keep the address allocated and billable; wait until the floating IP is
+	// `available`, then reuse its `fip_id` when enabling NAT.
 	//
 	// Corresponds with DELETE /vpcs/{vpc_id}/nat-gateway (the `NetworkingDisableNatGateway` operationId).
 	NetworkingDisableNatGateway(ctx context.Context, vpcId string, params *NetworkingDisableNatGatewayParams, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -14559,7 +14564,9 @@ func (c *Client) NetworkingRenameVpc(ctx context.Context, vpcId string, body Net
 // NetworkingDisableNatGateway Disable the VPC's NAT gateway
 //
 // Remove the SNAT; the gateway's address is released automatically once
-// the region confirms (`202`, `status: detaching`).
+// the region confirms (`202`, `status: detaching`). With `retain_ip=true`,
+// keep the address allocated and billable; wait until the floating IP is
+// `available`, then reuse its `fip_id` when enabling NAT.
 //
 // Corresponds with DELETE /vpcs/{vpc_id}/nat-gateway (the `NetworkingDisableNatGateway` operationId).
 func (c *Client) NetworkingDisableNatGateway(ctx context.Context, vpcId string, params *NetworkingDisableNatGatewayParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
@@ -29289,6 +29296,18 @@ func NewNetworkingDisableNatGatewayRequest(server string, vpcId string, params *
 
 		}
 
+		if params.RetainIp != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "retain_ip", *params.RetainIp, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "boolean", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
 		if encoded := queryValues.Encode(); encoded != "" {
 			rawQueryFragments = append(rawQueryFragments, encoded)
 		}
@@ -32989,7 +33008,9 @@ type ClientWithResponsesInterface interface {
 	// NetworkingDisableNatGatewayWithResponse Disable the VPC's NAT gateway
 	//
 	// Remove the SNAT; the gateway's address is released automatically once
-	// the region confirms (`202`, `status: detaching`).
+	// the region confirms (`202`, `status: detaching`). With `retain_ip=true`,
+	// keep the address allocated and billable; wait until the floating IP is
+	// `available`, then reuse its `fip_id` when enabling NAT.
 	//
 	// Returns a wrapper object for the known response body format(s).
 	//
@@ -53134,7 +53155,9 @@ func (c *ClientWithResponses) NetworkingRenameVpcWithResponse(ctx context.Contex
 // NetworkingDisableNatGatewayWithResponse Disable the VPC's NAT gateway
 //
 // Remove the SNAT; the gateway's address is released automatically once
-// the region confirms (`202`, `status: detaching`).
+// the region confirms (`202`, `status: detaching`). With `retain_ip=true`,
+// keep the address allocated and billable; wait until the floating IP is
+// `available`, then reuse its `fip_id` when enabling NAT.
 //
 // Returns a wrapper object for the known response body format(s).
 //
