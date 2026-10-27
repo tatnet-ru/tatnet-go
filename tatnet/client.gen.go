@@ -1235,6 +1235,7 @@ type LBTargetsPutRequest struct {
 type LoadBalancerDetailResponse struct {
 	Config           *LBConfigResponse                 `json:"config,omitempty"`
 	CreatedAt        *time.Time                        `json:"created_at,omitempty"`
+	FloatingIpId     *string                           `json:"floating_ip_id,omitempty"`
 	Id               string                            `json:"id"`
 	Mode             *string                           `json:"mode,omitempty"`
 	Name             string                            `json:"name"`
@@ -1256,6 +1257,7 @@ type LoadBalancerDetailResponseScheme string
 // LoadBalancerResponse defines model for LoadBalancerResponse.
 type LoadBalancerResponse struct {
 	CreatedAt        *time.Time                  `json:"created_at,omitempty"`
+	FloatingIpId     *string                     `json:"floating_ip_id,omitempty"`
 	Id               string                      `json:"id"`
 	Mode             *string                     `json:"mode,omitempty"`
 	Name             string                      `json:"name"`
@@ -1906,6 +1908,7 @@ type V1App struct {
 	CurrentBuildId           *string `json:"current_build_id,omitempty"`
 	DeployState              *string `json:"deploy_state,omitempty"`
 	DockerImage              *string `json:"docker_image,omitempty"`
+	GitConnectionId          *string `json:"git_connection_id,omitempty"`
 	GitProvider              *string `json:"git_provider,omitempty"`
 	Id                       string  `json:"id"`
 	Name                     string  `json:"name"`
@@ -1987,6 +1990,9 @@ type V1AppDomain struct {
 
 // V1AppUpdate defines model for V1AppUpdate.
 type V1AppUpdate struct {
+	// Branch Git branch for future builds and push-triggered deployments. Does not deploy automatically; only valid for Git apps.
+	Branch *string `json:"branch,omitempty"`
+
 	// DockerImage Image of an app whose source_type is docker_image, e.g. ghcr.io/org/app:<sha>. Takes effect on the next deploy; 422 on other source types. null is ignored.
 	DockerImage      *string `json:"docker_image,omitempty"`
 	Name             *string `json:"name,omitempty"`
@@ -2249,20 +2255,22 @@ type V1EnvVarCreate struct {
 
 // V1FloatingIP defines model for V1FloatingIP.
 type V1FloatingIP struct {
-	Address         string  `json:"address"`
-	AutoRelease     *bool   `json:"auto_release,omitempty"`
-	ClusterId       string  `json:"cluster_id"`
-	CreatedAt       *string `json:"created_at,omitempty"`
-	Id              string  `json:"id"`
-	InternalAddress *string `json:"internal_address,omitempty"`
-	LastError       *string `json:"last_error,omitempty"`
-	Name            *string `json:"name,omitempty"`
-	Status          string  `json:"status"`
-	TargetKind      *string `json:"target_kind,omitempty"`
-	VmId            *string `json:"vm_id,omitempty"`
-	VmInterfaceId   *string `json:"vm_interface_id,omitempty"`
-	VmProjectId     *string `json:"vm_project_id,omitempty"`
-	VpcId           *string `json:"vpc_id,omitempty"`
+	Address               string  `json:"address"`
+	AutoRelease           *bool   `json:"auto_release,omitempty"`
+	ClusterId             string  `json:"cluster_id"`
+	CreatedAt             *string `json:"created_at,omitempty"`
+	Id                    string  `json:"id"`
+	InternalAddress       *string `json:"internal_address,omitempty"`
+	LastError             *string `json:"last_error,omitempty"`
+	LoadBalancerId        *string `json:"load_balancer_id,omitempty"`
+	LoadBalancerProjectId *string `json:"load_balancer_project_id,omitempty"`
+	Name                  *string `json:"name,omitempty"`
+	Status                string  `json:"status"`
+	TargetKind            *string `json:"target_kind,omitempty"`
+	VmId                  *string `json:"vm_id,omitempty"`
+	VmInterfaceId         *string `json:"vm_interface_id,omitempty"`
+	VmProjectId           *string `json:"vm_project_id,omitempty"`
+	VpcId                 *string `json:"vpc_id,omitempty"`
 }
 
 // V1FloatingIPAttach defines model for V1FloatingIPAttach.
@@ -2482,6 +2490,9 @@ type V1Kubeconfig struct {
 // V1LBCreate defines model for V1LBCreate.
 type V1LBCreate struct {
 	Config *LBConfigSpec `json:"config,omitempty"`
+
+	// FloatingIpId Reserved public IP allocation in the same account and region; retained after LB deletion
+	FloatingIpId *string `json:"floating_ip_id,omitempty"`
 
 	// K8sClusterId k8s mode: front this cluster's NodePorts (CCM)
 	K8sClusterId *string `json:"k8s_cluster_id,omitempty"`
@@ -4110,14 +4121,14 @@ type ClientInterface interface {
 	// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
 	AppsGetAppById(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AppsUpdateAppByIdWithBody Update an app (scale / resources / image)
+	// AppsUpdateAppByIdWithBody Update an app (scale / resources / image / Git branch)
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
 	AppsUpdateAppByIdWithBody(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AppsUpdateAppById Update an app (scale / resources / image)
+	// AppsUpdateAppById Update an app (scale / resources / image / Git branch)
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -5388,26 +5399,28 @@ type ClientInterface interface {
 	// Corresponds with GET /projects/{project_id}/apps/{app_id} (the `AppsGetApp` operationId).
 	AppsGetApp(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AppsUpdateAppRouteWithBody Update an app (scale / resources / image)
+	// AppsUpdateAppRouteWithBody Update an app (scale / resources / image / Git branch)
 	//
 	// Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 	// app, or point a Docker-image app at a new image (docker_image). Billing/plan
 	// gates are shared with the panel route; a resource change creates a
 	// resource-only revision so app-deployer rolls running replicas to the new
-	// size right away. A new image is built on the next deploy.
+	// size right away. A new image or Git branch is built on the next deploy.
+	// Changing branch also selects which pushes trigger automatic builds.
 	//
 	// Takes any type of body and a specified content type.
 	//
 	// Corresponds with PATCH /projects/{project_id}/apps/{app_id} (the `AppsUpdateAppRoute` operationId).
 	AppsUpdateAppRouteWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
-	// AppsUpdateAppRoute Update an app (scale / resources / image)
+	// AppsUpdateAppRoute Update an app (scale / resources / image / Git branch)
 	//
 	// Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 	// app, or point a Docker-image app at a new image (docker_image). Billing/plan
 	// gates are shared with the panel route; a resource change creates a
 	// resource-only revision so app-deployer rolls running replicas to the new
-	// size right away. A new image is built on the next deploy.
+	// size right away. A new image or Git branch is built on the next deploy.
+	// Changing branch also selects which pushes trigger automatic builds.
 	//
 	// Takes a body of the `application/json` content type.
 	//
@@ -7376,7 +7389,7 @@ func (c *Client) AppsGetAppById(ctx context.Context, appId string, reqEditors ..
 	return c.Client.Do(req)
 }
 
-// AppsUpdateAppByIdWithBody Update an app (scale / resources / image)
+// AppsUpdateAppByIdWithBody Update an app (scale / resources / image / Git branch)
 //
 // Takes any type of body and a specified content type.
 //
@@ -7393,7 +7406,7 @@ func (c *Client) AppsUpdateAppByIdWithBody(ctx context.Context, appId string, co
 	return c.Client.Do(req)
 }
 
-// AppsUpdateAppById Update an app (scale / resources / image)
+// AppsUpdateAppById Update an app (scale / resources / image / Git branch)
 //
 // Takes a body of the `application/json` content type.
 //
@@ -10394,13 +10407,14 @@ func (c *Client) AppsGetApp(ctx context.Context, projectId string, appId string,
 	return c.Client.Do(req)
 }
 
-// AppsUpdateAppRouteWithBody Update an app (scale / resources / image)
+// AppsUpdateAppRouteWithBody Update an app (scale / resources / image / Git branch)
 //
 // Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 // app, or point a Docker-image app at a new image (docker_image). Billing/plan
 // gates are shared with the panel route; a resource change creates a
 // resource-only revision so app-deployer rolls running replicas to the new
-// size right away. A new image is built on the next deploy.
+// size right away. A new image or Git branch is built on the next deploy.
+// Changing branch also selects which pushes trigger automatic builds.
 //
 // Takes any type of body and a specified content type.
 //
@@ -10417,13 +10431,14 @@ func (c *Client) AppsUpdateAppRouteWithBody(ctx context.Context, projectId strin
 	return c.Client.Do(req)
 }
 
-// AppsUpdateAppRoute Update an app (scale / resources / image)
+// AppsUpdateAppRoute Update an app (scale / resources / image / Git branch)
 //
 // Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 // app, or point a Docker-image app at a new image (docker_image). Billing/plan
 // gates are shared with the panel route; a resource change creates a
 // resource-only revision so app-deployer rolls running replicas to the new
-// size right away. A new image is built on the next deploy.
+// size right away. A new image or Git branch is built on the next deploy.
+// Changing branch also selects which pushes trigger automatic builds.
 //
 // Takes a body of the `application/json` content type.
 //
@@ -29518,14 +29533,14 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /apps/{app_id} (the `AppsGetAppById` operationId).
 	AppsGetAppByIdWithResponse(ctx context.Context, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppByIdResponse, error)
 
-	// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources / image)
+	// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources / image / Git branch)
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with PATCH /apps/{app_id} (the `AppsUpdateAppById` operationId).
 	AppsUpdateAppByIdWithBodyWithResponse(ctx context.Context, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateAppByIdResponse, error)
 
-	// AppsUpdateAppByIdWithResponse Update an app (scale / resources / image)
+	// AppsUpdateAppByIdWithResponse Update an app (scale / resources / image / Git branch)
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -30950,26 +30965,28 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with GET /projects/{project_id}/apps/{app_id} (the `AppsGetApp` operationId).
 	AppsGetAppWithResponse(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppResponse, error)
 
-	// AppsUpdateAppRouteWithBodyWithResponse Update an app (scale / resources / image)
+	// AppsUpdateAppRouteWithBodyWithResponse Update an app (scale / resources / image / Git branch)
 	//
 	// Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 	// app, or point a Docker-image app at a new image (docker_image). Billing/plan
 	// gates are shared with the panel route; a resource change creates a
 	// resource-only revision so app-deployer rolls running replicas to the new
-	// size right away. A new image is built on the next deploy.
+	// size right away. A new image or Git branch is built on the next deploy.
+	// Changing branch also selects which pushes trigger automatic builds.
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 	//
 	// Corresponds with PATCH /projects/{project_id}/apps/{app_id} (the `AppsUpdateAppRoute` operationId).
 	AppsUpdateAppRouteWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsUpdateAppRouteResponse, error)
 
-	// AppsUpdateAppRouteWithResponse Update an app (scale / resources / image)
+	// AppsUpdateAppRouteWithResponse Update an app (scale / resources / image / Git branch)
 	//
 	// Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 	// app, or point a Docker-image app at a new image (docker_image). Billing/plan
 	// gates are shared with the panel route; a resource change creates a
 	// resource-only revision so app-deployer rolls running replicas to the new
-	// size right away. A new image is built on the next deploy.
+	// size right away. A new image or Git branch is built on the next deploy.
+	// Changing branch also selects which pushes trigger automatic builds.
 	//
 	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 	//
@@ -47226,7 +47243,7 @@ func (c *ClientWithResponses) AppsGetAppByIdWithResponse(ctx context.Context, ap
 	return ParseAppsGetAppByIdResponse(rsp)
 }
 
-// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources / image)
+// AppsUpdateAppByIdWithBodyWithResponse Update an app (scale / resources / image / Git branch)
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -47239,7 +47256,7 @@ func (c *ClientWithResponses) AppsUpdateAppByIdWithBodyWithResponse(ctx context.
 	return ParseAppsUpdateAppByIdResponse(rsp)
 }
 
-// AppsUpdateAppByIdWithResponse Update an app (scale / resources / image)
+// AppsUpdateAppByIdWithResponse Update an app (scale / resources / image / Git branch)
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //
@@ -49702,13 +49719,14 @@ func (c *ClientWithResponses) AppsGetAppWithResponse(ctx context.Context, projec
 	return ParseAppsGetAppResponse(rsp)
 }
 
-// AppsUpdateAppRouteWithBodyWithResponse Update an app (scale / resources / image)
+// AppsUpdateAppRouteWithBodyWithResponse Update an app (scale / resources / image / Git branch)
 //
 // Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 // app, or point a Docker-image app at a new image (docker_image). Billing/plan
 // gates are shared with the panel route; a resource change creates a
 // resource-only revision so app-deployer rolls running replicas to the new
-// size right away. A new image is built on the next deploy.
+// size right away. A new image or Git branch is built on the next deploy.
+// Changing branch also selects which pushes trigger automatic builds.
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
 //
@@ -49721,13 +49739,14 @@ func (c *ClientWithResponses) AppsUpdateAppRouteWithBodyWithResponse(ctx context
 	return ParseAppsUpdateAppRouteResponse(rsp)
 }
 
-// AppsUpdateAppRouteWithResponse Update an app (scale / resources / image)
+// AppsUpdateAppRouteWithResponse Update an app (scale / resources / image / Git branch)
 //
 // Scale (replica_count) and resize (replica_vcpu / replica_memory_mb) an
 // app, or point a Docker-image app at a new image (docker_image). Billing/plan
 // gates are shared with the panel route; a resource change creates a
 // resource-only revision so app-deployer rolls running replicas to the new
-// size right away. A new image is built on the next deploy.
+// size right away. A new image or Git branch is built on the next deploy.
+// Changing branch also selects which pushes trigger automatic builds.
 //
 // Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
 //

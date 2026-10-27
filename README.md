@@ -14,6 +14,11 @@ Go-клиент публичного API облака [TatNet](https://tatnet.ru
 **Генерируется** из контракта — править `tatnet/client.gen.go` руками
 бессмысленно, следующая генерация затрёт.
 
+`V1AppUpdate.Branch` меняет ветку Git-приложения через
+`AppsUpdateAppByIdWithResponse` или `AppsUpdateAppRouteWithResponse`.
+Требуется `app:update`. Смена ветки не запускает сборку: новый код
+выкатывается отдельным deploy; будущие push-события используют новую ветку.
+
 Ключ доступа создаётся в панели:
 [min.tatnet.ru/api-keys](https://min.tatnet.ru/api-keys).
 
