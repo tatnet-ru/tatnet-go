@@ -91,3 +91,37 @@ func TestReservedLBIPOptionalAndFloatingIPAttachment(t *testing.T) {
 		t.Fatal("absent reservation must be omitted")
 	}
 }
+
+func TestRetainCurrentLBIPContract(t *testing.T) {
+	for _, status := range []int{200, 409, 503} {
+		t.Run(http.StatusText(status), func(t *testing.T) {
+			srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+				if r.Method != "POST" || r.URL.Path != "/v1/projects/p/load-balancers/lb/retain-ip" || r.Header.Get("Authorization") != "Bearer tn_live_test" {
+					t.Fatalf("unexpected request %s %s", r.Method, r.URL)
+				}
+				var body map[string]any
+				if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+					t.Fatal(err)
+				}
+				if len(body) != 1 || body["expected_vip"] != "198.51.100.42" {
+					t.Fatalf("wrong body %v", body)
+				}
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(status)
+				_, _ = w.Write([]byte(`{"id":"lb","vip":"198.51.100.42","floating_ip_id":"allocation","ip_billing_included":true,"can_retain_current_ip":false}`))
+			}))
+			defer srv.Close()
+			c, err := NewClientWithResponses(srv.URL+"/v1", WithAPIKey("tn_live_test"))
+			if err != nil {
+				t.Fatal(err)
+			}
+			res, err := c.LoadBalancersRetainLbIpWithResponse(context.Background(), "p", "lb", RetainLBIPRequest{ExpectedVip: "198.51.100.42"})
+			if err != nil || res.StatusCode() != status {
+				t.Fatalf("response %v %v", res, err)
+			}
+			if status == 200 && (res.JSON200 == nil || res.JSON200.FloatingIpId == nil || *res.JSON200.FloatingIpId != "allocation" || res.JSON200.IpBillingIncluded == nil || !*res.JSON200.IpBillingIncluded) {
+				t.Fatalf("reservation lost: %+v", res)
+			}
+		})
+	}
+}

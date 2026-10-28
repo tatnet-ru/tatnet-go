@@ -1233,22 +1233,24 @@ type LBTargetsPutRequest struct {
 
 // LoadBalancerDetailResponse defines model for LoadBalancerDetailResponse.
 type LoadBalancerDetailResponse struct {
-	Config           *LBConfigResponse                 `json:"config,omitempty"`
-	CreatedAt        *time.Time                        `json:"created_at,omitempty"`
-	FloatingIpId     *string                           `json:"floating_ip_id,omitempty"`
-	Id               string                            `json:"id"`
-	Mode             *string                           `json:"mode,omitempty"`
-	Name             string                            `json:"name"`
-	NodeCount        int                               `json:"node_count"`
-	Nodes            *[]LBNodeResponse                 `json:"nodes,omitempty"`
-	ProjectId        string                            `json:"project_id"`
-	RegionId         string                            `json:"region_id"`
-	RegionObservedAt *time.Time                        `json:"region_observed_at,omitempty"`
-	Scheme           *LoadBalancerDetailResponseScheme `json:"scheme,omitempty"`
-	Status           string                            `json:"status"`
-	StatusDetail     *string                           `json:"status_detail,omitempty"`
-	Vip              *string                           `json:"vip,omitempty"`
-	VpcId            string                            `json:"vpc_id"`
+	CanRetainCurrentIp *bool                             `json:"can_retain_current_ip,omitempty"`
+	Config             *LBConfigResponse                 `json:"config,omitempty"`
+	CreatedAt          *time.Time                        `json:"created_at,omitempty"`
+	FloatingIpId       *string                           `json:"floating_ip_id,omitempty"`
+	Id                 string                            `json:"id"`
+	IpBillingIncluded  *bool                             `json:"ip_billing_included,omitempty"`
+	Mode               *string                           `json:"mode,omitempty"`
+	Name               string                            `json:"name"`
+	NodeCount          int                               `json:"node_count"`
+	Nodes              *[]LBNodeResponse                 `json:"nodes,omitempty"`
+	ProjectId          string                            `json:"project_id"`
+	RegionId           string                            `json:"region_id"`
+	RegionObservedAt   *time.Time                        `json:"region_observed_at,omitempty"`
+	Scheme             *LoadBalancerDetailResponseScheme `json:"scheme,omitempty"`
+	Status             string                            `json:"status"`
+	StatusDetail       *string                           `json:"status_detail,omitempty"`
+	Vip                *string                           `json:"vip,omitempty"`
+	VpcId              string                            `json:"vpc_id"`
 }
 
 // LoadBalancerDetailResponseScheme defines model for LoadBalancerDetailResponse.Scheme.
@@ -1256,20 +1258,22 @@ type LoadBalancerDetailResponseScheme string
 
 // LoadBalancerResponse defines model for LoadBalancerResponse.
 type LoadBalancerResponse struct {
-	CreatedAt        *time.Time                  `json:"created_at,omitempty"`
-	FloatingIpId     *string                     `json:"floating_ip_id,omitempty"`
-	Id               string                      `json:"id"`
-	Mode             *string                     `json:"mode,omitempty"`
-	Name             string                      `json:"name"`
-	NodeCount        int                         `json:"node_count"`
-	ProjectId        string                      `json:"project_id"`
-	RegionId         string                      `json:"region_id"`
-	RegionObservedAt *time.Time                  `json:"region_observed_at,omitempty"`
-	Scheme           *LoadBalancerResponseScheme `json:"scheme,omitempty"`
-	Status           string                      `json:"status"`
-	StatusDetail     *string                     `json:"status_detail,omitempty"`
-	Vip              *string                     `json:"vip,omitempty"`
-	VpcId            string                      `json:"vpc_id"`
+	CanRetainCurrentIp *bool                       `json:"can_retain_current_ip,omitempty"`
+	CreatedAt          *time.Time                  `json:"created_at,omitempty"`
+	FloatingIpId       *string                     `json:"floating_ip_id,omitempty"`
+	Id                 string                      `json:"id"`
+	IpBillingIncluded  *bool                       `json:"ip_billing_included,omitempty"`
+	Mode               *string                     `json:"mode,omitempty"`
+	Name               string                      `json:"name"`
+	NodeCount          int                         `json:"node_count"`
+	ProjectId          string                      `json:"project_id"`
+	RegionId           string                      `json:"region_id"`
+	RegionObservedAt   *time.Time                  `json:"region_observed_at,omitempty"`
+	Scheme             *LoadBalancerResponseScheme `json:"scheme,omitempty"`
+	Status             string                      `json:"status"`
+	StatusDetail       *string                     `json:"status_detail,omitempty"`
+	Vip                *string                     `json:"vip,omitempty"`
+	VpcId              string                      `json:"vpc_id"`
 }
 
 // LoadBalancerResponseScheme defines model for LoadBalancerResponse.Scheme.
@@ -1773,6 +1777,12 @@ type RestoreTechnicalDomainRequest struct {
 	Domain string `json:"domain"`
 }
 
+// RetainLBIPRequest defines model for RetainLBIPRequest.
+type RetainLBIPRequest struct {
+	// ExpectedVip The exact current public IPv4; the operation never chooses another IP
+	ExpectedVip string `json:"expected_vip"`
+}
+
 // StatusResponse defines model for StatusResponse.
 type StatusResponse struct {
 	Message *string `json:"message,omitempty"`
@@ -2255,22 +2265,23 @@ type V1EnvVarCreate struct {
 
 // V1FloatingIP defines model for V1FloatingIP.
 type V1FloatingIP struct {
-	Address               string  `json:"address"`
-	AutoRelease           *bool   `json:"auto_release,omitempty"`
-	ClusterId             string  `json:"cluster_id"`
-	CreatedAt             *string `json:"created_at,omitempty"`
-	Id                    string  `json:"id"`
-	InternalAddress       *string `json:"internal_address,omitempty"`
-	LastError             *string `json:"last_error,omitempty"`
-	LoadBalancerId        *string `json:"load_balancer_id,omitempty"`
-	LoadBalancerProjectId *string `json:"load_balancer_project_id,omitempty"`
-	Name                  *string `json:"name,omitempty"`
-	Status                string  `json:"status"`
-	TargetKind            *string `json:"target_kind,omitempty"`
-	VmId                  *string `json:"vm_id,omitempty"`
-	VmInterfaceId         *string `json:"vm_interface_id,omitempty"`
-	VmProjectId           *string `json:"vm_project_id,omitempty"`
-	VpcId                 *string `json:"vpc_id,omitempty"`
+	Address                       string  `json:"address"`
+	AutoRelease                   *bool   `json:"auto_release,omitempty"`
+	BillingIncludedInLoadBalancer *bool   `json:"billing_included_in_load_balancer,omitempty"`
+	ClusterId                     string  `json:"cluster_id"`
+	CreatedAt                     *string `json:"created_at,omitempty"`
+	Id                            string  `json:"id"`
+	InternalAddress               *string `json:"internal_address,omitempty"`
+	LastError                     *string `json:"last_error,omitempty"`
+	LoadBalancerId                *string `json:"load_balancer_id,omitempty"`
+	LoadBalancerProjectId         *string `json:"load_balancer_project_id,omitempty"`
+	Name                          *string `json:"name,omitempty"`
+	Status                        string  `json:"status"`
+	TargetKind                    *string `json:"target_kind,omitempty"`
+	VmId                          *string `json:"vm_id,omitempty"`
+	VmInterfaceId                 *string `json:"vm_interface_id,omitempty"`
+	VmProjectId                   *string `json:"vm_project_id,omitempty"`
+	VpcId                         *string `json:"vpc_id,omitempty"`
 }
 
 // V1FloatingIPAttach defines model for V1FloatingIPAttach.
@@ -3683,6 +3694,9 @@ type LoadBalancersPatchListenerRuleByIdJSONRequestBody = LBRulePatchRequest
 // LoadBalancersPutLbManagedConfigByIdJSONRequestBody defines body for LoadBalancersPutLbManagedConfigById for application/json ContentType.
 type LoadBalancersPutLbManagedConfigByIdJSONRequestBody = LBConfigSpec
 
+// LoadBalancersRetainLbIpByIdJSONRequestBody defines body for LoadBalancersRetainLbIpById for application/json ContentType.
+type LoadBalancersRetainLbIpByIdJSONRequestBody = RetainLBIPRequest
+
 // LoadBalancersCreateTargetGroupByIdJSONRequestBody defines body for LoadBalancersCreateTargetGroupById for application/json ContentType.
 type LoadBalancersCreateTargetGroupByIdJSONRequestBody = LBTargetGroupSpec
 
@@ -3819,6 +3833,9 @@ type LoadBalancersPatchListenerRuleJSONRequestBody = LBRulePatchRequest
 
 // LoadBalancersPutLbManagedConfigJSONRequestBody defines body for LoadBalancersPutLbManagedConfig for application/json ContentType.
 type LoadBalancersPutLbManagedConfigJSONRequestBody = LBConfigSpec
+
+// LoadBalancersRetainLbIpJSONRequestBody defines body for LoadBalancersRetainLbIp for application/json ContentType.
+type LoadBalancersRetainLbIpJSONRequestBody = RetainLBIPRequest
 
 // LoadBalancersCreateTargetGroupJSONRequestBody defines body for LoadBalancersCreateTargetGroup for application/json ContentType.
 type LoadBalancersCreateTargetGroupJSONRequestBody = LBTargetGroupSpec
@@ -4875,6 +4892,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
 	LoadBalancersPutLbManagedConfigById(ctx context.Context, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersRetainLbIpByIdWithBody Retain the current public IPv4 without changing the VIP
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+	LoadBalancersRetainLbIpByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersRetainLbIpById Retain the current public IPv4 without changing the VIP
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+	LoadBalancersRetainLbIpById(ctx context.Context, lbId string, body LoadBalancersRetainLbIpByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// LoadBalancersCreateTargetGroupByIdWithBody Add a target group
 	//
@@ -6069,6 +6100,20 @@ type ClientInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfig` operationId).
 	LoadBalancersPutLbManagedConfig(ctx context.Context, projectId string, lbId string, body LoadBalancersPutLbManagedConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersRetainLbIpWithBody Retain the current public IPv4 without changing the VIP
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+	LoadBalancersRetainLbIpWithBody(ctx context.Context, projectId string, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// LoadBalancersRetainLbIp Retain the current public IPv4 without changing the VIP
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+	LoadBalancersRetainLbIp(ctx context.Context, projectId string, lbId string, body LoadBalancersRetainLbIpJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// LoadBalancersCreateTargetGroupWithBody Add a target group
 	//
@@ -9246,6 +9291,40 @@ func (c *Client) LoadBalancersPutLbManagedConfigById(ctx context.Context, lbId s
 	return c.Client.Do(req)
 }
 
+// LoadBalancersRetainLbIpByIdWithBody Retain the current public IPv4 without changing the VIP
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+func (c *Client) LoadBalancersRetainLbIpByIdWithBody(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersRetainLbIpByIdRequestWithBody(c.Server, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersRetainLbIpById Retain the current public IPv4 without changing the VIP
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+func (c *Client) LoadBalancersRetainLbIpById(ctx context.Context, lbId string, body LoadBalancersRetainLbIpByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersRetainLbIpByIdRequest(c.Server, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 // LoadBalancersCreateTargetGroupByIdWithBody Add a target group
 //
 // Takes any type of body and a specified content type.
@@ -11968,6 +12047,40 @@ func (c *Client) LoadBalancersPutLbManagedConfigWithBody(ctx context.Context, pr
 // Corresponds with PUT /projects/{project_id}/load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfig` operationId).
 func (c *Client) LoadBalancersPutLbManagedConfig(ctx context.Context, projectId string, lbId string, body LoadBalancersPutLbManagedConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewLoadBalancersPutLbManagedConfigRequest(c.Server, projectId, lbId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersRetainLbIpWithBody Retain the current public IPv4 without changing the VIP
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+func (c *Client) LoadBalancersRetainLbIpWithBody(ctx context.Context, projectId string, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersRetainLbIpRequestWithBody(c.Server, projectId, lbId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// LoadBalancersRetainLbIp Retain the current public IPv4 without changing the VIP
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+func (c *Client) LoadBalancersRetainLbIp(ctx context.Context, projectId string, lbId string, body LoadBalancersRetainLbIpJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewLoadBalancersRetainLbIpRequest(c.Server, projectId, lbId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -18820,6 +18933,53 @@ func NewLoadBalancersPutLbManagedConfigByIdRequestWithBody(server string, lbId s
 	return req, nil
 }
 
+// NewLoadBalancersRetainLbIpByIdRequest calls the generic LoadBalancersRetainLbIpById builder with application/json body
+func NewLoadBalancersRetainLbIpByIdRequest(server string, lbId string, body LoadBalancersRetainLbIpByIdJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersRetainLbIpByIdRequestWithBody(server, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersRetainLbIpByIdRequestWithBody constructs an http.Request for the LoadBalancersRetainLbIpById method, with any body, and a specified content type
+func NewLoadBalancersRetainLbIpByIdRequestWithBody(server string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/load-balancers/%s/retain-ip", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewLoadBalancersCreateTargetGroupByIdRequest calls the generic LoadBalancersCreateTargetGroupById builder with application/json body
 func NewLoadBalancersCreateTargetGroupByIdRequest(server string, lbId string, body LoadBalancersCreateTargetGroupByIdJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -24358,6 +24518,60 @@ func NewLoadBalancersPutLbManagedConfigRequestWithBody(server string, projectId 
 	}
 
 	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewLoadBalancersRetainLbIpRequest calls the generic LoadBalancersRetainLbIp builder with application/json body
+func NewLoadBalancersRetainLbIpRequest(server string, projectId string, lbId string, body LoadBalancersRetainLbIpJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewLoadBalancersRetainLbIpRequestWithBody(server, projectId, lbId, "application/json", bodyReader)
+}
+
+// NewLoadBalancersRetainLbIpRequestWithBody constructs an http.Request for the LoadBalancersRetainLbIp method, with any body, and a specified content type
+func NewLoadBalancersRetainLbIpRequestWithBody(server string, projectId string, lbId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "lb_id", lbId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/load-balancers/%s/retain-ip", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
 	if err != nil {
 		return nil, err
 	}
@@ -30402,6 +30616,20 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with PUT /load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfigById` operationId).
 	LoadBalancersPutLbManagedConfigByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersPutLbManagedConfigByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbManagedConfigByIdResponse, error)
 
+	// LoadBalancersRetainLbIpByIdWithBodyWithResponse Retain the current public IPv4 without changing the VIP
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+	LoadBalancersRetainLbIpByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpByIdResponse, error)
+
+	// LoadBalancersRetainLbIpByIdWithResponse Retain the current public IPv4 without changing the VIP
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+	LoadBalancersRetainLbIpByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersRetainLbIpByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpByIdResponse, error)
+
 	// LoadBalancersCreateTargetGroupByIdWithBodyWithResponse Add a target group
 	//
 	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -31721,6 +31949,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with PUT /projects/{project_id}/load-balancers/{lb_id}/managed-config (the `LoadBalancersPutLbManagedConfig` operationId).
 	LoadBalancersPutLbManagedConfigWithResponse(ctx context.Context, projectId string, lbId string, body LoadBalancersPutLbManagedConfigJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersPutLbManagedConfigResponse, error)
+
+	// LoadBalancersRetainLbIpWithBodyWithResponse Retain the current public IPv4 without changing the VIP
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+	LoadBalancersRetainLbIpWithBodyWithResponse(ctx context.Context, projectId string, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpResponse, error)
+
+	// LoadBalancersRetainLbIpWithResponse Retain the current public IPv4 without changing the VIP
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+	LoadBalancersRetainLbIpWithResponse(ctx context.Context, projectId string, lbId string, body LoadBalancersRetainLbIpJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpResponse, error)
 
 	// LoadBalancersCreateTargetGroupWithBodyWithResponse Add a target group
 	//
@@ -37066,6 +37308,54 @@ func (r LoadBalancersPutLbManagedConfigByIdResponse) ContentType() string {
 	return ""
 }
 
+type LoadBalancersRetainLbIpByIdResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LoadBalancerDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersRetainLbIpByIdResponse) GetJSON200() *LoadBalancerDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersRetainLbIpByIdResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersRetainLbIpByIdResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersRetainLbIpByIdResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersRetainLbIpByIdResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersRetainLbIpByIdResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type LoadBalancersCreateTargetGroupByIdResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -42173,6 +42463,54 @@ func (r LoadBalancersPutLbManagedConfigResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r LoadBalancersPutLbManagedConfigResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type LoadBalancersRetainLbIpResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *LoadBalancerDetailResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r LoadBalancersRetainLbIpResponse) GetJSON200() *LoadBalancerDetailResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r LoadBalancersRetainLbIpResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r LoadBalancersRetainLbIpResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r LoadBalancersRetainLbIpResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r LoadBalancersRetainLbIpResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r LoadBalancersRetainLbIpResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -48774,6 +49112,32 @@ func (c *ClientWithResponses) LoadBalancersPutLbManagedConfigByIdWithResponse(ct
 	return ParseLoadBalancersPutLbManagedConfigByIdResponse(rsp)
 }
 
+// LoadBalancersRetainLbIpByIdWithBodyWithResponse Retain the current public IPv4 without changing the VIP
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+func (c *ClientWithResponses) LoadBalancersRetainLbIpByIdWithBodyWithResponse(ctx context.Context, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpByIdResponse, error) {
+	rsp, err := c.LoadBalancersRetainLbIpByIdWithBody(ctx, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersRetainLbIpByIdResponse(rsp)
+}
+
+// LoadBalancersRetainLbIpByIdWithResponse Retain the current public IPv4 without changing the VIP
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIpById` operationId).
+func (c *ClientWithResponses) LoadBalancersRetainLbIpByIdWithResponse(ctx context.Context, lbId string, body LoadBalancersRetainLbIpByIdJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpByIdResponse, error) {
+	rsp, err := c.LoadBalancersRetainLbIpById(ctx, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersRetainLbIpByIdResponse(rsp)
+}
+
 // LoadBalancersCreateTargetGroupByIdWithBodyWithResponse Add a target group
 //
 // Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
@@ -51015,6 +51379,32 @@ func (c *ClientWithResponses) LoadBalancersPutLbManagedConfigWithResponse(ctx co
 		return nil, err
 	}
 	return ParseLoadBalancersPutLbManagedConfigResponse(rsp)
+}
+
+// LoadBalancersRetainLbIpWithBodyWithResponse Retain the current public IPv4 without changing the VIP
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+func (c *ClientWithResponses) LoadBalancersRetainLbIpWithBodyWithResponse(ctx context.Context, projectId string, lbId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpResponse, error) {
+	rsp, err := c.LoadBalancersRetainLbIpWithBody(ctx, projectId, lbId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersRetainLbIpResponse(rsp)
+}
+
+// LoadBalancersRetainLbIpWithResponse Retain the current public IPv4 without changing the VIP
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/load-balancers/{lb_id}/retain-ip (the `LoadBalancersRetainLbIp` operationId).
+func (c *ClientWithResponses) LoadBalancersRetainLbIpWithResponse(ctx context.Context, projectId string, lbId string, body LoadBalancersRetainLbIpJSONRequestBody, reqEditors ...RequestEditorFn) (*LoadBalancersRetainLbIpResponse, error) {
+	rsp, err := c.LoadBalancersRetainLbIp(ctx, projectId, lbId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseLoadBalancersRetainLbIpResponse(rsp)
 }
 
 // LoadBalancersCreateTargetGroupWithBodyWithResponse Add a target group
@@ -55994,6 +56384,39 @@ func ParseLoadBalancersPutLbManagedConfigByIdResponse(rsp *http.Response) (*Load
 	return response, nil
 }
 
+// ParseLoadBalancersRetainLbIpByIdResponse parses an HTTP response from a LoadBalancersRetainLbIpByIdWithResponse call
+func ParseLoadBalancersRetainLbIpByIdResponse(rsp *http.Response) (*LoadBalancersRetainLbIpByIdResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersRetainLbIpByIdResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LoadBalancerDetailResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseLoadBalancersCreateTargetGroupByIdResponse parses an HTTP response from a LoadBalancersCreateTargetGroupByIdWithResponse call
 func ParseLoadBalancersCreateTargetGroupByIdResponse(rsp *http.Response) (*LoadBalancersCreateTargetGroupByIdResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -59494,6 +59917,39 @@ func ParseLoadBalancersPutLbManagedConfigResponse(rsp *http.Response) (*LoadBala
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest LBConfigResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseLoadBalancersRetainLbIpResponse parses an HTTP response from a LoadBalancersRetainLbIpWithResponse call
+func ParseLoadBalancersRetainLbIpResponse(rsp *http.Response) (*LoadBalancersRetainLbIpResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &LoadBalancersRetainLbIpResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest LoadBalancerDetailResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}

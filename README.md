@@ -150,3 +150,12 @@ Reader endpoint возвращается как `ReadHost` / `ReadPort` (TCP/543
 завершения регионального удаления, когда Floating IP вернётся в `available`.
 Сервер должен поддерживать этот контракт (миграция 00298 и соответствующий API);
 наличие поля в SDK само по себе не обновляет сервер.
+
+
+`LoadBalancersRetainLbIpWithResponse(ctx, projectID, lbID, RetainLBIPRequest{ExpectedVip: currentIP})`
+закрепляет текущий IP работающего LB. При несовпадении адреса API возвращает
+409; новый адрес не выбирается. Ответ содержит `FloatingIpId` и
+`IpBillingIncluded`: сохранённый адрес оплачивается в текущей подписке LB,
+а после её освобождения — отдельно. `CanRetainCurrentIp` сообщает о готовности
+операции в текущей версии API. Для Kubernetes сохраните UUID в
+`tatnet/lb-floating-ip-id` и исходных Helm/GitOps values перед пересозданием Service.
