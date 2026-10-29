@@ -1552,6 +1552,7 @@ type PgClusterCreatedResponse struct {
 	Roles                 *[]PgRoleResponse       `json:"roles,omitempty"`
 	Status                string                  `json:"status"`
 	StatusDetail          *string                 `json:"status_detail,omitempty"`
+	Storage               *PgStorageResponse      `json:"storage,omitempty"`
 	Topology              string                  `json:"topology"`
 	TopologyChangePending *bool                   `json:"topology_change_pending,omitempty"`
 	VersionCapabilities   *map[string]interface{} `json:"version_capabilities,omitempty"`
@@ -1597,6 +1598,7 @@ type PgClusterDetailResponse struct {
 	Roles                 *[]PgRoleResponse       `json:"roles,omitempty"`
 	Status                string                  `json:"status"`
 	StatusDetail          *string                 `json:"status_detail,omitempty"`
+	Storage               *PgStorageResponse      `json:"storage,omitempty"`
 	Topology              string                  `json:"topology"`
 	TopologyChangePending *bool                   `json:"topology_change_pending,omitempty"`
 	VersionCapabilities   *map[string]interface{} `json:"version_capabilities,omitempty"`
@@ -1752,6 +1754,19 @@ type PgRolePasswordResetResponse struct {
 type PgRoleResponse struct {
 	CanLogin bool   `json:"can_login"`
 	Name     string `json:"name"`
+}
+
+// PgStorageResponse defines model for PgStorageResponse.
+type PgStorageResponse struct {
+	AdditionalGibMonthlyCost *float32                  `json:"additional_gib_monthly_cost,omitempty"`
+	AllocatedStorageGb       int                       `json:"allocated_storage_gb"`
+	AutoscalingEnabled       bool                      `json:"autoscaling_enabled"`
+	MaxAllocatedStorageGb    *int                      `json:"max_allocated_storage_gb,omitempty"`
+	Nodes                    *[]map[string]interface{} `json:"nodes,omitempty"`
+	OnlineResizeAvailable    bool                      `json:"online_resize_available"`
+	ResizePending            bool                      `json:"resize_pending"`
+	Status                   string                    `json:"status"`
+	StorageLimitGb           int                       `json:"storage_limit_gb"`
 }
 
 // PgTopologyResponse Топология и число узлов, на которое умножается цена тарифа.
