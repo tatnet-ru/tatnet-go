@@ -1,6 +1,6 @@
 module github.com/tatnet-ru/tatnet-go
 
-go 1.24.0
+go 1.27.3
 
 require github.com/oapi-codegen/runtime v1.7.0
 
