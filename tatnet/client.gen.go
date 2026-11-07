@@ -724,6 +724,14 @@ type CreateValkeyClusterRequest struct {
 	VpcId          *string   `json:"vpc_id,omitempty"`
 }
 
+// Database defines model for Database.
+type Database struct {
+	Id       openapi_types.UUID `json:"id"`
+	Name     string             `json:"name"`
+	ReadOnly bool               `json:"read_only"`
+	Status   string             `json:"status"`
+}
+
 // DeleteAccepted The body of a 202 delete: the row is marked and a region tears the
 // resource down over the next minutes.
 //
@@ -1295,6 +1303,14 @@ type PageAppJobRunResponse struct {
 	Offset int                 `json:"offset"`
 }
 
+// PageDatabase defines model for Page_Database_.
+type PageDatabase struct {
+	Count  int        `json:"count"`
+	Data   []Database `json:"data"`
+	Limit  int        `json:"limit"`
+	Offset int        `json:"offset"`
+}
+
 // PageKafkaClusterResponse defines model for Page_KafkaClusterResponse_.
 type PageKafkaClusterResponse struct {
 	Count  int                    `json:"count"`
@@ -1796,6 +1812,39 @@ type RestoreTechnicalDomainRequest struct {
 type RetainLBIPRequest struct {
 	// ExpectedVip The exact current public IPv4; the operation never chooses another IP
 	ExpectedVip string `json:"expected_vip"`
+}
+
+// SQLError defines model for SQLError.
+type SQLError struct {
+	Detail         *string `json:"detail,omitempty"`
+	Hint           *string `json:"hint,omitempty"`
+	Message        string  `json:"message"`
+	Position       *int    `json:"position,omitempty"`
+	Sqlstate       *string `json:"sqlstate,omitempty"`
+	StatementIndex *int    `json:"statement_index,omitempty"`
+}
+
+// SQLRequest defines model for SQLRequest.
+type SQLRequest struct {
+	MaxRows   *int   `json:"max_rows,omitempty"`
+	Sql       string `json:"sql"`
+	TimeoutMs *int   `json:"timeout_ms,omitempty"`
+}
+
+// SQLResult defines model for SQLResult.
+type SQLResult struct {
+	Error   *SQLError    `json:"error,omitempty"`
+	Ok      bool         `json:"ok"`
+	Results *[]Statement `json:"results,omitempty"`
+}
+
+// Statement defines model for Statement.
+type Statement struct {
+	Columns      *[]string    `json:"columns,omitempty"`
+	CommandTag   string       `json:"command_tag"`
+	Rows         *[][]*string `json:"rows,omitempty"`
+	RowsAffected int          `json:"rows_affected"`
+	Truncated    *bool        `json:"truncated,omitempty"`
 }
 
 // StatusResponse defines model for StatusResponse.
@@ -3552,6 +3601,12 @@ type SshKeysListSshKeysParams struct {
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
 
+// SupabaseListDatabasesParams defines parameters for SupabaseListDatabases.
+type SupabaseListDatabasesParams struct {
+	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
+	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
+}
+
 // ValkeyListClustersByAccountParams defines parameters for ValkeyListClustersByAccount.
 type ValkeyListClustersByAccountParams struct {
 	// ProjectId Only resources of this project (optional)
@@ -3932,6 +3987,12 @@ type VolumesDetachVolumeJSONRequestBody = VolumesDetachVolumeJSONBody
 
 // SshKeysCreateSshKeyJSONRequestBody defines body for SshKeysCreateSshKey for application/json ContentType.
 type SshKeysCreateSshKeyJSONRequestBody = V1SshKeyCreate
+
+// SupabaseQueryDatabaseJSONRequestBody defines body for SupabaseQueryDatabase for application/json ContentType.
+type SupabaseQueryDatabaseJSONRequestBody = SQLRequest
+
+// SupabaseExecuteSqlJSONRequestBody defines body for SupabaseExecuteSql for application/json ContentType.
+type SupabaseExecuteSqlJSONRequestBody = SQLRequest
 
 // ValkeyUpdateAllowlistByIdJSONRequestBody defines body for ValkeyUpdateAllowlistById for application/json ContentType.
 type ValkeyUpdateAllowlistByIdJSONRequestBody = UpdateValkeyAllowlistRequest
@@ -6880,6 +6941,43 @@ type ClientInterface interface {
 	//
 	// Corresponds with DELETE /ssh-keys/{key_id} (the `SshKeysDeleteSshKey` operationId).
 	SshKeysDeleteSshKey(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SupabaseListDatabases List accessible managed Supabase databases
+	//
+	// Corresponds with GET /supabase (the `SupabaseListDatabases` operationId).
+	SupabaseListDatabases(ctx context.Context, params *SupabaseListDatabasesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SupabaseQueryDatabaseWithBody Execute one read-only SQL statement
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+	SupabaseQueryDatabaseWithBody(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SupabaseQueryDatabase Execute one read-only SQL statement
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+	SupabaseQueryDatabase(ctx context.Context, databaseId openapi_types.UUID, body SupabaseQueryDatabaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SupabaseExecuteSqlWithBody Execute SQL as the database owner
+	//
+	// May change or delete data. No superuser authority. Never automatically retry.
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+	SupabaseExecuteSqlWithBody(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// SupabaseExecuteSql Execute SQL as the database owner
+	//
+	// May change or delete data. No superuser authority. Never automatically retry.
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+	SupabaseExecuteSql(ctx context.Context, databaseId openapi_types.UUID, body SupabaseExecuteSqlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// ValkeyListClustersByAccount List Valkey clusters in a project
 	//
@@ -13737,6 +13835,93 @@ func (c *Client) SshKeysCreateSshKey(ctx context.Context, body SshKeysCreateSshK
 // Corresponds with DELETE /ssh-keys/{key_id} (the `SshKeysDeleteSshKey` operationId).
 func (c *Client) SshKeysDeleteSshKey(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewSshKeysDeleteSshKeyRequest(c.Server, keyId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SupabaseListDatabases List accessible managed Supabase databases
+//
+// Corresponds with GET /supabase (the `SupabaseListDatabases` operationId).
+func (c *Client) SupabaseListDatabases(ctx context.Context, params *SupabaseListDatabasesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSupabaseListDatabasesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SupabaseQueryDatabaseWithBody Execute one read-only SQL statement
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+func (c *Client) SupabaseQueryDatabaseWithBody(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSupabaseQueryDatabaseRequestWithBody(c.Server, databaseId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SupabaseQueryDatabase Execute one read-only SQL statement
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+func (c *Client) SupabaseQueryDatabase(ctx context.Context, databaseId openapi_types.UUID, body SupabaseQueryDatabaseJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSupabaseQueryDatabaseRequest(c.Server, databaseId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SupabaseExecuteSqlWithBody Execute SQL as the database owner
+//
+// May change or delete data. No superuser authority. Never automatically retry.
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+func (c *Client) SupabaseExecuteSqlWithBody(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSupabaseExecuteSqlRequestWithBody(c.Server, databaseId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// SupabaseExecuteSql Execute SQL as the database owner
+//
+// May change or delete data. No superuser authority. Never automatically retry.
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+func (c *Client) SupabaseExecuteSql(ctx context.Context, databaseId openapi_types.UUID, body SupabaseExecuteSqlJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewSupabaseExecuteSqlRequest(c.Server, databaseId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -27716,6 +27901,166 @@ func NewSshKeysDeleteSshKeyRequest(server string, keyId string) (*http.Request, 
 	return req, nil
 }
 
+// NewSupabaseListDatabasesRequest constructs an http.Request for the SupabaseListDatabases method
+func NewSupabaseListDatabasesRequest(server string, params *SupabaseListDatabasesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/supabase")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "limit", *params.Limit, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if params.Offset != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "offset", *params.Offset, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "integer", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewSupabaseQueryDatabaseRequest calls the generic SupabaseQueryDatabase builder with application/json body
+func NewSupabaseQueryDatabaseRequest(server string, databaseId openapi_types.UUID, body SupabaseQueryDatabaseJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSupabaseQueryDatabaseRequestWithBody(server, databaseId, "application/json", bodyReader)
+}
+
+// NewSupabaseQueryDatabaseRequestWithBody constructs an http.Request for the SupabaseQueryDatabase method, with any body, and a specified content type
+func NewSupabaseQueryDatabaseRequestWithBody(server string, databaseId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "database_id", databaseId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/supabase/%s/query", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewSupabaseExecuteSqlRequest calls the generic SupabaseExecuteSql builder with application/json body
+func NewSupabaseExecuteSqlRequest(server string, databaseId openapi_types.UUID, body SupabaseExecuteSqlJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewSupabaseExecuteSqlRequestWithBody(server, databaseId, "application/json", bodyReader)
+}
+
+// NewSupabaseExecuteSqlRequestWithBody constructs an http.Request for the SupabaseExecuteSql method, with any body, and a specified content type
+func NewSupabaseExecuteSqlRequestWithBody(server string, databaseId openapi_types.UUID, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "database_id", databaseId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/supabase/%s/sql", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewValkeyListClustersByAccountRequest constructs an http.Request for the ValkeyListClustersByAccount method
 func NewValkeyListClustersByAccountRequest(server string, params *ValkeyListClustersByAccountParams) (*http.Request, error) {
 	var err error
@@ -32799,6 +33144,45 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with DELETE /ssh-keys/{key_id} (the `SshKeysDeleteSshKey` operationId).
 	SshKeysDeleteSshKeyWithResponse(ctx context.Context, keyId string, reqEditors ...RequestEditorFn) (*SshKeysDeleteSshKeyResponse, error)
+
+	// SupabaseListDatabasesWithResponse List accessible managed Supabase databases
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /supabase (the `SupabaseListDatabases` operationId).
+	SupabaseListDatabasesWithResponse(ctx context.Context, params *SupabaseListDatabasesParams, reqEditors ...RequestEditorFn) (*SupabaseListDatabasesResponse, error)
+
+	// SupabaseQueryDatabaseWithBodyWithResponse Execute one read-only SQL statement
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+	SupabaseQueryDatabaseWithBodyWithResponse(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SupabaseQueryDatabaseResponse, error)
+
+	// SupabaseQueryDatabaseWithResponse Execute one read-only SQL statement
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+	SupabaseQueryDatabaseWithResponse(ctx context.Context, databaseId openapi_types.UUID, body SupabaseQueryDatabaseJSONRequestBody, reqEditors ...RequestEditorFn) (*SupabaseQueryDatabaseResponse, error)
+
+	// SupabaseExecuteSqlWithBodyWithResponse Execute SQL as the database owner
+	//
+	// May change or delete data. No superuser authority. Never automatically retry.
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+	SupabaseExecuteSqlWithBodyWithResponse(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SupabaseExecuteSqlResponse, error)
+
+	// SupabaseExecuteSqlWithResponse Execute SQL as the database owner
+	//
+	// May change or delete data. No superuser authority. Never automatically retry.
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+	SupabaseExecuteSqlWithResponse(ctx context.Context, databaseId openapi_types.UUID, body SupabaseExecuteSqlJSONRequestBody, reqEditors ...RequestEditorFn) (*SupabaseExecuteSqlResponse, error)
 
 	// ValkeyListClustersByAccountWithResponse List Valkey clusters in a project
 	//
@@ -45487,6 +45871,150 @@ func (r SshKeysDeleteSshKeyResponse) ContentType() string {
 	return ""
 }
 
+type SupabaseListDatabasesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *PageDatabase
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r SupabaseListDatabasesResponse) GetJSON200() *PageDatabase {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r SupabaseListDatabasesResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r SupabaseListDatabasesResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SupabaseListDatabasesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SupabaseListDatabasesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SupabaseListDatabasesResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type SupabaseQueryDatabaseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SQLResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r SupabaseQueryDatabaseResponse) GetJSON200() *SQLResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r SupabaseQueryDatabaseResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r SupabaseQueryDatabaseResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SupabaseQueryDatabaseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SupabaseQueryDatabaseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SupabaseQueryDatabaseResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type SupabaseExecuteSqlResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *SQLResult
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r SupabaseExecuteSqlResponse) GetJSON200() *SQLResult {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r SupabaseExecuteSqlResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r SupabaseExecuteSqlResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r SupabaseExecuteSqlResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r SupabaseExecuteSqlResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r SupabaseExecuteSqlResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type ValkeyListClustersByAccountResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -52775,6 +53303,75 @@ func (c *ClientWithResponses) SshKeysDeleteSshKeyWithResponse(ctx context.Contex
 		return nil, err
 	}
 	return ParseSshKeysDeleteSshKeyResponse(rsp)
+}
+
+// SupabaseListDatabasesWithResponse List accessible managed Supabase databases
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /supabase (the `SupabaseListDatabases` operationId).
+func (c *ClientWithResponses) SupabaseListDatabasesWithResponse(ctx context.Context, params *SupabaseListDatabasesParams, reqEditors ...RequestEditorFn) (*SupabaseListDatabasesResponse, error) {
+	rsp, err := c.SupabaseListDatabases(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSupabaseListDatabasesResponse(rsp)
+}
+
+// SupabaseQueryDatabaseWithBodyWithResponse Execute one read-only SQL statement
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+func (c *ClientWithResponses) SupabaseQueryDatabaseWithBodyWithResponse(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SupabaseQueryDatabaseResponse, error) {
+	rsp, err := c.SupabaseQueryDatabaseWithBody(ctx, databaseId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSupabaseQueryDatabaseResponse(rsp)
+}
+
+// SupabaseQueryDatabaseWithResponse Execute one read-only SQL statement
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /supabase/{database_id}/query (the `SupabaseQueryDatabase` operationId).
+func (c *ClientWithResponses) SupabaseQueryDatabaseWithResponse(ctx context.Context, databaseId openapi_types.UUID, body SupabaseQueryDatabaseJSONRequestBody, reqEditors ...RequestEditorFn) (*SupabaseQueryDatabaseResponse, error) {
+	rsp, err := c.SupabaseQueryDatabase(ctx, databaseId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSupabaseQueryDatabaseResponse(rsp)
+}
+
+// SupabaseExecuteSqlWithBodyWithResponse Execute SQL as the database owner
+//
+// May change or delete data. No superuser authority. Never automatically retry.
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+func (c *ClientWithResponses) SupabaseExecuteSqlWithBodyWithResponse(ctx context.Context, databaseId openapi_types.UUID, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*SupabaseExecuteSqlResponse, error) {
+	rsp, err := c.SupabaseExecuteSqlWithBody(ctx, databaseId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSupabaseExecuteSqlResponse(rsp)
+}
+
+// SupabaseExecuteSqlWithResponse Execute SQL as the database owner
+//
+// May change or delete data. No superuser authority. Never automatically retry.
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /supabase/{database_id}/sql (the `SupabaseExecuteSql` operationId).
+func (c *ClientWithResponses) SupabaseExecuteSqlWithResponse(ctx context.Context, databaseId openapi_types.UUID, body SupabaseExecuteSqlJSONRequestBody, reqEditors ...RequestEditorFn) (*SupabaseExecuteSqlResponse, error) {
+	rsp, err := c.SupabaseExecuteSql(ctx, databaseId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseSupabaseExecuteSqlResponse(rsp)
 }
 
 // ValkeyListClustersByAccountWithResponse List Valkey clusters in a project
@@ -62003,6 +62600,105 @@ func ParseSshKeysDeleteSshKeyResponse(rsp *http.Response) (*SshKeysDeleteSshKeyR
 	switch {
 	case rsp.StatusCode == 204:
 		break // No content-type
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSupabaseListDatabasesResponse parses an HTTP response from a SupabaseListDatabasesWithResponse call
+func ParseSupabaseListDatabasesResponse(rsp *http.Response) (*SupabaseListDatabasesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SupabaseListDatabasesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest PageDatabase
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSupabaseQueryDatabaseResponse parses an HTTP response from a SupabaseQueryDatabaseWithResponse call
+func ParseSupabaseQueryDatabaseResponse(rsp *http.Response) (*SupabaseQueryDatabaseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SupabaseQueryDatabaseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SQLResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseSupabaseExecuteSqlResponse parses an HTTP response from a SupabaseExecuteSqlWithResponse call
+func ParseSupabaseExecuteSqlResponse(rsp *http.Response) (*SupabaseExecuteSqlResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &SupabaseExecuteSqlResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest SQLResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
