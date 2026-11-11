@@ -500,28 +500,28 @@ func (e V1LBCreateScheme) Valid() bool {
 
 // Defines values for V1VMSubscriptionUpdatePeriodType.
 const (
-	N12m V1VMSubscriptionUpdatePeriodType = "12m"
-	N1d  V1VMSubscriptionUpdatePeriodType = "1d"
-	N1h  V1VMSubscriptionUpdatePeriodType = "1h"
-	N1m  V1VMSubscriptionUpdatePeriodType = "1m"
-	N3m  V1VMSubscriptionUpdatePeriodType = "3m"
-	N6m  V1VMSubscriptionUpdatePeriodType = "6m"
+	V1VMSubscriptionUpdatePeriodTypeN12m V1VMSubscriptionUpdatePeriodType = "12m"
+	V1VMSubscriptionUpdatePeriodTypeN1d  V1VMSubscriptionUpdatePeriodType = "1d"
+	V1VMSubscriptionUpdatePeriodTypeN1h  V1VMSubscriptionUpdatePeriodType = "1h"
+	V1VMSubscriptionUpdatePeriodTypeN1m  V1VMSubscriptionUpdatePeriodType = "1m"
+	V1VMSubscriptionUpdatePeriodTypeN3m  V1VMSubscriptionUpdatePeriodType = "3m"
+	V1VMSubscriptionUpdatePeriodTypeN6m  V1VMSubscriptionUpdatePeriodType = "6m"
 )
 
 // Valid indicates whether the value is a known member of the V1VMSubscriptionUpdatePeriodType enum.
 func (e V1VMSubscriptionUpdatePeriodType) Valid() bool {
 	switch e {
-	case N12m:
+	case V1VMSubscriptionUpdatePeriodTypeN12m:
 		return true
-	case N1d:
+	case V1VMSubscriptionUpdatePeriodTypeN1d:
 		return true
-	case N1h:
+	case V1VMSubscriptionUpdatePeriodTypeN1h:
 		return true
-	case N1m:
+	case V1VMSubscriptionUpdatePeriodTypeN1m:
 		return true
-	case N3m:
+	case V1VMSubscriptionUpdatePeriodTypeN3m:
 		return true
-	case N6m:
+	case V1VMSubscriptionUpdatePeriodTypeN6m:
 		return true
 	default:
 		return false
@@ -543,6 +543,57 @@ func (e AccountPreviewFundsParamsProduct) Valid() bool {
 	case Supabase:
 		return true
 	case T1000:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KafkaNodeMetricsParamsMetric.
+const (
+	Cpu       KafkaNodeMetricsParamsMetric = "cpu"
+	DiskIo    KafkaNodeMetricsParamsMetric = "disk_io"
+	Memory    KafkaNodeMetricsParamsMetric = "memory"
+	NetworkIo KafkaNodeMetricsParamsMetric = "network_io"
+)
+
+// Valid indicates whether the value is a known member of the KafkaNodeMetricsParamsMetric enum.
+func (e KafkaNodeMetricsParamsMetric) Valid() bool {
+	switch e {
+	case Cpu:
+		return true
+	case DiskIo:
+		return true
+	case Memory:
+		return true
+	case NetworkIo:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for KafkaNodeMetricsParamsRange.
+const (
+	KafkaNodeMetricsParamsRangeN1h  KafkaNodeMetricsParamsRange = "1h"
+	KafkaNodeMetricsParamsRangeN24h KafkaNodeMetricsParamsRange = "24h"
+	KafkaNodeMetricsParamsRangeN30d KafkaNodeMetricsParamsRange = "30d"
+	KafkaNodeMetricsParamsRangeN6h  KafkaNodeMetricsParamsRange = "6h"
+	KafkaNodeMetricsParamsRangeN7d  KafkaNodeMetricsParamsRange = "7d"
+)
+
+// Valid indicates whether the value is a known member of the KafkaNodeMetricsParamsRange enum.
+func (e KafkaNodeMetricsParamsRange) Valid() bool {
+	switch e {
+	case KafkaNodeMetricsParamsRangeN1h:
+		return true
+	case KafkaNodeMetricsParamsRangeN24h:
+		return true
+	case KafkaNodeMetricsParamsRangeN30d:
+		return true
+	case KafkaNodeMetricsParamsRangeN6h:
+		return true
+	case KafkaNodeMetricsParamsRangeN7d:
 		return true
 	default:
 		return false
@@ -844,6 +895,7 @@ type KafkaClusterCreatedResponse struct {
 	Name                    string              `json:"name"`
 	Nodes                   []KafkaNodeResponse `json:"nodes"`
 	Password                string              `json:"password"`
+	PasswordStatus          *string             `json:"password_status,omitempty"`
 	PlanId                  openapi_types.UUID  `json:"plan_id"`
 	PrivateBootstrapServers []string            `json:"private_bootstrap_servers"`
 	ProjectId               openapi_types.UUID  `json:"project_id"`
@@ -872,6 +924,7 @@ type KafkaClusterResponse struct {
 	MonthlyCost             *float32            `json:"monthly_cost,omitempty"`
 	Name                    string              `json:"name"`
 	Nodes                   []KafkaNodeResponse `json:"nodes"`
+	PasswordStatus          *string             `json:"password_status,omitempty"`
 	PlanId                  openapi_types.UUID  `json:"plan_id"`
 	PrivateBootstrapServers []string            `json:"private_bootstrap_servers"`
 	ProjectId               openapi_types.UUID  `json:"project_id"`
@@ -901,6 +954,12 @@ type KafkaNodeResponse struct {
 	Role        string              `json:"role"`
 	Status      string              `json:"status"`
 	VmId        *openapi_types.UUID `json:"vm_id"`
+}
+
+// KafkaPasswordResetResponse defines model for KafkaPasswordResetResponse.
+type KafkaPasswordResetResponse struct {
+	Applied  *bool  `json:"applied,omitempty"`
+	Password string `json:"password"`
 }
 
 // KafkaPlanResponse defines model for KafkaPlanResponse.
@@ -1286,6 +1345,18 @@ type LoadBalancerResponse struct {
 
 // LoadBalancerResponseScheme defines model for LoadBalancerResponse.Scheme.
 type LoadBalancerResponseScheme string
+
+// MetricsResponse defines model for MetricsResponse.
+type MetricsResponse struct {
+	Metric string          `json:"metric"`
+	Series []MetricsSeries `json:"series"`
+}
+
+// MetricsSeries defines model for MetricsSeries.
+type MetricsSeries struct {
+	Data [][]float64 `json:"data"`
+	Name string      `json:"name"`
+}
 
 // PageAppJobResponse defines model for Page_AppJobResponse_.
 type PageAppJobResponse struct {
@@ -3546,6 +3617,18 @@ type KafkaListClustersParams struct {
 	Limit  *int `form:"limit,omitempty" json:"limit,omitempty"`
 	Offset *int `form:"offset,omitempty" json:"offset,omitempty"`
 }
+
+// KafkaNodeMetricsParams defines parameters for KafkaNodeMetrics.
+type KafkaNodeMetricsParams struct {
+	Metric KafkaNodeMetricsParamsMetric `form:"metric" json:"metric"`
+	Range  *KafkaNodeMetricsParamsRange `form:"range,omitempty" json:"range,omitempty"`
+}
+
+// KafkaNodeMetricsParamsMetric defines parameters for KafkaNodeMetrics.
+type KafkaNodeMetricsParamsMetric string
+
+// KafkaNodeMetricsParamsRange defines parameters for KafkaNodeMetrics.
+type KafkaNodeMetricsParamsRange string
 
 // KubernetesListClustersParams defines parameters for KubernetesListClusters.
 type KubernetesListClustersParams struct {
@@ -5870,6 +5953,16 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
 	KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaNodeMetrics Node Metrics
+	//
+	// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/metrics (the `KafkaNodeMetrics` operationId).
+	KafkaNodeMetrics(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, params *KafkaNodeMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// KafkaResetPassword Reset Password
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/password (the `KafkaResetPassword` operationId).
+	KafkaResetPassword(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// KafkaResumeCluster Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
 	//
@@ -11474,6 +11567,36 @@ func (c *Client) KafkaCanaryNodeActionWithBody(ctx context.Context, projectId op
 // Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
 func (c *Client) KafkaCanaryNodeAction(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewKafkaCanaryNodeActionRequest(c.Server, projectId, clusterId, nodeId, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaNodeMetrics Node Metrics
+//
+// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/metrics (the `KafkaNodeMetrics` operationId).
+func (c *Client) KafkaNodeMetrics(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, params *KafkaNodeMetricsParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaNodeMetricsRequest(c.Server, projectId, clusterId, nodeId, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// KafkaResetPassword Reset Password
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/password (the `KafkaResetPassword` operationId).
+func (c *Client) KafkaResetPassword(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewKafkaResetPasswordRequest(c.Server, projectId, clusterId)
 	if err != nil {
 		return nil, err
 	}
@@ -23413,6 +23536,130 @@ func NewKafkaCanaryNodeActionRequestWithBody(server string, projectId openapi_ty
 	return req, nil
 }
 
+// NewKafkaNodeMetricsRequest constructs an http.Request for the KafkaNodeMetrics method
+func NewKafkaNodeMetricsRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, params *KafkaNodeMetricsParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam2 string
+
+	pathParam2, err = runtime.StyleParamWithOptions("simple", false, "node_id", nodeId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s/nodes/%s/metrics", pathParam0, pathParam1, pathParam2)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		// queryValues collects non-styled parameters (passthrough, JSON)
+		// that are safe to round-trip through url.Values.Encode().
+		queryValues := queryURL.Query()
+		// rawQueryFragments collects pre-encoded query fragments from
+		// styled parameters, preserving literal commas as delimiters
+		// per the OpenAPI spec (e.g. "color=blue,black,brown").
+		var rawQueryFragments []string
+
+		if queryFrag, err := runtime.StyleParamWithOptions("form", true, "metric", params.Metric, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+			return nil, err
+		} else {
+			for _, qp := range strings.Split(queryFrag, "&") {
+				rawQueryFragments = append(rawQueryFragments, qp)
+			}
+		}
+
+		if params.Range != nil {
+
+			if queryFrag, err := runtime.StyleParamWithOptions("form", true, "range", *params.Range, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationQuery, Type: "string", Format: ""}); err != nil {
+				return nil, err
+			} else {
+				for _, qp := range strings.Split(queryFrag, "&") {
+					rawQueryFragments = append(rawQueryFragments, qp)
+				}
+			}
+
+		}
+
+		if encoded := queryValues.Encode(); encoded != "" {
+			rawQueryFragments = append(rawQueryFragments, encoded)
+		}
+		queryURL.RawQuery = strings.Join(rawQueryFragments, "&")
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewKafkaResetPasswordRequest constructs an http.Request for the KafkaResetPassword method
+func NewKafkaResetPasswordRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "cluster_id", clusterId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: "uuid"})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/kafka-clusters/%s/password", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPost, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewKafkaResumeClusterRequest constructs an http.Request for the KafkaResumeCluster method
 func NewKafkaResumeClusterRequest(server string, projectId openapi_types.UUID, clusterId openapi_types.UUID) (*http.Request, error) {
 	var err error
@@ -31979,6 +32226,20 @@ type ClientWithResponsesInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/canary-power (the `KafkaCanaryNodeAction` operationId).
 	KafkaCanaryNodeActionWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, body KafkaCanaryNodeActionJSONRequestBody, reqEditors ...RequestEditorFn) (*KafkaCanaryNodeActionResponse, error)
+
+	// KafkaNodeMetricsWithResponse Node Metrics
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/metrics (the `KafkaNodeMetrics` operationId).
+	KafkaNodeMetricsWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, params *KafkaNodeMetricsParams, reqEditors ...RequestEditorFn) (*KafkaNodeMetricsResponse, error)
+
+	// KafkaResetPasswordWithResponse Reset Password
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/password (the `KafkaResetPassword` operationId).
+	KafkaResetPasswordWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaResetPasswordResponse, error)
 
 	// KafkaResumeClusterWithResponse Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
 	//
@@ -41682,6 +41943,102 @@ func (r KafkaCanaryNodeActionResponse) ContentType() string {
 	return ""
 }
 
+type KafkaNodeMetricsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *MetricsResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaNodeMetricsResponse) GetJSON200() *MetricsResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaNodeMetricsResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaNodeMetricsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaNodeMetricsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaNodeMetricsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaNodeMetricsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type KafkaResetPasswordResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *KafkaPasswordResetResponse
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r KafkaResetPasswordResponse) GetJSON200() *KafkaPasswordResetResponse {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r KafkaResetPasswordResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r KafkaResetPasswordResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r KafkaResetPasswordResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r KafkaResetPasswordResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r KafkaResetPasswordResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
 type KafkaResumeClusterResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -51366,6 +51723,32 @@ func (c *ClientWithResponses) KafkaCanaryNodeActionWithResponse(ctx context.Cont
 	return ParseKafkaCanaryNodeActionResponse(rsp)
 }
 
+// KafkaNodeMetricsWithResponse Node Metrics
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/kafka-clusters/{cluster_id}/nodes/{node_id}/metrics (the `KafkaNodeMetrics` operationId).
+func (c *ClientWithResponses) KafkaNodeMetricsWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, nodeId openapi_types.UUID, params *KafkaNodeMetricsParams, reqEditors ...RequestEditorFn) (*KafkaNodeMetricsResponse, error) {
+	rsp, err := c.KafkaNodeMetrics(ctx, projectId, clusterId, nodeId, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaNodeMetricsResponse(rsp)
+}
+
+// KafkaResetPasswordWithResponse Reset Password
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with POST /projects/{project_id}/kafka-clusters/{cluster_id}/password (the `KafkaResetPassword` operationId).
+func (c *ClientWithResponses) KafkaResetPasswordWithResponse(ctx context.Context, projectId openapi_types.UUID, clusterId openapi_types.UUID, reqEditors ...RequestEditorFn) (*KafkaResetPasswordResponse, error) {
+	rsp, err := c.KafkaResetPassword(ctx, projectId, clusterId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseKafkaResetPasswordResponse(rsp)
+}
+
 // KafkaResumeClusterWithResponse Resume Kafka after payment; stopped subscriptions charge one hour before starting nodes
 //
 // Returns a wrapper object for the known response body format(s).
@@ -59712,6 +60095,72 @@ func ParseKafkaCanaryNodeActionResponse(rsp *http.Response) (*KafkaCanaryNodeAct
 	switch {
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
 		var dest KafkaNodePowerResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaNodeMetricsResponse parses an HTTP response from a KafkaNodeMetricsWithResponse call
+func ParseKafkaNodeMetricsResponse(rsp *http.Response) (*KafkaNodeMetricsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaNodeMetricsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest MetricsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseKafkaResetPasswordResponse parses an HTTP response from a KafkaResetPasswordWithResponse call
+func ParseKafkaResetPasswordResponse(rsp *http.Response) (*KafkaResetPasswordResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &KafkaResetPasswordResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest KafkaPasswordResetResponse
 		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
 			return nil, err
 		}
