@@ -39,3 +39,8 @@ jobs:
         env:
           GOTOOLCHAIN: auto
         run: ./scripts/generate.sh --check
+
+      - name: Check reachable Go vulnerabilities
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+          "$(go env GOPATH)/bin/govulncheck" ./...
