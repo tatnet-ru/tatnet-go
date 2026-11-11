@@ -159,3 +159,9 @@ Reader endpoint возвращается как `ReadHost` / `ReadPort` (TCP/543
 а после её освобождения — отдельно. `CanRetainCurrentIp` сообщает о готовности
 операции в текущей версии API. Для Kubernetes сохраните UUID в
 `tatnet/lb-floating-ip-id` и исходных Helm/GitOps values перед пересозданием Service.
+
+### Kafka monitoring and password reset
+
+Generated `KafkaNodeMetricsWithResponse` reads scoped VM telemetry. `KafkaResetPasswordWithResponse` returns a one-time password with `applied=false`; read the cluster's `password_status` until regional application is confirmed. Time-series samples use float64 to preserve epoch-second precision. Existing `N1m` and related billing constants remain source compatible.
+
+Release this additive SDK version before updating the CLI dependency and running its `scripts/sync-contract.sh`. The Kafka change can be verified together with the CLI using a Go workspace; do not add go.mod replace directives.
