@@ -77,3 +77,28 @@ func TestKafkaMonitoringAndResetPreserveScopeAndTimestampPrecision(t *testing.T)
 		t.Fatalf("reset: %v %+v", err, reset)
 	}
 }
+
+func TestKafkaMonitoringKeepsUnknownLagAndHistoryPrecision(t *testing.T) {
+	project := uuid.MustParse("11111111-1111-1111-1111-111111111111")
+	cluster := uuid.MustParse("22222222-2222-2222-2222-222222222222")
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Header.Get("Authorization") != "Bearer tn_live_test" || r.URL.Path != "/projects/"+project.String()+"/kafka-clusters/"+cluster.String()+"/monitoring" {
+			t.Fatal("scope/auth lost")
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"status":"partial","stale":false,"config":{"lag_threshold":null,"lag_duration_seconds":300},"replication":{"status":"unavailable","partitions":null},"consumers":{"status":"ok","groups":[{"group":"workers","state":"Stable","status":"no_offsets","lag":null,"max_lag":null,"topics":[]}]}}`))
+	}))
+	defer srv.Close()
+	c, err := NewClientWithResponses(srv.URL, WithAPIKey("tn_live_test"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	response, err := c.KafkaGetMonitoringWithResponse(context.Background(), project, cluster)
+	if err != nil || response.JSON200 == nil {
+		t.Fatalf("monitoring %v %+v", err, response)
+	}
+	groups := response.JSON200.Consumers.Groups
+	if groups == nil || len(*groups) != 1 || (*groups)[0].Lag != nil {
+		t.Fatalf("unknown lag lost %+v", groups)
+	}
+}
