@@ -159,3 +159,8 @@ Reader endpoint возвращается как `ReadHost` / `ReadPort` (TCP/543
 а после её освобождения — отдельно. `CanRetainCurrentIp` сообщает о готовности
 операции в текущей версии API. Для Kubernetes сохраните UUID в
 `tatnet/lb-floating-ip-id` и исходных Helm/GitOps values перед пересозданием Service.
+
+Kafka monitoring uses `KafkaGetMonitoringWithResponse`,
+`KafkaUpdateMonitoringWithResponse` and `KafkaMonitoringMetricsWithResponse`.
+Lag is committed-offset distance; nullable lag remains unknown. Check freshness
+and `config_applied` before interpreting health or changed console warning settings.

@@ -1,9 +1,12 @@
 package tatnet
 
-// Preserve the published target-type constants. Adding the VM plan role enum
-// makes oapi-codegen qualify these names to disambiguate the shared "vm" value.
+// Preserve subscription constant names exported before Kafka history introduced
+// another enum containing 1h. Generated names are now qualified by their type.
 const (
-	App = LBTargetGroupSpecTargetTypeApp
-	Ip  = LBTargetGroupSpecTargetTypeIp
-	Vm  = LBTargetGroupSpecTargetTypeVm
+	N12m = V1VMSubscriptionUpdatePeriodTypeN12m
+	N1d  = V1VMSubscriptionUpdatePeriodTypeN1d
+	N1h  = V1VMSubscriptionUpdatePeriodTypeN1h
+	N1m  = V1VMSubscriptionUpdatePeriodTypeN1m
+	N3m  = V1VMSubscriptionUpdatePeriodTypeN3m
+	N6m  = V1VMSubscriptionUpdatePeriodTypeN6m
 )
