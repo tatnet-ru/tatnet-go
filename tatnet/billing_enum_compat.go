@@ -1,7 +1,7 @@
 package tatnet
 
-// Preserve subscription constant names exported before Kafka history introduced
-// another enum containing 1h. Generated names are now qualified by their type.
+// Preserve the public billing constants when the generator qualifies enums to
+// disambiguate Kafka monitoring's time ranges. Existing SDK callers keep working.
 const (
 	N12m = V1VMSubscriptionUpdatePeriodTypeN12m
 	N1d  = V1VMSubscriptionUpdatePeriodTypeN1d
