@@ -876,6 +876,12 @@ type AppJobUpdateRequest struct {
 	TimeoutSeconds *int    `json:"timeout_seconds,omitempty"`
 }
 
+// AppTrustedIPs defines model for AppTrustedIPs.
+type AppTrustedIPs struct {
+	// TrustedIps IPv4 addresses or CIDR networks. An empty list disables protection.
+	TrustedIps []string `json:"trusted_ips"`
+}
+
 // AttachInterfaceResponse defines model for AttachInterfaceResponse.
 type AttachInterfaceResponse struct {
 	InterfaceId string `json:"interface_id"`
@@ -4241,6 +4247,9 @@ type AppJobsV1CreateJobJSONRequestBody = AppJobCreateRequest
 // AppJobsV1UpdateJobJSONRequestBody defines body for AppJobsV1UpdateJob for application/json ContentType.
 type AppJobsV1UpdateJobJSONRequestBody = AppJobUpdateRequest
 
+// AppsSetAppTrustedIpsJSONRequestBody defines body for AppsSetAppTrustedIps for application/json ContentType.
+type AppsSetAppTrustedIpsJSONRequestBody = AppTrustedIPs
+
 // FunctionsCreateFunctionRouteJSONRequestBody defines body for FunctionsCreateFunctionRoute for application/json ContentType.
 type FunctionsCreateFunctionRouteJSONRequestBody = V1FunctionCreate
 
@@ -6125,6 +6134,25 @@ type ClientInterface interface {
 	//
 	// Corresponds with POST /projects/{project_id}/apps/{app_id}/jobs/{job_id}/run (the `AppJobsV1RunJob` operationId).
 	AppJobsV1RunJob(ctx context.Context, projectId string, appId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsGetAppTrustedIps Get the IPv4 allowlist for all deployments of an app
+	//
+	// Corresponds with GET /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsGetAppTrustedIps` operationId).
+	AppsGetAppTrustedIps(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsSetAppTrustedIpsWithBody Replace the IPv4 allowlist for all deployments of an app
+	//
+	// Takes any type of body and a specified content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+	AppsSetAppTrustedIpsWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// AppsSetAppTrustedIps Replace the IPv4 allowlist for all deployments of an app
+	//
+	// Takes a body of the `application/json` content type.
+	//
+	// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+	AppsSetAppTrustedIps(ctx context.Context, projectId string, appId string, body AppsSetAppTrustedIpsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// FunctionsListFunctions List functions
 	//
@@ -11543,6 +11571,55 @@ func (c *Client) AppJobsV1UpdateJob(ctx context.Context, projectId string, appId
 // Corresponds with POST /projects/{project_id}/apps/{app_id}/jobs/{job_id}/run (the `AppJobsV1RunJob` operationId).
 func (c *Client) AppJobsV1RunJob(ctx context.Context, projectId string, appId string, jobId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewAppJobsV1RunJobRequest(c.Server, projectId, appId, jobId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsGetAppTrustedIps Get the IPv4 allowlist for all deployments of an app
+//
+// Corresponds with GET /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsGetAppTrustedIps` operationId).
+func (c *Client) AppsGetAppTrustedIps(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsGetAppTrustedIpsRequest(c.Server, projectId, appId)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsSetAppTrustedIpsWithBody Replace the IPv4 allowlist for all deployments of an app
+//
+// Takes any type of body and a specified content type.
+//
+// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+func (c *Client) AppsSetAppTrustedIpsWithBody(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsSetAppTrustedIpsRequestWithBody(c.Server, projectId, appId, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// AppsSetAppTrustedIps Replace the IPv4 allowlist for all deployments of an app
+//
+// Takes a body of the `application/json` content type.
+//
+// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+func (c *Client) AppsSetAppTrustedIps(ctx context.Context, projectId string, appId string, body AppsSetAppTrustedIpsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewAppsSetAppTrustedIpsRequest(c.Server, projectId, appId, body)
 	if err != nil {
 		return nil, err
 	}
@@ -23093,6 +23170,101 @@ func NewAppJobsV1RunJobRequest(server string, projectId string, appId string, jo
 	return req, nil
 }
 
+// NewAppsGetAppTrustedIpsRequest constructs an http.Request for the AppsGetAppTrustedIps method
+func NewAppsGetAppTrustedIpsRequest(server string, projectId string, appId string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/trusted-ips", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodGet, queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewAppsSetAppTrustedIpsRequest calls the generic AppsSetAppTrustedIps builder with application/json body
+func NewAppsSetAppTrustedIpsRequest(server string, projectId string, appId string, body AppsSetAppTrustedIpsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewAppsSetAppTrustedIpsRequestWithBody(server, projectId, appId, "application/json", bodyReader)
+}
+
+// NewAppsSetAppTrustedIpsRequestWithBody constructs an http.Request for the AppsSetAppTrustedIps method, with any body, and a specified content type
+func NewAppsSetAppTrustedIpsRequestWithBody(server string, projectId string, appId string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithOptions("simple", false, "project_id", projectId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithOptions("simple", false, "app_id", appId, runtime.StyleParamOptions{ParamLocation: runtime.ParamLocationPath, Type: "string", Format: ""})
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/projects/%s/apps/%s/trusted-ips", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewFunctionsListFunctionsRequest constructs an http.Request for the FunctionsListFunctions method
 func NewFunctionsListFunctionsRequest(server string, projectId string, params *FunctionsListFunctionsParams) (*http.Request, error) {
 	var err error
@@ -32662,6 +32834,27 @@ type ClientWithResponsesInterface interface {
 	// Corresponds with POST /projects/{project_id}/apps/{app_id}/jobs/{job_id}/run (the `AppJobsV1RunJob` operationId).
 	AppJobsV1RunJobWithResponse(ctx context.Context, projectId string, appId string, jobId string, reqEditors ...RequestEditorFn) (*AppJobsV1RunJobResponse, error)
 
+	// AppsGetAppTrustedIpsWithResponse Get the IPv4 allowlist for all deployments of an app
+	//
+	// Returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with GET /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsGetAppTrustedIps` operationId).
+	AppsGetAppTrustedIpsWithResponse(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppTrustedIpsResponse, error)
+
+	// AppsSetAppTrustedIpsWithBodyWithResponse Replace the IPv4 allowlist for all deployments of an app
+	//
+	// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+	AppsSetAppTrustedIpsWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsSetAppTrustedIpsResponse, error)
+
+	// AppsSetAppTrustedIpsWithResponse Replace the IPv4 allowlist for all deployments of an app
+	//
+	// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+	//
+	// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+	AppsSetAppTrustedIpsWithResponse(ctx context.Context, projectId string, appId string, body AppsSetAppTrustedIpsJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsSetAppTrustedIpsResponse, error)
+
 	// FunctionsListFunctionsWithResponse List functions
 	//
 	// Returns a wrapper object for the known response body format(s).
@@ -41808,6 +42001,102 @@ func (r AppJobsV1RunJobResponse) StatusCode() int {
 
 // ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
 func (r AppJobsV1RunJobResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsGetAppTrustedIpsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppTrustedIPs
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsGetAppTrustedIpsResponse) GetJSON200() *AppTrustedIPs {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsGetAppTrustedIpsResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsGetAppTrustedIpsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsGetAppTrustedIpsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsGetAppTrustedIpsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsGetAppTrustedIpsResponse) ContentType() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Header.Get("Content-Type")
+	}
+	return ""
+}
+
+type AppsSetAppTrustedIpsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	// JSON200 the response for an HTTP 200 `application/json` response
+	JSON200 *AppTrustedIPs
+	// JSON422 the response for an HTTP 422 `application/json` response
+	JSON422 *HTTPValidationError
+}
+
+// GetJSON200 returns the response for an HTTP 200 `application/json` response
+func (r AppsSetAppTrustedIpsResponse) GetJSON200() *AppTrustedIPs {
+	return r.JSON200
+}
+
+// GetJSON422 returns the response for an HTTP 422 `application/json` response
+func (r AppsSetAppTrustedIpsResponse) GetJSON422() *HTTPValidationError {
+	return r.JSON422
+}
+
+// GetBody returns the raw response body bytes
+func (r AppsSetAppTrustedIpsResponse) GetBody() []byte {
+	return r.Body
+}
+
+// Status returns HTTPResponse.Status
+func (r AppsSetAppTrustedIpsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r AppsSetAppTrustedIpsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// ContentType is a convenience method to retrieve the Content-Type value from the HTTP response headers
+func (r AppsSetAppTrustedIpsResponse) ContentType() string {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.Header.Get("Content-Type")
 	}
@@ -52198,6 +52487,45 @@ func (c *ClientWithResponses) AppJobsV1RunJobWithResponse(ctx context.Context, p
 	return ParseAppJobsV1RunJobResponse(rsp)
 }
 
+// AppsGetAppTrustedIpsWithResponse Get the IPv4 allowlist for all deployments of an app
+//
+// Returns a wrapper object for the known response body format(s).
+//
+// Corresponds with GET /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsGetAppTrustedIps` operationId).
+func (c *ClientWithResponses) AppsGetAppTrustedIpsWithResponse(ctx context.Context, projectId string, appId string, reqEditors ...RequestEditorFn) (*AppsGetAppTrustedIpsResponse, error) {
+	rsp, err := c.AppsGetAppTrustedIps(ctx, projectId, appId, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsGetAppTrustedIpsResponse(rsp)
+}
+
+// AppsSetAppTrustedIpsWithBodyWithResponse Replace the IPv4 allowlist for all deployments of an app
+//
+// Takes any type of body and a specified content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+func (c *ClientWithResponses) AppsSetAppTrustedIpsWithBodyWithResponse(ctx context.Context, projectId string, appId string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*AppsSetAppTrustedIpsResponse, error) {
+	rsp, err := c.AppsSetAppTrustedIpsWithBody(ctx, projectId, appId, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsSetAppTrustedIpsResponse(rsp)
+}
+
+// AppsSetAppTrustedIpsWithResponse Replace the IPv4 allowlist for all deployments of an app
+//
+// Takes a body of the `application/json` content type, and returns a wrapper object for the known response body format(s).
+//
+// Corresponds with PUT /projects/{project_id}/apps/{app_id}/trusted-ips (the `AppsSetAppTrustedIps` operationId).
+func (c *ClientWithResponses) AppsSetAppTrustedIpsWithResponse(ctx context.Context, projectId string, appId string, body AppsSetAppTrustedIpsJSONRequestBody, reqEditors ...RequestEditorFn) (*AppsSetAppTrustedIpsResponse, error) {
+	rsp, err := c.AppsSetAppTrustedIps(ctx, projectId, appId, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseAppsSetAppTrustedIpsResponse(rsp)
+}
+
 // FunctionsListFunctionsWithResponse List functions
 //
 // Returns a wrapper object for the known response body format(s).
@@ -60400,6 +60728,72 @@ func ParseAppJobsV1RunJobResponse(rsp *http.Response) (*AppJobsV1RunJobResponse,
 			return nil, err
 		}
 		response.JSON202 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsGetAppTrustedIpsResponse parses an HTTP response from a AppsGetAppTrustedIpsWithResponse call
+func ParseAppsGetAppTrustedIpsResponse(rsp *http.Response) (*AppsGetAppTrustedIpsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsGetAppTrustedIpsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppTrustedIPs
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest HTTPValidationError
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseAppsSetAppTrustedIpsResponse parses an HTTP response from a AppsSetAppTrustedIpsWithResponse call
+func ParseAppsSetAppTrustedIpsResponse(rsp *http.Response) (*AppsSetAppTrustedIpsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &AppsSetAppTrustedIpsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest AppTrustedIPs
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
 		var dest HTTPValidationError
